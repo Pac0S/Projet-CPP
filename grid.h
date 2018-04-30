@@ -2,17 +2,23 @@
 #define GRID_H
 
 #include <map>
-#include <string>
-#include <iostream>
-
+#include <vector>
+#include "cellule.h"
+#include "metabolite.h"
+struct Case//pour manipuler on fait NomCase.cel ou NomCase.metab
+{
+    cellule* cel;
+    vector<float> metab[3];
+};
 
 
 class Grid {
 	public :
-	
+
+
 /*#############################################*/
-/*               CONSTRUCTORS                  */
-/*#############################################*/	
+/*             CONSTRUCTORS                    */
+/*#############################################*/
 
 		Grid();
 
