@@ -5,10 +5,27 @@
 
 using namespace std;
 
-int main(int argc, char* argv[]){
-	cellule c('m');// test cellule
+void test_grid_getters(Grid g);
 
+int main(int argc, char* argv[]){
+	cellule c1('L');// test cellule
 	Grid g1;
 	
+	test_grid_getters(g1);
+	
+	
 	return 0;
+}
+
+
+void test_grid_getters(Grid g){
+	cout << "Taille de la grille : " << g.get_taille() << endl;
+	cout << "Coefficient de diffusion D : " << g.get_coeff_diff() << endl;
+	cout << "Probabilité de mort des cellules : " << g.get_p_death() << endl;
+	cout << "Probabilité de mutation des cellules : " << g.get_p_mut() << endl;
+	cout << "Fitness minimale nécessaire à la division : " << g.get_W_min() << endl;
+	cout << "Taux métabolique Raa : " << g.get_Raa() << endl;
+	cout << "Taux métabolique Rab : " << g.get_Rab() << endl;
+	cout << "Taux métabolique Rbb : " << g.get_Rbb() << endl;
+	cout << "Taux métabolique Rbc : " << g.get_Rbc() << endl;
 }

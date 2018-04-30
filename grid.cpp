@@ -23,14 +23,52 @@ Grid::Grid(){
 	taux_meta_["Rbc"]=1;
 }
 	
-}
 
 /*#############################################*/
 /*                 GETTERS                     */
 /*#############################################*/
 
-
-
+int Grid::get_taille(){
+	return taille_;
+}
+	
+	
+float Grid::get_coeff_diff(){
+	return coeff_diff_;
+}
+	
+	
+float Grid::get_p_death(){
+	return p_death_;
+}
+	
+	
+float Grid::get_p_mut(){
+	return p_mut_;
+}
+	
+	
+float Grid::get_W_min(){
+	return W_min_;
+}
+	
+	
+float Grid::get_Raa(){
+	return taux_meta_["Raa"];
+}
+	
+	
+float Grid::get_Rab(){
+	return taux_meta_["Rab"];
+}
+	
+float Grid::get_Rbb(){
+	return taux_meta_["Rbb"];
+}
+	
+float Grid::get_Rbc(){
+	return taux_meta_["Rbc"];
+}
 /*#############################################*/
 /*                  SETTERS                    */
 /*#############################################*/
