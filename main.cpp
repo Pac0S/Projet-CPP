@@ -1,8 +1,10 @@
 #include <iostream>
+#include <map>
+#include "cellule.h"
 
 using namespace std;
 
 int main(int argc, char* argv[]){
-	cout << "Hello, World !" << endl;
+	cellule c('m');// test cellule
 	return 0;
 }
