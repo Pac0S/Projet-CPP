@@ -2,7 +2,7 @@
 #include <cmath>
 #include <map>
 #include <iostream>
-
+#include <cstdlib>
 using namespace std;
 /*#############################################*/
 /*               CONSTRUCTORS                  */
@@ -50,6 +50,7 @@ map<string,float> cellule::getReseauMet(){
 */
 
 
+
 /*#############################################*/
 /*                  SETTERS                    */
 /*#############################################*/
@@ -58,8 +59,20 @@ map<string,float> cellule::getReseauMet(){
 /*                  DISPLAY                    */
 /*#############################################*/
 
-
 /*#############################################*/
 /*                   METHODS                   */
 /*#############################################*/
 
+
+
+//méthode:
+bool cellule::is_dead(float Pdeath){
+	float lancer = rand() %100;
+	bool death;
+	if (lancer<=Pdeath*100){
+		death=true;
+	}else{
+		death=false;
+	}
+	return death;
+}
