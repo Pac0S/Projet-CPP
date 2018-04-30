@@ -1,6 +1,7 @@
 #include <iostream>
 #include <map>
 #include "cellule.h"
+#include "grid.h"
 
 using namespace std;
 

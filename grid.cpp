@@ -1,8 +1,10 @@
-#include "grid.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <cmath>
 #include <vector>
+
+#include "grid.h"
+
 
 
 
@@ -20,6 +22,7 @@ Grid::Grid(){
 	taux_meta_["Rab"]=1;
 	taux_meta_["Rbb"]=1;
 	taux_meta_["Rbc"]=1;
+}
 	
 }
 

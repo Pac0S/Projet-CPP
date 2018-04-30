@@ -6,19 +6,19 @@
 using namespace std;
 
 class cellule {
-public :
+	public :
 /*#############################################*/
 /*               CONSTRUCTORS                  */
 /*#############################################*/
-	cellule();
-	cellule(char gen);
+		cellule();
+		cellule(char gen);
 	
 /*#############################################*/
 /*                 GETTERS                     */
 /*#############################################*/
-	float getFitness();
-	char getGen();
-	map<string,float> getReseauMet();
+		float getFitness();
+		char getGen();
+		map<string,float> getReseauMet();
 	
 /*#############################################*/
 /*                  SETTERS                    */
@@ -27,20 +27,22 @@ public :
 /*#############################################*/
 /*                  DISPLAY                    */
 /*#############################################*/
-  void printc();
+		void printc();
   
 /*#############################################*/
 /*                   METHODS                   */
 /*#############################################*/
-	bool is_mutating(float Pmut);
-	bool is_dead(float Pdeath);
+		bool is_mutating(float Pmut);
+		bool is_dead(float Pdeath);
 
-protected :
+	protected :
+/*#############################################*/
+/*                   ATTRIBUTES                */
+/*#############################################*/
+
+		char genotype_; //Ga ou Gb
+		map<string,float> reseauMet_; //quantité de A,B et C dans la cellule
 	
-private :
-	//parametres
-	char genotype_; //Ga ou Gb
-	map<string,float> reseauMet_; //quantité de A,B et C dans la cellule
 	
 };
 
