@@ -2,7 +2,7 @@
 #include <cmath>
 #include <map>
 #include <iostream>
-
+#include <cstdlib>
 using namespace std;
 //getters
 float cellule::getFitness() {
@@ -51,4 +51,13 @@ cellule::cellule(char gen, map<string, float> metabolisme){
 
 
 //méthode:
-
+bool cellule::is_dead(float Pdeath){
+	float lancer = rand() %100;
+	bool death;
+	if (lancer<=Pdeath*100){
+		death=true;
+	}else{
+		death=false;
+	}
+	return death;
+}
