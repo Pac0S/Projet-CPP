@@ -7,24 +7,34 @@ using namespace std;
 
 class cellule {
 public :
-/*
-	//getters
+/*#############################################*/
+/*               CONSTRUCTORS                  */
+/*#############################################*/
+	cellule();
+	cellule(char gen);
+	
+/*#############################################*/
+/*                 GETTERS                     */
+/*#############################################*/
 	float getFitness();
 	char getGen();
 	map<string,float> getReseauMet();
-	//setters
-
-	//constructor
-	*/
-	cellule();
-	cellule(char gen);
-	/*
-	//affichage
-	void printc;
-	//methode
+	
+/*#############################################*/
+/*                  SETTERS                    */
+/*#############################################*/
+  
+/*#############################################*/
+/*                  DISPLAY                    */
+/*#############################################*/
+  void printc;
+  
+/*#############################################*/
+/*                   METHODS                   */
+/*#############################################*/
 	bool is_mutating(float Pmut);
 	bool is_dead(float Pdeath);
-	*/
+
 protected :
 	
 private :

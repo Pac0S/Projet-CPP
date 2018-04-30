@@ -4,27 +4,9 @@
 #include <iostream>
 
 using namespace std;
-//getters
-/*float cellule::getFitness() {
-	float fitness;
-	if (genotype_=='L'){
-		fitness= reseauMet_[Acetate];
-	}else{
-		fitness= reseauMet_[Ethanol];
-	}
-	return fitness;
-}
-
-char cellule::getGen(){
-	return genotype_;
-}
-
-map<string,float> cellule::getReseauMet(){
-	return reseauMet_;
-}
-
-*/
-//constructors
+/*#############################################*/
+/*               CONSTRUCTORS                  */
+/*#############################################*/
 cellule::cellule(){
   genotype_ = 'S';
   reseauMet_["Glucose"]=0.;
@@ -44,11 +26,40 @@ cellule::cellule(char gen){
 }
 
 
-//affichage
+/*#############################################*/
+/*                 GETTERS                     */
+/*#############################################*/
+/*float cellule::getFitness() {
+	float fitness;
+	if (genotype_=='L'){
+		fitness= reseauMet_[Acetate];
+	}else{
+		fitness= reseauMet_[Ethanol];
+	}
+	return fitness;
+}
 
-//setters
+char cellule::getGen(){
+	return genotype_;
+}
+
+map<string,float> cellule::getReseauMet(){
+	return reseauMet_;
+}
+
+*/
 
 
+/*#############################################*/
+/*                  SETTERS                    */
+/*#############################################*/
 
-//méthode:
+/*#############################################*/
+/*                  DISPLAY                    */
+/*#############################################*/
+
+
+/*#############################################*/
+/*                   METHODS                   */
+/*#############################################*/
 
