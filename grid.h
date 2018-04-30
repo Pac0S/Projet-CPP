@@ -53,7 +53,7 @@ protected :
 	float p_mut_;
 	float W_min_; //Fitness minimum
 	map<string,float> taux_meta_;
-	
+	Case case_;
 	
 private :
 	//parametres

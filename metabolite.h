@@ -2,7 +2,6 @@
 #define MET_H
 
 
-
 class metabolite {//complexe a+ib
 public :
 	//getters
