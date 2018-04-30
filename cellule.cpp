@@ -76,3 +76,13 @@ bool cellule::is_dead(float Pdeath){
 	}
 	return death;
 }
+bool cellule::is_mutating(float Pmut){
+	float lancer = rand() %100;
+	bool mutation;
+	if (lancer<=mutation*100){
+		mutation=true;
+	}else{
+		mutation=false;
+	}
+	return mutation;
+}
