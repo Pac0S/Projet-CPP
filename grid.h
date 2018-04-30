@@ -2,7 +2,7 @@
 #define GRID_H
 
 
-class grid {//complexe a+ib
+class grid {
 public :
 	//getters
 

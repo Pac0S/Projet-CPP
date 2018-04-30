@@ -12,7 +12,8 @@ public :
 	//setters
 
 	//constructor
-	
+	cellule();
+	cellule(char gen, map<string, float> metabolisme);
 	//affichage
 	void printc;
 	//methode
@@ -23,7 +24,7 @@ protected :
 	
 private :
 	//parametres
-	char genotype_; //L ou S
+	char genotype_; //Ga ou Gb
 	map<string,float> reseauMet_; //quantité de A,B et C dans la cellule
 	
 	
