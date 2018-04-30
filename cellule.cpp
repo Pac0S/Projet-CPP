@@ -5,9 +5,7 @@
 
 using namespace std;
 //getters
-float cellule::getre() {
-	return re_;
-}
+
 
 
 //constructors
@@ -29,4 +27,12 @@ cellule::cellule(char gen, map<string, float> metabolisme){
   reseauMet_["Ethanol"]=0;
 }
 
+
+//affichage
+
+//setters
+
+
+
+//méthode:
 
