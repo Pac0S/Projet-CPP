@@ -5,6 +5,7 @@
 
 class cellule {
 public :
+/*
 	//getters
 	float getFitness();
 	char getGen();
@@ -25,7 +26,7 @@ private :
 	//parametres
 	char genotype_; //L ou S
 	map<string,float> reseauMet_; //quantité de A,B et C dans la cellule
-	
+	*/
 	
 };
 
