@@ -1,7 +1,9 @@
-#include "grid.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <cmath>
+
+#include "grid.h"
+
 
 
 /*#############################################*/
@@ -13,12 +15,12 @@ Grid::Grid(){
 	coeff_diff_=0.5;
 	p_death_=0.;
 	p_mut_=0.;
-	A_init_=0.5; //Concentration initiale en glucose
 	W_min_=0.1; //Fitness minimum
 	taux_meta_["Raa"]=1;
 	taux_meta_["Rab"]=1;
 	taux_meta_["Rbb"]=1;
 	taux_meta_["Rbc"]=1;
+}
 	
 
 
