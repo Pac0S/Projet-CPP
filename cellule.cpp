@@ -14,27 +14,24 @@ cellule::cellule(){
   reseauMet_["Ethanol"]=0.;
   }
 
-cellule::cellule(char gen){
-  if(gen == 'L' || gen == 'S'){
+cellule::cellule(char gen){//preconditions: gen='L' ou 'S'
     genotype_ = gen;
     reseauMet_["Glucose"]=0.;
     reseauMet_["Acetate"]=0.;
     reseauMet_["Ethanol"]=0.;
-  }else{
-    cout << gen << " is not a type. Please try again."<< endl;
-  }
+  
 }
 
 
 /*#############################################*/
 /*                 GETTERS                     */
 /*#############################################*/
-/*float cellule::getFitness() {
+float cellule::getFitness() {
 	float fitness;
 	if (genotype_=='L'){
-		fitness= reseauMet_[Acetate];
+		fitness= reseauMet_["Acetate"];
 	}else{
-		fitness= reseauMet_[Ethanol];
+		fitness= reseauMet_["Ethanol"];
 	}
 	return fitness;
 }
@@ -47,7 +44,7 @@ map<string,float> cellule::getReseauMet(){
 	return reseauMet_;
 }
 
-*/
+
 
 
 

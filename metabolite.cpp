@@ -4,18 +4,7 @@
 #include <cmath>
 
 //getters
-float Comp::getre() {
-	return re_;
-}
-float Comp::getim(){
-	return im_;
-}
-float Comp::getmod(){
-	return mod_;
-}
-float Comp::getarg(){
-	return arg_;
-}
+
 //constructors
 Comp::Comp(float re_, float im_){ //à partir des parties réelles et imaginaires
 	this->re_=re_;

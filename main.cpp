@@ -6,6 +6,7 @@
 using namespace std;
 
 void test_grid_getters(Grid g);
+void test_bool_function(cellule c,int try_nbr, int Pdeath, int Pmutation);
 
 int main(int argc, char* argv[]){
 	cellule c1('L');// test cellule
@@ -16,7 +17,6 @@ int main(int argc, char* argv[]){
 	
 	return 0;
 }
-
 
 void test_grid_getters(Grid g){
 	cout << "Taille de la grille : " << g.get_taille() << endl;
@@ -29,3 +29,16 @@ void test_grid_getters(Grid g){
 	cout << "Taux métabolique Rbb : " << g.get_Rbb() << endl;
 	cout << "Taux métabolique Rbc : " << g.get_Rbc() << endl;
 }
+
+void test_bool_function(cellule c,int try_nbr, int Pdeath, int Pmutation){
+	int morts =0;
+	int mutations=0;
+	for (int i(0);i<=try_nbr;i++){
+		if(c.is_dead(Pdeath)){morts++;}
+		if(c.is_mutating(Pmutation)){mutations++;}
+	}
+	cout << morts << "morts et "<<mutations<< "mutations.\n"<<endl; //resultat bizarre je tombe sur 7 7 beaucoup trop souvent à voir..
+	
+	
+}
+	
