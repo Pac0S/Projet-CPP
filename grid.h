@@ -9,7 +9,7 @@ public :
 	//setters
 
 	//constructor
-
+	grid()
 	//affichage
 
 	//methode
