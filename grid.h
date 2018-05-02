@@ -57,6 +57,7 @@ class Grid {
 		float p_mut_;
 		float W_min_; //Fitness minimum
 		map<string,float> taux_meta_;
+		vector<vector<Case>> grille_;
 	
 
 
