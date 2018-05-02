@@ -5,6 +5,7 @@
 #include <vector>
 #include "cellule.h"
 #include "metabolite.h"
+using namespace std;
 struct Case//pour manipuler on fait NomCase.cel ou NomCase.metab
 {
     cellule* cel;
@@ -50,11 +51,16 @@ class Grid {
 /*                   DISPLAY                   */
 /*#############################################*/
 
-
+	string zoliaffissage();
 
 /*#############################################*/
 /*                  METHODS                    */
 /*#############################################*/
+	void step();
+	//
+	//
+
+
 
 	protected :
 		

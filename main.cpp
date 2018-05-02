@@ -14,10 +14,8 @@ int main(int argc, char* argv[]){
 	Grid g1;
 	
 	//test_grid_getters(g1);
-	test_bool_function(c1,50,0.2,0.2);
-	test_bool_function(c1,50,0.4,0.4);
-	test_bool_function(c1,50,0.6,0.6);
-	test_bool_function(c1,50,0.8,0.8);
+	//test_bool_function(c1,50,0.2,0.2);
+	
 	
 	return 0;
 }

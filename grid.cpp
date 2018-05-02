@@ -1,9 +1,8 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-
 #include "grid.h"
-
+using namespace std;
 
 
 
@@ -23,7 +22,7 @@ Grid::Grid(){
 	taux_meta_["Rbc"]=1;
 	/*vector< vector<Case> > grille(taille_, vector<Case>(taille_));
 	for (vector<vector<Case>>::iterator i =grille.begin();i!=grille.end();i++){
-		for (vector<Case>::iterator j =(*i).begin();j!=(*i).end();j){//on parcourt toute les cases
+		for (vector<Case>::iterator j =(*i).begin();j!=(*i).end();j++){//on parcourt toute les cases
 			cellule c ('L');//a changer pour avoir du 50 50
 	   	   *((*j).cel)=c;
 	   	   vector<float> metab(3);
@@ -38,7 +37,21 @@ Grid::Grid(){
 	
 }
 	
+void Grid::step(){
+	//diffusion metabolite libre 
+		//voir algo sur le pdf
+	//mort des cellules
+		//on conserve les coordonnées où il y a mort dans un conteneur pour l'etape d'apres (list de paire d'int?)
+	//faire un rdm pour savoir quelle case vide on traite en premier, puis comparer les getfitness de toute les cellules autour
+		//faire un constructeur divide, qui prend en entrée une cellule et Pmut et qui sort une copie avec moitié moins de métabolite et eventuellement muté (L->s et s->L)
+		//on fait &grille_[coordonnées mortes].cel=cmere.divide()
+		//&grille_[coordonnées mère].cel=cmere.divide()
+	//fonctionnement metabolique:
+		//!!dt=0.1!!
 
+
+
+}
 
 /*#############################################*/
 /*                 GETTERS                     */
@@ -95,8 +108,39 @@ float Grid::get_Rbc(){
 /*                   DISPLAY                   */
 /*#############################################*/
 
+string Grid::zoliaffissage(){//pas encore testé parce que le constructeur de grid est pas fini.
+	string zoli = "";
+	for (vector<vector<Case>>::iterator ligne =grille_.begin();ligne!=grille_.end();ligne++){
+		for (int i(0);i<taille_*2+1;i++){
+			zoli+='-';
+		}
+		zoli+='\n';
+		zoli+='|';
+		for (vector<Case>::iterator colonne =(*ligne).begin();colonne!=(*ligne).end();colonne++){
+			if((*colonne).cel->getGen()=='L'){
+				zoli+="L|";
+			}else if((*colonne).cel->getGen()=='S'){
+				zoli+="S|";
+			}
+		}
+		zoli+='\n';
+	}
+	for (int j(0);j<taille_*2+1;j++){
+		zoli+='-';
+	}
+	return zoli;
+
+}
+
+
+
+
 
 
 /*#############################################*/
 /*                  METHODS                    */
 /*#############################################*/
+
+
+
+
