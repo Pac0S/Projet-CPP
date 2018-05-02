@@ -8,7 +8,7 @@
 struct Case//pour manipuler on fait NomCase.cel ou NomCase.metab
 {
     cellule* cel;
-    vector<float> metab[3];
+    vector<float> metab;
 };
 
 
@@ -36,6 +36,7 @@ class Grid {
 	float get_Rab();
 	float get_Rbb();
 	float get_Rbc();
+
 	
 	
 

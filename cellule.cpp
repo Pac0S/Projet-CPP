@@ -3,6 +3,8 @@
 #include <map>
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
+
 using namespace std;
 /*#############################################*/
 /*               CONSTRUCTORS                  */
@@ -76,7 +78,7 @@ bool cellule::is_dead(float Pdeath){
 bool cellule::is_mutating(float Pmut){
 	float lancer = rand() %100;
 	bool mutation;
-	if (lancer<=mutation*100){
+	if (lancer<=Pmut*100){
 		mutation=true;
 	}else{
 		mutation=false;

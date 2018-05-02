@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
 #include <cmath>
 #include <vector>
 
@@ -13,7 +12,7 @@
 /*#############################################*/
 
 Grid::Grid(){
-	taille_= 30;
+	taille_= 32;
 	coeff_diff_=0.5;
 	p_death_=0.;
 	p_mut_=0.;
@@ -22,6 +21,21 @@ Grid::Grid(){
 	taux_meta_["Rab"]=1;
 	taux_meta_["Rbb"]=1;
 	taux_meta_["Rbc"]=1;
+	/*vector< vector<Case> > grille(taille_, vector<Case>(taille_));
+	for (vector<vector<Case>>::iterator i =grille.begin();i!=grille.end();i++){
+		for (vector<Case>::iterator j =(*i).begin();j!=(*i).end();j){//on parcourt toute les cases
+			cellule c ('L');//a changer pour avoir du 50 50
+	   	   *((*j).cel)=c;
+	   	   vector<float> metab(3);
+	   	   metab[0]=0;
+	   	   metab[1]=1;
+	   	   metab[2]=2;
+	   	   (*j).metab=metab;
+	   }
+	   	   
+   }
+	grille_=grille;*/
+	
 }
 	
 
