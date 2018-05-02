@@ -27,7 +27,17 @@ class Grid {
 /*                 GETTERS                     */
 /*#############################################*/
 
-
+	int get_taille();
+	float get_coeff_diff();
+	float get_p_death();
+	float get_p_mut();
+	float get_W_min();
+	float get_Raa();
+	float get_Rab();
+	float get_Rbb();
+	float get_Rbc();
+	
+	
 
 /*#############################################*/
 /*                  SETTERS                    */
