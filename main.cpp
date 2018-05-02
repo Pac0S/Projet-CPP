@@ -2,18 +2,22 @@
 #include <map>
 #include "cellule.h"
 #include "grid.h"
-
+#include <ctime>
+#include <cstdlib>
 using namespace std;
 
 void test_grid_getters(Grid g);
-void test_bool_function(cellule c,int try_nbr, int Pdeath, int Pmutation);
+void test_bool_function(cellule c,int try_nbr, float Pdeath, float Pmutation);
 
 int main(int argc, char* argv[]){
 	cellule c1('L');// test cellule
 	Grid g1;
 	
-	test_grid_getters(g1);
-	
+	//test_grid_getters(g1);
+	test_bool_function(c1,50,0.2,0.2);
+	test_bool_function(c1,50,0.4,0.4);
+	test_bool_function(c1,50,0.6,0.6);
+	test_bool_function(c1,50,0.8,0.8);
 	
 	return 0;
 }
@@ -30,7 +34,9 @@ void test_grid_getters(Grid g){
 	cout << "Taux métabolique Rbc : " << g.get_Rbc() << endl;
 }
 
-void test_bool_function(cellule c,int try_nbr, int Pdeath, int Pmutation){
+void test_bool_function(cellule c,int try_nbr, float Pdeath, float Pmutation){
+	
+	srand(time(0));//initialise les valeurs aléatoire, a mettre au debut du code
 	int morts =0;
 	int mutations=0;
 	for (int i(0);i<=try_nbr;i++){
