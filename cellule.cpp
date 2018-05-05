@@ -3,30 +3,31 @@
 #include <map>
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
+
 using namespace std;
 /*#############################################*/
 /*               CONSTRUCTORS                  */
 /*#############################################*/
-cellule::cellule(){
+Cellule::Cellule(){
   genotype_ = 'S';
   reseauMet_["Glucose"]=0.;
   reseauMet_["Acetate"]=0.;
   reseauMet_["Ethanol"]=0.;
-  }
+ }
 
-cellule::cellule(char gen){//preconditions: gen='L' ou 'S'
+Cellule::Cellule(char gen){//preconditions: gen='L' ou 'S' ou 'N'(Nothing)
     genotype_ = gen;
     reseauMet_["Glucose"]=0.;
     reseauMet_["Acetate"]=0.;
     reseauMet_["Ethanol"]=0.;
-  
 }
 
 
 /*#############################################*/
 /*                 GETTERS                     */
 /*#############################################*/
-float cellule::getFitness() {
+float Cellule::getFitness() {
 	float fitness;
 	if (genotype_=='L'){
 		fitness= reseauMet_["Acetate"];
@@ -36,11 +37,11 @@ float cellule::getFitness() {
 	return fitness;
 }
 
-char cellule::getGen(){
+char Cellule::getGen(){
 	return genotype_;
 }
 
-map<string,float> cellule::getReseauMet(){
+map<string,float> Cellule::getReseauMet(){
 	return reseauMet_;
 }
 
@@ -63,7 +64,7 @@ map<string,float> cellule::getReseauMet(){
 
 
 //méthode:
-bool cellule::is_dead(float Pdeath){
+bool Cellule::is_dead(float Pdeath){
 	float lancer = rand() %100;
 	bool death;
 	if (lancer<=Pdeath*100){
@@ -73,10 +74,10 @@ bool cellule::is_dead(float Pdeath){
 	}
 	return death;
 }
-bool cellule::is_mutating(float Pmut){
+bool Cellule::is_mutating(float Pmut){
 	float lancer = rand() %100;
 	bool mutation;
-	if (lancer<=mutation*100){
+	if (lancer<=Pmut*100){
 		mutation=true;
 	}else{
 		mutation=false;

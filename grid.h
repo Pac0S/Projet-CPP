@@ -5,12 +5,13 @@
 #include <vector>
 #include "cellule.h"
 #include "metabolite.h"
+using namespace std;
 
 
 struct Case//pour manipuler on fait NomCase.cel ou NomCase.metab
 {
-    cellule* cel;
-    vector<float> metab[3];
+    Cellule* cel;
+    vector<float> metab;
 };
 
 
@@ -51,11 +52,16 @@ class Grid {
 /*                   DISPLAY                   */
 /*#############################################*/
 
-
+		string zoliaffissage();
 
 /*#############################################*/
 /*                  METHODS                    */
 /*#############################################*/
+		void step();
+		//
+		//
+
+
 
 	protected :
 		
@@ -68,7 +74,9 @@ class Grid {
 		float p_death_;
 		float p_mut_;
 		float W_min_; //Fitness minimum
+		float temps_; // Temps de simulation par intervalles de 0.1. Apres T pas de temps (T E [1,1500]),réinitialisation de l'environnement. Fin de la simulation à t = 5000.
 		map<string,float> taux_meta_;
+		vector<vector<Case>> grille_;
 	
 
 

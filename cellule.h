@@ -5,13 +5,13 @@
 
 using namespace std;
 
-class cellule {
+class Cellule {
 	public :
 /*#############################################*/
 /*               CONSTRUCTORS                  */
 /*#############################################*/
-		cellule();
-		cellule(char gen);
+		Cellule();
+		Cellule(char gen);
 	
 /*#############################################*/
 /*                 GETTERS                     */
@@ -40,8 +40,9 @@ class cellule {
 /*                   ATTRIBUTES                */
 /*#############################################*/
 
-		char genotype_; //Ga ou Gb
+		char genotype_; //Ga ou Gb  ou rien 
 		map<string,float> reseauMet_; //quantité de A,B et C dans la cellule
+		static float A_init; //Concentration initiale en A dans chaque Cellule (plutot que de modifier le constructeur on pourra modifier l'initialisation de A).
 	
 	
 };

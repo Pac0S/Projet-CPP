@@ -2,17 +2,19 @@
 #include <map>
 #include "cellule.h"
 #include "grid.h"
-
+#include <ctime>
+#include <cstdlib>
 using namespace std;
 
 void test_grid_getters(Grid g);
-void test_bool_function(cellule c,int try_nbr, int Pdeath, int Pmutation);
+void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation);
 
 int main(int argc, char* argv[]){
-	cellule c1('L');// test cellule
+	Cellule c1('L');// test Cellule
 	Grid g1;
 	
 	test_grid_getters(g1);
+	test_bool_function(c1,50,0.2,0.2);
 	
 	
 	return 0;
@@ -30,12 +32,18 @@ void test_grid_getters(Grid g){
 	cout << "Taux métabolique Rbc : " << g.get_Rbc() << endl;
 }
 
-void test_bool_function(cellule c,int try_nbr, int Pdeath, int Pmutation){
+void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation){
+	
+	srand(time(0));//initialise les valeurs aléatoire, a mettre au debut du code
 	int morts =0;
 	int mutations=0;
 	for (int i(0);i<=try_nbr;i++){
-		if(c.is_dead(Pdeath)){morts++;}
-		if(c.is_mutating(Pmutation)){mutations++;}
+		if(c.is_dead(Pdeath)){
+			morts++;
+		}
+		if(c.is_mutating(Pmutation)){
+			mutations++;
+		}
 	}
 	cout << morts << "morts et "<<mutations<< "mutations.\n"<<endl; //resultat bizarre je tombe sur 7 7 beaucoup trop souvent à voir..
 	
