@@ -11,7 +11,7 @@ using namespace std;
 struct Case//pour manipuler on fait NomCase.cel ou NomCase.metab
 {
     Cellule* cel_;
-    vector<float> metab_;
+    map<char,float> metab_;
 };
 
 

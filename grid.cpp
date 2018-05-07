@@ -33,9 +33,9 @@ Grid::Grid(){
 			Cellule* c = new Cellule('L');//a changer pour avoir du 50 50
 			j->cel_=c;
 			vector<float> metab(3);
-			metab[0]=0; // Concentration ???
-			metab[1]=1;
-			metab[2]=2;
+			metab['A']=0.; // Concentration ???
+			metab['B']=1.;
+			metab['C']=2.;
 			j->metab_=metab;
 		} 	   
 	}
@@ -51,8 +51,16 @@ void Grid::step(){
 		//faire un constructeur divide, qui prend en entrée une cellule et Pmut et qui sort une copie avec moitié moins de métabolite et eventuellement muté (L->s et s->L)
 		//on fait &grille_[coordonnées mortes].cel=cmere.divide()
 		//&grille_[coordonnées mère].cel=cmere.divide()
-	//fonctionnement metabolique:
-		//!!dt=0.1!!
+	//fonctionnement metabolique: !!dt=0.1!!
+	for (vector<vector<Case>>::iterator i =grid.begin();i!=grid.end();++i){
+		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
+		  if (j->cel_).getGen()=='L'){
+		    
+		  }
+		  else{
+		  }
+		}
+	}
 
 
 
