@@ -2,6 +2,7 @@
 #include <cmath>
 #include <vector>
 #include "grid.h"
+#include <list>
 using namespace std;
 
 
@@ -13,7 +14,8 @@ static float A_init=25;
 /*#############################################*/
 
 Grid::Grid(){
-	taille_= 32; //W=H
+	taille_= 4; //W=H
+	taille_= 4; //W=H
 	coeff_diff_=0.1; //D
 	p_death_=0.02;
 	p_mut_=0.;
@@ -42,10 +44,19 @@ Grid::Grid(){
 	grille_=grid;
 }
 	
-void Grid::step(){
+void Grid::step(float Pdeath, float Pmut){
 	//diffusion metabolite libre 
 		//voir algo sur le pdf
 	//mort des cellules
+	list<Cellule*> dead_cells;
+	for (unsigned int i(0);i<taille_;i++){
+		for (vector<Case>::iterator j =grille_[i].begin();j!=grille_[i].end();j++){//on parcourt la grille
+			if(j->cel_->is_dead(Pdeath)){//si la cellule meurt
+				dead_cells.push_back((*j).cel_);//on l'ajoute à la liste
+			}
+		}
+	}
+	cout<<dead_cells.size()<<endl;
 		//on conserve les coordonnées où il y a mort dans un conteneur pour l'etape d'apres (list de paire d'int?)
 	//faire un rdm pour savoir quelle case vide on traite en premier, puis comparer les getfitness de toute les cellules autour
 		//faire un constructeur divide, qui prend en entrée une cellule et Pmut et qui sort une copie avec moitié moins de métabolite et eventuellement muté (L->s et s->L)
@@ -64,7 +75,7 @@ void Grid::step(){
 
 
 Grid::~Grid(){
-	grille_.clear();
+	//grille_.clear();
 	/*for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
 		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
 			grille_.erase(*i(j));
