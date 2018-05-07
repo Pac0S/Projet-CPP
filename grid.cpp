@@ -13,7 +13,7 @@ static float A_init=25;
 /*#############################################*/
 
 Grid::Grid(){
-	taille_= 32; //W=H
+	taille_= 4; //W=H
 	coeff_diff_=0.1; //D
 	p_death_=0.02;
 	p_mut_=0.;
@@ -64,13 +64,15 @@ void Grid::step(){
 
 
 Grid::~Grid(){
-	grille_.clear();
-	/*for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
-		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
-			grille_.erase(*i(j));
+	for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
+		vector<Case> y_axis = *i;
+		for (vector<Case>::iterator j =y_axis.begin();j!=y_axis.end();j++){
+			Case here = *j;
+			delete here.cel_;
 		}
-	}*/
+	}
 }
+
 
 
 /*#############################################*/

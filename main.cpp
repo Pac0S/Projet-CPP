@@ -13,8 +13,8 @@ int main(int argc, char* argv[]){
 	Cellule c1('L');// test Cellule
 	Grid g1;
 	
-	test_grid_getters(g1);
-	test_bool_function(c1,50,0.2,0.2);
+	//test_grid_getters(g1);
+	//test_bool_function(c1,50,0.2,0.2);
 	
 	
 	return 0;
