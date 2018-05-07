@@ -32,10 +32,10 @@ Grid::Grid(){
 		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){//on parcourt toute les cases
 			Cellule* c = new Cellule('L');//a changer pour avoir du 50 50
 			j->cel_=c;
-			vector<float> metab(3);
-			metab[0]=0; // Concentration ???
-			metab[1]=1;
-			metab[2]=2;
+			map<char,float> metab(3);
+			metab['A']=0.1; // Concentration ???
+			metab['B']=0.1;
+			metab['C']=0.1;
 			j->metab_=metab;
 		} 	   
 	}
@@ -44,7 +44,9 @@ Grid::Grid(){
 	
 void Grid::step(){
 	//diffusion metabolite libre 
-		//voir algo sur le pdf
+	//voir algo sur le pdf
+	
+	
 	//mort des cellules
 		//on conserve les coordonnées où il y a mort dans un conteneur pour l'etape d'apres (list de paire d'int?)
 	//faire un rdm pour savoir quelle case vide on traite en premier, puis comparer les getfitness de toute les cellules autour
@@ -57,6 +59,49 @@ void Grid::step(){
 
 
 }
+
+/*
+void Grid::diffusion(){
+tableau de taille_ * taille_ contenant les concentration des 3 métabolites 
+	A, B et C pour chaque case.*/
+	/*vector<vector<map<string,float>>> metab_t_plus_un(taille_, vector<map<string,float>>(taille_); 
+	
+	//Parcours des cases de notre grille (t)
+	for (int i1=0;i1<taille_;++i1){
+		for (int i2=0;i2<taille_;++i2){
+		
+			//Copie des concentrations de t en t+1
+			metab_t_plus_un[i1][i2]['A'] = grille_[i][j].metab_['A'];
+			metab_t_plus_un[i1][i2]['B'] = grille_[i][j].metab_['B'];
+			metab_t_plus_un[i1][i2]['C'] = grille_[i][j].metab_['C'];
+			
+			//Parcours des 9 cases autour de notre case (t)
+			for(int j1=-1;j1<=1;++j1){
+				for(int j2=-1;j2<=1;++j2){
+				
+					//Ajout des métabolites des cases voisines diffusés en t+1 et stockage dans le tableau en t+1
+					metab_t_plus_un[i1+j1][i2+j2]['A'] += grille_[i1+j1][i2+j2].metab_['A']*coeff_diff_;
+					metab_t_plus_un[i1+j1][i2+j2]['B'] += grille_[i1+j1][i2+j2].metab_['B']*coeff_diff_;
+					metab_t_plus_un[i1+j1][i2+j2]['C'] += grille_[i1+j1][i2+j2].metab_['C']*coeff_diff_;
+				}
+			}
+		}
+		//Soustraction de la partie diffusée de la case
+		metab_t_plus_un[i1][i2]['A'] -= 9 * coeff_diff_ * grille_[i][j].metab_['A'];
+		metab_t_plus_un[i1][i2]['B'] -= 9 * coeff_diff_ * grille_[i][j].metab_['B'];
+		metab_t_plus_un[i1][i2]['C'] -= 9 * coeff_diff_ * grille_[i][j].metab_['C'];
+	}
+	for (int i1=0;i1<taille_;++i1){
+		for (int i2=0;i2<taille_;++i2){
+			//Copie des concentrations de t+1 en t
+			grille_[i][j].metab_['A']=metab_t_plus_un[i1][i2]['A'];
+			grille_[i][j].metab_['B']=metab_t_plus_un[i1][i2]['B'];
+			grille_[i][j].metab_['C']=metab_t_plus_un[i1][i2]['C'];
+		}
+	}
+}
+*/
+
 
 /*#############################################*/
 /*              DESTRUCTOR                     */
