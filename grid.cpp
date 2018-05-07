@@ -15,7 +15,6 @@ static float A_init=25;
 
 Grid::Grid(){
 	taille_= 4; //W=H
-	taille_= 4; //W=H
 	coeff_diff_=0.1; //D
 	p_death_=0.02;
 	p_mut_=0.;
@@ -35,9 +34,9 @@ Grid::Grid(){
 			Cellule* c = new Cellule('L');//a changer pour avoir du 50 50
 			j->cel_=c;
 			vector<float> metab(3);
-			metab[0]=0; // Concentration ???
-			metab[1]=1;
-			metab[2]=2;
+			metab['A']=0.; // Concentration ???
+			metab['B']=1.;
+			metab['C']=2.;
 			j->metab_=metab;
 		} 	   
 	}
@@ -56,14 +55,21 @@ void Grid::step(float Pdeath, float Pmut){
 			}
 		}
 	}
-	cout<<dead_cells.size()<<endl;
 		//on conserve les coordonnées où il y a mort dans un conteneur pour l'etape d'apres (list de paire d'int?)
 	//faire un rdm pour savoir quelle case vide on traite en premier, puis comparer les getfitness de toute les cellules autour
 		//faire un constructeur divide, qui prend en entrée une cellule et Pmut et qui sort une copie avec moitié moins de métabolite et eventuellement muté (L->s et s->L)
 		//on fait &grille_[coordonnées mortes].cel=cmere.divide()
 		//&grille_[coordonnées mère].cel=cmere.divide()
-	//fonctionnement metabolique:
-		//!!dt=0.1!!
+	//fonctionnement metabolique: !!dt=0.1!!
+	for (vector<vector<Case>>::iterator i =grid.begin();i!=grid.end();++i){
+		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
+		  if (j->cel_).getGen()=='L'){
+		    
+		  }
+		  else{
+		  }
+		}
+	}
 
 
 
@@ -75,13 +81,15 @@ void Grid::step(float Pdeath, float Pmut){
 
 
 Grid::~Grid(){
-	//grille_.clear();
-	/*for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
-		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
-			grille_.erase(*i(j));
+	for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
+		vector<Case> y_axis = *i;
+		for (vector<Case>::iterator j =y_axis.begin();j!=y_axis.end();j++){
+			Case here = *j;
+			delete here.cel_;
 		}
-	}*/
+	}
 }
+
 
 
 /*#############################################*/
