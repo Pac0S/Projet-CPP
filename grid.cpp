@@ -48,11 +48,10 @@ void Grid::step(float Pdeath, float Pmut){
 		//voir algo sur le pdf
 	//mort des cellules
 	list<Cellule*> dead_cells;
-	int k = 1;
 	for (unsigned int i(0);i<taille_;i++){
 		for (unsigned int j(0);j<taille_;j++){
 		//for (vector<Case>::iterator j =grille_[i].begin();j!=grille_[i].end();j++){//on parcourt la grille
-			if(j->cel_->is_dead(Pdeath)){//si la cellule meurt
+			//if(j->cel_->is_dead(Pdeath)){//si la cellule meurt
 				//map<string,float> reseau=j->cel_->getReseauMet();
 				
 				
@@ -79,22 +78,34 @@ void Grid::step(float Pdeath, float Pmut){
 		//on fait &grille_[coordonnées mortes].cel=cmere.divide()
 		//&grille_[coordonnées mère].cel=cmere.divide()
 	//fonctionnement metabolique: !!dt=0.1!!
-	
-	
-	
-	
-	
-	
-	/*for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
-		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
-		  if (j->cel_).getGen()=='L'){
-		    
+	for(int i = 0; i < 10 ; i++){ //
+	  for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
+		  for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
+		    if (j->cel_->getGen()=='L'){//Cas ou la cellule est de type Ga (Large)
+		    //Stockage des données au debut du pas de temps
+		      float A_out = j->metab_['A']; //Quantite de Glucose dans la case j
+		      float A_in = j->cel_->getReseauMet()["Glucose"]; //Quantite de Glucose dans la cellule de la case j
+		    //Calculs du fonctionnement metabolique
+		      j->metab_['A'] = A_out * (1 - taux_meta_["Raa"]);
+		      float dA = A_in + (A_out * taux_meta_["Raa"] - A_in * taux_meta_["Rab"]);
+		      j->cel_->set_Glucose(dA);
+		      float dB = A_in * (1 + taux_meta_["Rab"]);
+		      j->cel_->set_Acetate(dB);
+		    }
+		    else{ //Cas ou la cellule est de type Gb (Small)
+		    //Stockage des données au debut du pas de temps
+		      float B_out = j->metab_['B']; //Quantite d'Acetate dans la case j
+		      float B_in = (j->cel_)->getReseauMet()["Acetate"]; //Quantite d'Acetate dans la cellule de la case j
+		    //Calculs du fonctionnement metabolique
+		      j->metab_['B'] = B_out * (1 - taux_meta_["Rbb"]);
+		      float dB = B_in + (B_out * taux_meta_["Rbb"] - B_in * taux_meta_["Rbc"]);
+		      (j->cel_)->set_Acetate(dB);//Quantite d'acetate dans la cellule
+		      float dC = B_in * (1 + taux_meta_["Rbc"]);
+		      (j->cel_)->set_Ethanol(dC);//Quantite d'ethanol dans la cellule
+		    }
 		  }
-		  else{
-		  }
-		}
-	}*/
-
+	  }
+  }
 
 
 }
