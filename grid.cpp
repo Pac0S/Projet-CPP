@@ -25,21 +25,21 @@ Grid::Grid(){
 	taux_meta_["Rbc"]=0.1;
 	
 	
-	/*vector< vector<Case> > grille(taille_, vector<Case>(taille_));
-	for (vector<vector<Case>>::iterator i =grille.begin();i!=grille.end();i++){
-		for (vector<Case>::iterator j =(*i).begin();j!=(*i).end();j++){//on parcourt toute les cases
-			Cellule c ('L');//a changer pour avoir du 50 50
-	   	   *((*j).cel)=c;
-	   	   vector<float> metab(3);
-	   	   metab[0]=0;
-	   	   metab[1]=1;
-	   	   metab[2]=2;
-	   	   (*j).metab=metab;
-	   }
-	   	   
-   }
-	grille_=grille;*/
-	
+	vector<Case> y_axis(taille_);
+	vector< vector<Case> > grid(taille_, y_axis);
+	//vector< vector<Case> > grille(taille_, vector<Case>(taille_));
+	for (vector<vector<Case>>::iterator i =grid.begin();i!=grid.end();++i){
+		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){//on parcourt toute les cases
+			Cellule* c = new Cellule('L');//a changer pour avoir du 50 50
+			j->cel_=c;
+			vector<float> metab(3);
+			metab[0]=0; // Concentration ???
+			metab[1]=1;
+			metab[2]=2;
+			j->metab_=metab;
+		} 	   
+	}
+	grille_=grid;
 }
 	
 void Grid::step(){
@@ -57,6 +57,21 @@ void Grid::step(){
 
 
 }
+
+/*#############################################*/
+/*              DESTRUCTOR                     */
+/*#############################################*/
+
+
+Grid::~Grid(){
+	grille_.clear();
+	/*for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
+		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
+			grille_.erase(*i(j));
+		}
+	}*/
+}
+
 
 /*#############################################*/
 /*                 GETTERS                     */
@@ -115,16 +130,16 @@ float Grid::get_Rbc(){
 
 string Grid::zoliaffissage(){//pas encore testé parce que le constructeur de grid est pas fini.
 	string zoli = "";
-	for (vector<vector<Case>>::iterator ligne =grille_.begin();ligne!=grille_.end();ligne++){
+	for (vector<vector<Case>>::iterator ligne =grille_.begin();ligne!=grille_.end();++ligne){
 		for (int i(0);i<taille_*2+1;i++){
 			zoli+='-';
 		}
 		zoli+='\n';
 		zoli+='|';
-		for (vector<Case>::iterator colonne =(*ligne).begin();colonne!=(*ligne).end();colonne++){
-			if((*colonne).cel->getGen()=='L'){
+		for (vector<Case>::iterator colonne = ligne->begin();colonne!=ligne->end();colonne++){
+			if(colonne->cel_->getGen()=='L'){
 				zoli+="L|";
-			}else if((*colonne).cel->getGen()=='S'){
+			}else if((colonne->cel_)->getGen()=='S'){
 				zoli+="S|";
 			}
 		}

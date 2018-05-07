@@ -10,8 +10,8 @@ using namespace std;
 
 struct Case//pour manipuler on fait NomCase.cel ou NomCase.metab
 {
-    Cellule* cel;
-    vector<float> metab;
+    Cellule* cel_;
+    vector<float> metab_;
 };
 
 
@@ -26,6 +26,14 @@ class Grid {
 		Grid();
 
 	
+	
+/*#############################################*/
+/*             DESTRUCTOR                      */
+/*#############################################*/
+
+		~Grid();
+
+
 /*#############################################*/
 /*                 GETTERS                     */
 /*#############################################*/

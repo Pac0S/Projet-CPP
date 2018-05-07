@@ -3,7 +3,7 @@
 
 
 
-class metabolite {
+class Metabolite {
 	public :
 	
 /*#############################################*/
