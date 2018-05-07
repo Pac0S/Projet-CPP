@@ -19,6 +19,9 @@ class Cellule {
 		float getFitness();
 		char getGen();
 		map<string,float> getReseauMet();
+		float get_Glucose();
+		float get_Acetate();
+		float get_Ethanol();
 	
 /*#############################################*/
 /*                  SETTERS                    */

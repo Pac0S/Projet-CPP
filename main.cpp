@@ -12,6 +12,7 @@ void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation);
 int main(int argc, char* argv[]){
 	srand(time(0));//initialise les valeurs aléatoire, a mettre au debut du code
 	Cellule c1('L');// test Cellule
+	//cout<<"\n"<<c1.getReseauMet()["Acetate"]<<endl;
 	Grid g1;
 	cout<<g1.zoliaffissage()<<endl;
 	test_grid_getters(g1);

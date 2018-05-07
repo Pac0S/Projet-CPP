@@ -45,9 +45,17 @@ map<string,float> Cellule::getReseauMet(){
 	return reseauMet_;
 }
 
+float Cellule::get_Glucose(){
+  return reseauMet_["Glucose"];
+}
 
+float Cellule::get_Acetate(){
+  return reseauMet_["Acetate"];
+}
 
-
+float Cellule::get_Ethanol(){
+  return reseauMet_["Ethanol"];
+}
 
 /*#############################################*/
 /*                  SETTERS                    */
