@@ -29,11 +29,11 @@ Grid::Grid(){
 	vector<Case> y_axis(taille_);
 	vector< vector<Case> > grid(taille_, y_axis);
 	//vector< vector<Case> > grille(taille_, vector<Case>(taille_));
-	for (vector<vector<Case>>::iterator i =grid.begin();i!=grid.end();++i){
+	for (vector<vector<Case>>::iterator i =grid.begin();i!=grid.end();i++){
 		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){//on parcourt toute les cases
 			Cellule* c = new Cellule('L');//a changer pour avoir du 50 50
 			j->cel_=c;
-			vector<float> metab(3);
+			map<char,float> metab;
 			metab['A']=0.; // Concentration ???
 			metab['B']=1.;
 			metab['C']=2.;
@@ -48,20 +48,44 @@ void Grid::step(float Pdeath, float Pmut){
 		//voir algo sur le pdf
 	//mort des cellules
 	list<Cellule*> dead_cells;
+	int k = 1;
 	for (unsigned int i(0);i<taille_;i++){
-		for (vector<Case>::iterator j =grille_[i].begin();j!=grille_[i].end();j++){//on parcourt la grille
+		for (unsigned int j(0);j<taille_;j++){
+		//for (vector<Case>::iterator j =grille_[i].begin();j!=grille_[i].end();j++){//on parcourt la grille
 			if(j->cel_->is_dead(Pdeath)){//si la cellule meurt
-				dead_cells.push_back((*j).cel_);//on l'ajoute à la liste
+				//map<string,float> reseau=j->cel_->getReseauMet();
+				
+				
+				//Cellule* c1 = (grille_[i][j]).cel_;
+				
+				//cout<<c1->getFitness()<<endl;
+				
+				/*j->metab_['A']+=j->cel_->getReseauMet()["Glucose"];
+				j->metab_['B']+=j->cel_->getReseauMet()["Acetate"];
+				j->metab_['C']+=j->cel_->getReseauMet()["Ethanol"];*/
+				//dead_cells.push_back((*j).cel_);//on l'ajoute à la liste
 			}
 		}
 	}
+	
+	
+	
+	
+	
+	
 		//on conserve les coordonnées où il y a mort dans un conteneur pour l'etape d'apres (list de paire d'int?)
 	//faire un rdm pour savoir quelle case vide on traite en premier, puis comparer les getfitness de toute les cellules autour
 		//faire un constructeur divide, qui prend en entrée une cellule et Pmut et qui sort une copie avec moitié moins de métabolite et eventuellement muté (L->s et s->L)
 		//on fait &grille_[coordonnées mortes].cel=cmere.divide()
 		//&grille_[coordonnées mère].cel=cmere.divide()
 	//fonctionnement metabolique: !!dt=0.1!!
-	for (vector<vector<Case>>::iterator i =grid.begin();i!=grid.end();++i){
+	
+	
+	
+	
+	
+	
+	/*for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
 		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
 		  if (j->cel_).getGen()=='L'){
 		    
@@ -69,7 +93,7 @@ void Grid::step(float Pdeath, float Pmut){
 		  else{
 		  }
 		}
-	}
+	}*/
 
 
 
