@@ -66,7 +66,7 @@ class Grid {
 /*#############################################*/
 /*                  METHODS                    */
 /*#############################################*/
-		void step();
+		void step(float Pdeath,float Pmut);
 		void diffusion();
 		//
 
@@ -83,7 +83,7 @@ class Grid {
 		float p_death_;
 		float p_mut_;
 		float W_min_; //Fitness minimum
-		float temps_; // Temps de simulation par intervalles de 0.1. Apres T pas de temps (T E [1,1500]),réinitialisation de l'environnement. Fin de la simulation à t = 5000.
+		float temps_; // Temps de simulation par intervalles de 0.1. Apres T pas de temps (T E [1,1500]),réinitialisation de l'environnement. Fin de la simulation à t = 5000. 
 		map<string,float> taux_meta_;
 		vector<vector<Case>> grille_;
 	

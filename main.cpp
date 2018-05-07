@@ -10,10 +10,13 @@ void test_grid_getters(Grid g);
 void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation);
 
 int main(int argc, char* argv[]){
+	srand(time(0));//initialise les valeurs aléatoire, a mettre au debut du code
 	Cellule c1('L');// test Cellule
-	//Grid g1;
-	
-	//test_grid_getters(g1);
+	Grid g1;
+	cout<<g1.zoliaffissage()<<endl;
+	test_grid_getters(g1);
+	g1.diffusion();
+	//g1.step(0.5,0.5);
 	//test_bool_function(c1,50,0.2,0.2);
 	
 	
