@@ -52,6 +52,17 @@ map<string,float> Cellule::getReseauMet(){
 /*#############################################*/
 /*                  SETTERS                    */
 /*#############################################*/
+void Cellule::set_Glucose(float a){
+  reseauMet_["Glucose"]= a;
+}
+
+void Cellule::set_Acetate(float b){
+  reseauMet_["Acetate"]= b;
+}
+
+void Cellule::set_Ethanol(float c){
+  reseauMet_["Ethanol"]= c;
+}
 
 /*#############################################*/
 /*                  DISPLAY                    */
