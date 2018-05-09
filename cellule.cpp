@@ -72,6 +72,9 @@ void Cellule::set_Ethanol(float c){
   reseauMet_["Ethanol"]= c;
 }
 
+void Cellule::set_Genotype(char g){
+	genotype_=g;
+}
 /*#############################################*/
 /*                  DISPLAY                    */
 /*#############################################*/
@@ -87,9 +90,11 @@ bool Cellule::is_dead(float Pdeath){
 	float lancer = rand() %100;
 	bool death;
 	if (lancer<=Pdeath*100){
+		//cout<<"true"<<endl;
 		death=true;
 	}else{
 		death=false;
+		//cout<<"false"<<endl;
 	}
 	return death;
 }

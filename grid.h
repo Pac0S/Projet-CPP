@@ -62,6 +62,7 @@ class Grid {
 /*#############################################*/
 
 		string zoliaffissage();
+		string zoliaffissagemet();
 
 /*#############################################*/
 /*                  METHODS                    */

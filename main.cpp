@@ -14,12 +14,19 @@ int main(int argc, char* argv[]){
 	Cellule c1('L');// test Cellule
 	//cout<<"\n"<<c1.getReseauMet()["Acetate"]<<endl;
 	Grid g1;
-	cout<<g1.zoliaffissage()<<endl;
-	test_grid_getters(g1);
+	//cout<<g1.zoliaffissage()<<endl;
+	//test_grid_getters(g1); //change le genotype de toute les cellules wtf?
+	cout<<g1.zoliaffissagemet()<<endl;
 	g1.diffusion();
-	//g1.step(0.5,0.5);
+	cout<<g1.zoliaffissagemet()<<endl;
+	g1.diffusion();
+	cout<<g1.zoliaffissagemet()<<endl;
+	g1.diffusion();
+	cout<<g1.zoliaffissagemet()<<endl;
+	//g1.step(0.3,0.3);
+//	cout<<g1.zoliaffissage()<<endl;
 	//test_bool_function(c1,50,0.2,0.2);
-	
+//	cout<<g1.zoliaffissagemet()<<endl;
 	
 	return 0;
 }
