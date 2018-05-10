@@ -2,4 +2,7 @@ README.md
 .Rhistory
 ProjetCpp2018.pdf
 build/
+grid.cpp.orig
+grid.h.orig
+main.cpp.orig
 

@@ -26,9 +26,9 @@ class Cellule {
 /*#############################################*/
 /*                  SETTERS                    */
 /*#############################################*/
-    void set_Glucose(float a);
-    void set_Acetate(float b);
-    void set_Ethanol(float c);
+		void set_Glucose(float a);
+		void set_Acetate(float b);
+		void set_Ethanol(float c);
 /*#############################################*/
 /*                  DISPLAY                    */
 /*#############################################*/
