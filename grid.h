@@ -3,6 +3,7 @@
 
 #include <map>
 #include <vector>
+
 #include "cellule.h"
 #include "metabolite.h"
 using namespace std;
@@ -62,6 +63,7 @@ class Grid {
 /*#############################################*/
 
 		string zoliaffissage();
+		string zoliaffissagemet();
 
 /*#############################################*/
 /*                  METHODS                    */

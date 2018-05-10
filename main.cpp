@@ -1,9 +1,12 @@
 #include <iostream>
-#include <map>
-#include "cellule.h"
-#include "grid.h"
 #include <ctime>
 #include <cstdlib>
+#include <map>
+
+#include "cellule.h"
+#include "grid.h"
+
+
 using namespace std;
 
 void test_grid_getters(Grid g);
@@ -15,11 +18,24 @@ int main(int argc, char* argv[]){
 	//cout<<"\n"<<c1.getReseauMet()["Acetate"]<<endl;
 	Grid g1;
 	cout<<g1.zoliaffissage()<<endl;
-	test_grid_getters(g1);
-	g1.diffusion();
-	//g1.step(0.5,0.5);
-	//test_bool_function(c1,50,0.2,0.2);
 	
+	//test_grid_getters(g1); //change le genotype de toute les cellules wtf? Erreur de segmentation quand compilé avec diffusion...
+	cout<<g1.zoliaffissagemet()<<endl;
+	g1.diffusion();
+
+	cout<<g1.zoliaffissagemet()<<endl;
+	g1.diffusion();
+	
+	cout<<g1.zoliaffissagemet()<<endl;
+	g1.diffusion();
+	
+	cout<<g1.zoliaffissagemet()<<endl;
+	
+	g1.step(0.3,0.3);
+	cout<<g1.zoliaffissage()<<endl;
+	
+	test_bool_function(c1,50,0.2,0.2);
+	cout<<g1.zoliaffissagemet()<<endl;
 	
 	return 0;
 }

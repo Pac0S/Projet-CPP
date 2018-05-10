@@ -1,8 +1,12 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include "grid.h"
 #include <list>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "grid.h"
+
 using namespace std;
 
 
@@ -30,7 +34,7 @@ Grid::Grid(){
 	vector< vector<Case> > grid(taille_, y_axis);
 	//vector< vector<Case> > grille(taille_, vector<Case>(taille_));
 	for (vector<vector<Case>>::iterator i =grid.begin();i!=grid.end();i++){
-		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){//on parcourt toute les cases
+		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){//on parcourt toutes les cases
 			Cellule* c = new Cellule('L');//a changer pour avoir du 50 50
 			j->cel_=c;
 			map<char,float> metab;
@@ -43,17 +47,16 @@ Grid::Grid(){
 	grille_=grid;
 }
 	
-void Grid::step(float Pdeath, float Pmut){
-	//diffusion metabolite libre 
-	//voir algo sur le pdf
-	
+void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de la classe
+	//diffusion metabolite
+	diffusion();
 	
 	//mort des cellules
-	/*list<Cellule*> dead_cells;
+	list<Cellule*> dead_cells;
 	for (unsigned int i(0);i<taille_;i++){
-		for (unsigned int j(0);j<taille_;j++){
-		//for (vector<Case>::iterator j =grille_[i].begin();j!=grille_[i].end();j++){//on parcourt la grille
-			//if(j->cel_->is_dead(Pdeath)){//si la cellule meurt
+		//for (unsigned int j(0);j<taille_;j++){
+		for (vector<Case>::iterator j =grille_[i].begin();j!=grille_[i].end();j++){//on parcourt la grille
+			if(j->cel_->is_dead(Pdeath)){//si la cellule meurt
 				//map<string,float> reseau=j->cel_->getReseauMet();
 				
 				
@@ -61,21 +64,24 @@ void Grid::step(float Pdeath, float Pmut){
 				
 				//cout<<c1->getFitness()<<endl;
 				
-				/*j->metab_['A']+=j->cel_->getReseauMet()["Glucose"];
+				j->metab_['A']+=j->cel_->getReseauMet()["Glucose"];
 				j->metab_['B']+=j->cel_->getReseauMet()["Acetate"];
-				j->metab_['C']+=j->cel_->getReseauMet()["Ethanol"];*/
-				//dead_cells.push_back((*j).cel_);//on l'ajoute à la liste
+				j->metab_['C']+=j->cel_->getReseauMet()["Ethanol"];
+				dead_cells.push_back((*j).cel_);//on l'ajoute à la liste
+				cout<<dead_cells.size()<<endl; //Nombre de cellules mortes
+				j->cel_->set_Genotype('K');
 			}
 		}
-	}*/
+	}
+
 		//on conserve les coordonnées où il y a mort dans un conteneur pour l'etape d'apres (list de paire d'int?)
 	//faire un rdm pour savoir quelle case vide on traite en premier, puis comparer les getfitness de toute les cellules autour
 		//faire un constructeur divide, qui prend en entrée une cellule et Pmut et qui sort une copie avec moitié moins de métabolite et eventuellement muté (L->s et s->L)
 		//on fait &grille_[coordonnées mortes].cel=cmere.divide()
 		//&grille_[coordonnées mère].cel=cmere.divide()
 	//fonctionnement metabolique: !!dt=0.1!!
-	/*for(int i = 0; i < 10 ; i++){ //
-	  for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
+	/*for(int i = 0; i < 10 ; i++){ 
+	  for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();i++){
 		  for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
 		    if (j->cel_->getGen()=='L'){//Cas ou la cellule est de type Ga (Large)
 		    //Stockage des données au debut du pas de temps
@@ -87,7 +93,6 @@ void Grid::step(float Pdeath, float Pmut){
 		      j->cel_->set_Glucose(dA);
 		      float dB = A_in * (1 + taux_meta_["Rab"]);
 		      j->cel_->set_Acetate(dB);
-		      cout << "check" << endl;
 		    }
 		    else{ //Cas ou la cellule est de type Gb (Small)
 		    //Stockage des données au debut du pas de temps
@@ -144,9 +149,9 @@ A, B et C pour chaque case.*/
 					}
 					
 					//Ajout des métabolites des cases voisines diffusés en t+1 et stockage dans le tableau en t+1
-					(metab_t_plus_un[x][y]).metab_['A'] += grille_[x][y].metab_['A']*coeff_diff_;
-					(metab_t_plus_un[x][y]).metab_['B'] += grille_[x][y].metab_['B']*coeff_diff_;
-					(metab_t_plus_un[x][y]).metab_['C'] += grille_[x][y].metab_['C']*coeff_diff_;
+					(metab_t_plus_un[i1][j1]).metab_['A'] += grille_[x][y].metab_['A']*coeff_diff_;
+					(metab_t_plus_un[i1][j1]).metab_['B'] += grille_[x][y].metab_['B']*coeff_diff_;
+					(metab_t_plus_un[i1][j1]).metab_['C'] += grille_[x][y].metab_['C']*coeff_diff_;
 				}
 			}
 			//Soustraction de la partie diffusée de la case
@@ -178,7 +183,7 @@ A, B et C pour chaque case.*/
 Grid::~Grid(){
 	for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
 		vector<Case> y_axis = *i;
-		for (vector<Case>::iterator j =y_axis.begin();j!=y_axis.end();j++){
+		for (vector<Case>::iterator j =y_axis.begin();j!=y_axis.end();++j){
 			Case here = *j;
 			delete here.cel_;
 		}
@@ -253,8 +258,10 @@ string Grid::zoliaffissage(){//pas encore testé parce que le constructeur de gr
 		for (vector<Case>::iterator colonne = ligne->begin();colonne!=ligne->end();colonne++){
 			if(colonne->cel_->getGen()=='L'){
 				zoli+="L|";
-			}else if((colonne->cel_)->getGen()=='S'){
+			}else if(colonne->cel_->getGen()=='S'){
 				zoli+="S|";
+			}else{
+				zoli+="X|";
 			}
 		}
 		zoli+='\n';
@@ -266,14 +273,49 @@ string Grid::zoliaffissage(){//pas encore testé parce que le constructeur de gr
 }
 
 
+string Grid::zoliaffissagemet(){
+	string zolimet = "";
+	zolimet+="G";
+	for (int i (1);i<taille_*2+1;i++){
+		zolimet+="-";
+	}
+	zolimet+="\tA";
+	for (int i (1);i<taille_*2+1;i++){
+		zolimet+="-";
+	}
+	zolimet+="\tE";
+	for (int i (1);i<taille_*2+1;i++){
+		zolimet+="-";
+	}
+	zolimet+="\n";
+	for (int i(0);i<taille_;i++){
+		for (int l(0);l<3;l++){
+			zolimet+="|";
+			for (int j(0);j<taille_;j++){
+				int a = int(grille_[i][j].metab_['A'+l]);
+				zolimet+=to_string(a);
+				zolimet+="|";
+			}
+			zolimet+="\t";
+		}
+		zolimet+="\n";
+		for (int k(0);k<3;k++){
+			for (int l(0);l<taille_*2+1;l++){
+				zolimet+="-";
+			}
+			zolimet+="\t";
+		}
 
+		zolimet+="\n";
+	}
+	return zolimet;
+}
 
 
 
 /*#############################################*/
 /*                  METHODS                    */
 /*#############################################*/
-
 
 
 

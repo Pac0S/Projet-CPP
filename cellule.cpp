@@ -1,19 +1,20 @@
-#include "cellule.h"
 #include <cmath>
 #include <map>
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
 
+#include "cellule.h"
+
 using namespace std;
 /*#############################################*/
 /*               CONSTRUCTORS                  */
 /*#############################################*/
 Cellule::Cellule(){
-  genotype_ = 'S';
-  reseauMet_["Glucose"]=0.;
-  reseauMet_["Acetate"]=0.;
-  reseauMet_["Ethanol"]=0.;
+	genotype_ = 'S';
+	reseauMet_["Glucose"]=0.;
+	reseauMet_["Acetate"]=0.;
+	reseauMet_["Ethanol"]=0.;
  }
 
 Cellule::Cellule(char gen){//preconditions: gen='L' ou 'S' ou 'N'(Nothing)
@@ -46,32 +47,35 @@ map<string,float> Cellule::getReseauMet(){
 }
 
 float Cellule::get_Glucose(){
-  return reseauMet_["Glucose"];
+	return reseauMet_["Glucose"];
 }
 
 float Cellule::get_Acetate(){
-  return reseauMet_["Acetate"];
+	return reseauMet_["Acetate"];
 }
 
 float Cellule::get_Ethanol(){
-  return reseauMet_["Ethanol"];
+	return reseauMet_["Ethanol"];
 }
 
 /*#############################################*/
 /*                  SETTERS                    */
 /*#############################################*/
 void Cellule::set_Glucose(float a){
-  reseauMet_["Glucose"]= a;
+	reseauMet_["Glucose"]= a;
 }
 
 void Cellule::set_Acetate(float b){
-  reseauMet_["Acetate"]= b;
+	reseauMet_["Acetate"]= b;
 }
 
 void Cellule::set_Ethanol(float c){
-  reseauMet_["Ethanol"]= c;
+	reseauMet_["Ethanol"]= c;
 }
 
+void Cellule::set_Genotype(char g){
+	genotype_=g;
+}
 /*#############################################*/
 /*                  DISPLAY                    */
 /*#############################################*/
@@ -87,9 +91,11 @@ bool Cellule::is_dead(float Pdeath){
 	float lancer = rand() %100;
 	bool death;
 	if (lancer<=Pdeath*100){
+		//cout<<"true"<<endl;
 		death=true;
 	}else{
 		death=false;
+		//cout<<"false"<<endl;
 	}
 	return death;
 }

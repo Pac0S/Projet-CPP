@@ -22,6 +22,7 @@ class Cellule {
 		float get_Glucose();
 		float get_Acetate();
 		float get_Ethanol();
+		void set_Genotype(char g);
 	
 /*#############################################*/
 /*                  SETTERS                    */
