@@ -11,31 +11,23 @@ using namespace std;
 
 void test_grid_getters(Grid g);
 void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation);
+void test_affichages(Grid g1);
+void test_division(Cellule c1, float p_mut);
 
 int main(int argc, char* argv[]){
 	srand(time(0));//initialise les valeurs aléatoire, a mettre au debut du code
 	Cellule c1('L');// test Cellule
-	//cout<<"\n"<<c1.getReseauMet()["Acetate"]<<endl;
+
 	Grid g1;
-	cout<<g1.zoliaffissage()<<endl;
+	
+	
 	
 	//test_grid_getters(g1); //change le genotype de toute les cellules wtf? Erreur de segmentation quand compilé avec diffusion...
-	cout<<g1.zoliaffissagemet()<<endl;
-	g1.diffusion();
+	//test_bool_function(c1,50,0.2,0.2);
+	//test_affichages(g1);
+	test_division(c1,0.5);
+	
 
-	cout<<g1.zoliaffissagemet()<<endl;
-	g1.diffusion();
-	
-	cout<<g1.zoliaffissagemet()<<endl;
-	g1.diffusion();
-	
-	cout<<g1.zoliaffissagemet()<<endl;
-	
-	g1.step(0.3,0.3);
-	cout<<g1.zoliaffissage()<<endl;
-	
-	test_bool_function(c1,50,0.2,0.2);
-	cout<<g1.zoliaffissagemet()<<endl;
 	
 	return 0;
 }
@@ -61,12 +53,55 @@ void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation){
 		if(c.is_dead(Pdeath)){
 			morts++;
 		}
-		if(c.is_mutating(Pmutation)){
-			mutations++;
-		}
+		//if(c.is_mutating(Pmutation)){
+		//	mutations++;
+		//}
 	}
 	cout << morts << "morts et "<<mutations<< "mutations.\n"<<endl; //resultat bizarre je tombe sur 7 7 beaucoup trop souvent à voir..
-	
-	
 }
+
+
+void test_affichages(Grid g1){
+	cout<<g1.zoliaffissage()<<endl;
+	
+	cout<<g1.zoliaffissagemet()<<endl;
+	g1.diffusion();
+
+	cout<<g1.zoliaffissagemet()<<endl;
+	g1.diffusion();
+	
+	cout<<g1.zoliaffissagemet()<<endl;
+	g1.diffusion();
+	
+	cout<<g1.zoliaffissagemet()<<endl;
+	
+	g1.step(0.3,0.3);
+	cout<<g1.zoliaffissage()<<endl;
+	
+	
+	cout<<g1.zoliaffissagemet()<<endl;
+}
+
+void test_division(Cellule c1, float p_mut){
+	cout<<"\n"<<"Cellule mere avant division : " << endl;
+	cout << c1.getGen()<<endl;
+	cout<<c1.getReseauMet()["Glucose"]<<endl;
+	cout<<"\n"<<c1.getReseauMet()["Acetate"]<<endl;
+	cout<<"\n"<<c1.getReseauMet()["Ethanol"]<<endl<<endl;
+	
+	Cellule c2(c1,p_mut);
+	
+	cout<<"\n"<<"Cellule mere apres division : " << endl;
+	cout << c1.getGen()<<endl;
+	cout<<c1.getReseauMet()["Glucose"]<<endl;
+	cout<<"\n"<<c1.getReseauMet()["Acetate"]<<endl;
+	cout<<"\n"<<c1.getReseauMet()["Ethanol"]<<endl<<endl;
+	
+	cout<<"\n"<<"Cellule fille : " << endl;
+	cout << c2.getGen()<<endl;
+	cout<<c2.getReseauMet()["Glucose"]<<endl;
+	cout<<"\n"<<c2.getReseauMet()["Acetate"]<<endl;
+	cout<<"\n"<<c2.getReseauMet()["Ethanol"]<<endl<<endl;
+}
+	
 	

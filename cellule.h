@@ -12,6 +12,7 @@ class Cellule {
 /*#############################################*/
 		Cellule();
 		Cellule(char gen);
+		Cellule(Cellule& mere, float p_mut); // Constructeur spécifique à la division cellulaire
 	
 /*#############################################*/
 /*                 GETTERS                     */
@@ -38,7 +39,7 @@ class Cellule {
 /*#############################################*/
 /*                   METHODS                   */
 /*#############################################*/
-		bool is_mutating(float Pmut);
+		void mutates(float Pmut);
 		bool is_dead(float Pdeath);
 
 	protected :
