@@ -5,4 +5,6 @@ build/
 grid.cpp.orig
 grid.h.orig
 main.cpp.orig
+cellule.cpp.orig
+cellule.h.orig
 
