@@ -18,13 +18,32 @@ static float A_init=25;
 /*             CONSTRUCTORS                    */
 /*#############################################*/
 
+/************************ Constructeur par défaut ************************/
+/*                                                                       */
+/* Cree une grille torique de taille taille_ * taille_ qui possede des   */
+/* parametres tels que :                                                 */
+/*    coeff_diff : taux de diffusion des cellules dans leur environnement*/
+/*    p_death : probabilité de décès d'un individu                       */
+/*    p_mut : probabilité de mutation de deux individus fils apres une   */
+/*            division                                                   */
+/*    W_min : seuil minimum de la fitness pour un individu               */
+/*    temps : temps initial                                              */
+/*    taux_meta_ : map contenant les taux permettant de convertir ou     */
+/*                 d'importer les ressources de l'environnement          */
+/*                                                                       */
+/*  La grille contient 50% d'individus de type S et 50% d'individus de   */
+/* type L. Chaque case de la grille contient une cellule.                */
+/* Il n'y a pas de cases vides au temps initial.                         */ 
+/*                                                                       */
+/*************************************************************************/
+
 Grid::Grid(){
 	taille_= 4; //W=H
 	coeff_diff_=0.1; //D
 	p_death_=0.02;
 	p_mut_=0.;
 	W_min_=0.001; //Fitness minimum
-	temps_=0.;
+	temps_= 1;
 	taux_meta_["Raa"]=0.1;
 	taux_meta_["Rab"]=0.1;
 	taux_meta_["Rbb"]=0.1;
@@ -69,13 +88,41 @@ Grid::Grid(){
 			it++; // On passe au génotype suivant
 			cout << count << " Cells added" << endl;
 			count++;
-			//}
 		} 	   
 	}
 	grille_=grid;
 	cout << "DONE !" << endl;
 }
-	
+
+
+/*#############################################*/
+/*              DESTRUCTOR                     */
+/*#############################################*/
+
+
+Grid::~Grid(){
+	for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
+		vector<Case> y_axis = *i;
+		for (vector<Case>::iterator j =y_axis.begin();j!=y_axis.end();++j){
+			Case here = *j;
+			delete here.cel_;
+		}
+	}
+}
+
+/*#############################################*/
+/*                  METHODS                    */
+/*#############################################*/
+
+/******************************** Step **********************************/
+/* Représente tous les evenements se deroulant dans un pas de temps.    */
+/* Celui-ci comprend :                                                  */
+/*    - la diffusion des cellules dans leur environnement               */
+/*    - la mort des cellules (selon p_death)                            */
+/*    - le fonctionnement metabolique des cellules (precision : celui-ci*/
+/*       se déroule en un dixième de temps. Les individus metabolisent  */
+/*       donc 10 fois en un pas de temps)                               */
+/************************************************************************/
 void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de la classe
 	//diffusion metabolite//
 	diffusion();
@@ -97,9 +144,9 @@ void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce
   }
 }
 
-/*****************Fonctions utilisees par step()*************************/
+/**************** Fonctions utilisees par step() ************************/
 
-/*************Diffusion des cellules****************/
+/************* Diffusion des cellules **************/
 
 void Grid::diffusion(){
 
@@ -213,22 +260,6 @@ void Grid::metaboliser(){
   }
 }
 
-/*#############################################*/
-/*              DESTRUCTOR                     */
-/*#############################################*/
-
-
-Grid::~Grid(){
-	for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
-		vector<Case> y_axis = *i;
-		for (vector<Case>::iterator j =y_axis.begin();j!=y_axis.end();++j){
-			Case here = *j;
-			delete here.cel_;
-		}
-	}
-}
-
-
 
 /*#############################################*/
 /*                 GETTERS                     */
@@ -278,6 +309,9 @@ float Grid::get_Rbc(){
 /*#############################################*/
 /*                  SETTERS                    */
 /*#############################################*/
+
+
+
 
 
 
@@ -348,12 +382,4 @@ string Grid::zoliaffissagemet(){
 	}
 	return zolimet;
 }
-
-
-
-/*#############################################*/
-/*                  METHODS                    */
-/*#############################################*/
-
-
 
