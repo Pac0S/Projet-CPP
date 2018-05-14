@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "cellule.h"
-#include "metabolite.h"
 using namespace std;
 
 

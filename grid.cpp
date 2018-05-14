@@ -21,7 +21,7 @@ Grid::Grid(){
 	taille_= 4; //W=H
 	coeff_diff_=0.1; //D
 	p_death_=0.02;
-	p_mut_=0.;
+	p_mut_=0.02;
 	W_min_=0.001; //Fitness minimum
 	temps_=0.;
 	taux_meta_["Raa"]=0.1;
@@ -90,9 +90,38 @@ void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce
 		//on fait &grille_[coordonnées mortes].cel=cmere.divide()
 		//&grille_[coordonnées mère].cel=cmere.divide()
 		
+	while (! coord_dead_cells.empty()){
+		int rand_cell = rand() % (coord_dead_cells.size()-1);
+		int dead_cell_x=coord_dead_cells[rand_cell][0];
+		int dead_cell_y=coord_dead_cells[rand_cell][1];
+		Cellule* dividing_cell = grille_[dead_cell_x-1][dead_cell_y-1].cel_;
+		for (int x (dead_cell_x-1);x<=dead_cell_x+1;x++){
+			for (int y (dead_cell_y-1);y<=dead_cell_y+1;y++){
+				if(x!=dead_cell_x || y!=dead_cell_y){
+					
+					int realx=x;
+					int realy=y;
+					if (realx<0){realx=taille_-1;}
+					if (realx==taille_){realx=0;}
+					if (realy<0){realy=taille_-1;}
+					if (realy==taille_){realy=0;}
+					//si la valeur de la dividing_cell est plus petite que celle que pointe les coord, ou si elle est égale et que un lacer de dé de proba 1/2 donne true
+					if( dividing_cell->getFitness() < grille_[realx][realy].cel_->getFitness() || (rand()%2==0 && dividing_cell->getFitness() == grille_[realx][realy].cel_->getFitness()) ){
+						dividing_cell = grille_[realx][realy].cel_;
+					}
+					
+				}
+			}
+		}
+		delete grille_[dead_cell_x][dead_cell_y].cel_;
+		grille_[dead_cell_x][dead_cell_y].cel_= new Cellule(dividing_cell,p_mut_);
+		coord_dead_cells.erase(coord_dead_cells.begin()+rand_cell);
 		
 		
 		
+		
+		
+	}
 	
 	//fonctionnement metabolique: !!dt=0.1!!
 	for(int i = 0; i < 10 ; i++){ 

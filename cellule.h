@@ -12,7 +12,7 @@ class Cellule {
 /*#############################################*/
 		Cellule();
 		Cellule(char gen);
-		Cellule(Cellule& mere, float p_mut); // Constructeur spécifique à la division cellulaire
+		Cellule(Cellule*& mere, float& p_mut); // Constructeur spécifique à la division cellulaire
 	
 /*#############################################*/
 /*                 GETTERS                     */

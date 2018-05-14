@@ -20,11 +20,12 @@ int main(int argc, char* argv[]){
 	Cellule c1('L');// test Cellule
 
 	Grid g1;
+	
 
 	
 	//test_grid_getters(g1); //change le genotype de toute les cellules wtf? Erreur de segmentation quand compilé avec diffusion...
 	//test_bool_function(c1,50,0.2,0.2);
-	//test_affichages(g1);
+	test_affichages(g1);
 	//test_division(c1,0.5);
 	
 	return 0;
@@ -42,21 +43,17 @@ void test_grid_getters(Grid g){
 	cout << "Taux métabolique Rbc : " << g.get_Rbc() << endl;
 }
 
-/*void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation){
+void test_bool_function(Cellule c,int try_nbr, float P){
 	
 	srand(time(0));//initialise les valeurs aléatoire, a mettre au debut du code
-	int morts =0;
-	int mutations=0;
+	int nbr_true =0;
 	for (int i(0);i<=try_nbr;i++){
-		if(c.is_dead(Pdeath)){
-			morts++;
+		if(c.roll_a_dice(P)){
+			nbr_true++;
 		}
-		//if(c.is_mutating(Pmutation)){
-		//	mutations++;
-		//}
 	}
-	cout << morts << "morts et "<<mutations<< "mutations.\n"<<endl; //resultat bizarre je tombe sur 7 7 beaucoup trop souvent à voir..
-}*/
+	cout << nbr_true << " vrai pour "<<try_nbr<< "essais (p="<<P<<")\n"<<endl; //resultat bizarre je tombe sur 7 7 beaucoup trop souvent à voir..
+}
 
 
 void test_affichages(Grid g1){
@@ -71,7 +68,7 @@ void test_affichages(Grid g1){
 	cout<<g1.zoliaffissage()<<endl;
 	
 }
-
+/*
 void test_division(Cellule c1, float p_mut){
 	cout<<"\n"<<"Cellule mere avant division : " << endl;
 	cout << c1.getGen()<<endl;
@@ -92,5 +89,5 @@ void test_division(Cellule c1, float p_mut){
 	cout<<c2.getReseauMet()["Glucose"]<<endl;
 	cout<<"\n"<<c2.getReseauMet()["Acetate"]<<endl;
 	cout<<"\n"<<c2.getReseauMet()["Ethanol"]<<endl<<endl;
-}
+}*/
 	
