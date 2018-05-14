@@ -38,8 +38,7 @@ class Cellule {
 /*#############################################*/
 /*                   METHODS                   */
 /*#############################################*/
-		bool is_mutating(float Pmut);
-		bool is_dead(float Pdeath);
+		bool roll_a_dice(float Pdeath);
 
 	protected :
 /*#############################################*/

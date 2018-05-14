@@ -87,25 +87,16 @@ void Cellule::set_Genotype(char g){
 
 
 //méthode:
-bool Cellule::is_dead(float Pdeath){
+bool Cellule::roll_a_dice(float P){
 	float lancer = rand() %100;
-	bool death;
-	if (lancer<=Pdeath*100){
+	bool result;
+	if (lancer<=P*100){
 		//cout<<"true"<<endl;
-		death=true;
+		result=true;
 	}else{
-		death=false;
+		result=false;
 		//cout<<"false"<<endl;
 	}
-	return death;
+	return result;
 }
-bool Cellule::is_mutating(float Pmut){
-	float lancer = rand() %100;
-	bool mutation;
-	if (lancer<=Pmut*100){
-		mutation=true;
-	}else{
-		mutation=false;
-	}
-	return mutation;
-}
+

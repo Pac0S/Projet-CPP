@@ -13,6 +13,7 @@ void test_grid_getters(Grid g);
 void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation);
 
 int main(int argc, char* argv[]){
+	
 	srand(time(0));//initialise les valeurs aléatoire, a mettre au debut du code
 	Cellule c1('L');// test Cellule
 	//cout<<"\n"<<c1.getReseauMet()["Acetate"]<<endl;
@@ -21,20 +22,23 @@ int main(int argc, char* argv[]){
 	
 	//test_grid_getters(g1); //change le genotype de toute les cellules wtf? Erreur de segmentation quand compilé avec diffusion...
 	cout<<g1.zoliaffissagemet()<<endl;
-	g1.diffusion();
+	g1.step(0.5,0.5);
+	cout<<g1.zoliaffissage()<<endl;
 
 	cout<<g1.zoliaffissagemet()<<endl;
-	g1.diffusion();
-	
-	cout<<g1.zoliaffissagemet()<<endl;
-	g1.diffusion();
-	
-	cout<<g1.zoliaffissagemet()<<endl;
-	
-	g1.step(0.3,0.3);
+	g1.step(0.5,0.5);
 	cout<<g1.zoliaffissage()<<endl;
 	
-	test_bool_function(c1,50,0.2,0.2);
+	cout<<g1.zoliaffissagemet()<<endl;
+	g1.step(0.5,0.5);
+	cout<<g1.zoliaffissage()<<endl;
+	
+	cout<<g1.zoliaffissagemet()<<endl;
+	
+	//g1.step(0.3,0.3);
+	//cout<<g1.zoliaffissage()<<endl;
+	
+	
 	cout<<g1.zoliaffissagemet()<<endl;
 	
 	return 0;
@@ -52,7 +56,7 @@ void test_grid_getters(Grid g){
 	cout << "Taux métabolique Rbc : " << g.get_Rbc() << endl;
 }
 
-void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation){
+/*void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation){
 	
 	srand(time(0));//initialise les valeurs aléatoire, a mettre au debut du code
 	int morts =0;
@@ -68,5 +72,5 @@ void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation){
 	cout << morts << "morts et "<<mutations<< "mutations.\n"<<endl; //resultat bizarre je tombe sur 7 7 beaucoup trop souvent à voir..
 	
 	
-}
+}*/
 	
