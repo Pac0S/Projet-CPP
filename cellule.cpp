@@ -19,11 +19,27 @@ Cellule::Cellule(){
 
 Cellule::Cellule(char gen){//preconditions: gen='L' ou 'S' ou 'N'(Nothing)
     genotype_ = gen;
-    reseauMet_["Glucose"]=0.;
-    reseauMet_["Acetate"]=0.;
-    reseauMet_["Ethanol"]=0.;
+    reseauMet_["Glucose"]=0.5;
+    reseauMet_["Acetate"]=0.5;
+    reseauMet_["Ethanol"]=0.5;
 }
 
+Cellule::Cellule(Cellule& mere, float p_mut){
+	//Division par deux des quantités de métabolites dans la cellule mere
+	mere.reseauMet_["Glucose"]=mere.reseauMet_["Glucose"]/2;
+	mere.reseauMet_["Acetate"]=mere.reseauMet_["Acetate"]/2;
+	mere.reseauMet_["Ethanol"]=mere.reseauMet_["Ethanol"]/2;
+	reseauMet_ = mere.reseauMet_;
+	genotype_ = mere.genotype_;
+	
+	float who_mutates = rand() %100; // Les 2 cellules sont identiques, il faut voir si l'une des deux mute.
+
+	if(who_mutates < 50){ // La fille mute
+		mutates(p_mut);
+	}else{ // La mere mute
+		mere.mutates(p_mut);
+	}
+}
 
 /*#############################################*/
 /*                 GETTERS                     */
@@ -100,3 +116,14 @@ bool Cellule::roll_a_dice(float P){
 	return result;
 }
 
+
+void Cellule::mutates(float Pmut){
+	float lancer = rand() %100;
+	if (lancer<=Pmut*100){
+		if(genotype_=='S'){
+			genotype_='L';
+		}else{
+			genotype_ = 'S';
+		}
+	}
+}

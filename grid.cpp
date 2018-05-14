@@ -290,15 +290,15 @@ string Grid::zoliaffissage(){//pas encore testé parce que le constructeur de gr
 
 string Grid::zoliaffissagemet(){
 	string zolimet = "";
-	zolimet+="G";
+	zolimet+="A";
 	for (int i (1);i<taille_*2+1;i++){
 		zolimet+="-";
 	}
-	zolimet+="\tA";
+	zolimet+="\tB";
 	for (int i (1);i<taille_*2+1;i++){
 		zolimet+="-";
 	}
-	zolimet+="\tE";
+	zolimet+="\tC";
 	for (int i (1);i<taille_*2+1;i++){
 		zolimet+="-";
 	}
