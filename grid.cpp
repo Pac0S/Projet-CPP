@@ -77,11 +77,14 @@ void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce
 				coord_dead_cells.push_back(coord);
 				//coord_dead_cells[dead_cells_count].push_back(j);
 				//dead_cells.push_back(pair<i,j>);//on l'ajoute à la liste
-				cout<<coord_dead_cells.size()<<endl; //Nombre de cellules mortes
+				
 				grille_[i][j].cel_->set_Genotype('K');
 				
 			}
 		}
+	}
+	for (int test (0); test<coord_dead_cells.size();test++){
+		cout<<coord_dead_cells[test][0]<<","<<coord_dead_cells[test][1]<<endl; 
 	}
 
 		//on conserve les coordonnées où il y a mort dans un conteneur pour l'etape d'apres (list de paire d'int?)
