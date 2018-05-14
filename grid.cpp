@@ -123,16 +123,27 @@ void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce
 				*/
 		
 	while (! coord_dead_cells.empty()){
-		int rand_cell = rand() % (coord_dead_cells.size()-1);
-		int dead_cell_x=coord_dead_cells[rand_cell][0];
-		int dead_cell_y=coord_dead_cells[rand_cell][1];
-		Cellule* dividing_cell = grille_[dead_cell_x-1][dead_cell_y-1].cel_;
+		int rand_cell_nbr;
+		if (coord_dead_cells.size()!=1){
+			rand_cell_nbr = rand() % (coord_dead_cells.size()-1);
+		}else{
+			rand_cell_nbr = 0;
+		}
+		int dead_cell_x=coord_dead_cells[rand_cell_nbr][0];
+		int dead_cell_y=coord_dead_cells[rand_cell_nbr][1];
+		int realx=dead_cell_x-1;
+		int realy=dead_cell_y-1;
+		if (realx<0){realx=taille_-1;}
+		if (realx==taille_){realx=0;}
+		if (realy<0){realy=taille_-1;}
+		if (realy==taille_){realy=0;}
+		Cellule* dividing_cell = grille_[realx][realy].cel_;
 		for (int x (dead_cell_x-1);x<=dead_cell_x+1;x++){
 			for (int y (dead_cell_y-1);y<=dead_cell_y+1;y++){
 				if(x!=dead_cell_x || y!=dead_cell_y){
 					
-					int realx=x;
-					int realy=y;
+					realx=x;
+					realy=y;
 					if (realx<0){realx=taille_-1;}
 					if (realx==taille_){realx=0;}
 					if (realy<0){realy=taille_-1;}
@@ -147,7 +158,7 @@ void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce
 		}
 		delete grille_[dead_cell_x][dead_cell_y].cel_;
 		grille_[dead_cell_x][dead_cell_y].cel_= new Cellule(dividing_cell,p_mut_);
-		coord_dead_cells.erase(coord_dead_cells.begin()+rand_cell);
+		coord_dead_cells.erase(coord_dead_cells.begin()+rand_cell_nbr);
 		
 		
 		
