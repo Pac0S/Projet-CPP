@@ -103,17 +103,17 @@ void Cellule::set_Genotype(char g){
 
 
 //méthode:
-bool Cellule::is_dead(float Pdeath){
+bool Cellule::roll_a_dice(float P){
 	float lancer = rand() %100;
-	bool death;
-	if (lancer<=Pdeath*100){
+	bool result;
+	if (lancer<=P*100){
 		//cout<<"true"<<endl;
-		death=true;
+		result=true;
 	}else{
-		death=false;
+		result=false;
 		//cout<<"false"<<endl;
 	}
-	return death;
+	return result;
 }
 
 

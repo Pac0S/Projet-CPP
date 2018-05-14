@@ -35,7 +35,10 @@ Grid::Grid(){
 	//vector< vector<Case> > grille(taille_, vector<Case>(taille_));
 	for (vector<vector<Case>>::iterator i =grid.begin();i!=grid.end();i++){
 		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){//on parcourt toutes les cases
-			Cellule* c = new Cellule('L');//a changer pour avoir du 50 50
+			Cellule* c = new Cellule('L');
+			/*if (c->roll_a_dice(0.5)){
+				c->set_Genotype('S');
+			}*/
 			j->cel_=c;
 			map<char,float> metab;
 			metab['A']=25; // -> A initial mis dans chaque case. Concentration ???
@@ -52,11 +55,12 @@ void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce
 	diffusion();
 	
 	//mort des cellules
-	list<Cellule*> dead_cells;
+	vector<vector<int>> coord_dead_cells;
+	int dead_cells_count = 0;
 	for (unsigned int i(0);i<taille_;i++){
-		//for (unsigned int j(0);j<taille_;j++){
-		for (vector<Case>::iterator j =grille_[i].begin();j!=grille_[i].end();j++){//on parcourt la grille
-			if(j->cel_->is_dead(Pdeath)){//si la cellule meurt
+		for (unsigned int j(0);j<taille_;j++){
+		//for (vector<Case>::iterator j =grille_[i].begin();j!=grille_[i].end();j++){//on parcourt la grille
+			if(grille_[i][j].cel_->roll_a_dice(Pdeath)){//si la cellule meurt
 				//map<string,float> reseau=j->cel_->getReseauMet();
 				
 				
@@ -64,14 +68,23 @@ void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce
 				
 				//cout<<c1->getFitness()<<endl;
 				
-				j->metab_['A']+=j->cel_->getReseauMet()["Glucose"];
-				j->metab_['B']+=j->cel_->getReseauMet()["Acetate"];
-				j->metab_['C']+=j->cel_->getReseauMet()["Ethanol"];
-				dead_cells.push_back((*j).cel_);//on l'ajoute à la liste
-				cout<<dead_cells.size()<<endl; //Nombre de cellules mortes
-				j->cel_->set_Genotype('K');
+				grille_[i][j].metab_['A']+=grille_[i][j].cel_->getReseauMet()["Glucose"];
+				grille_[i][j].metab_['B']+=grille_[i][j].cel_->getReseauMet()["Acetate"];
+				grille_[i][j].metab_['C']+=grille_[i][j].cel_->getReseauMet()["Ethanol"];
+				vector<int> coord;
+				coord.push_back(i);
+				coord.push_back(j);
+				coord_dead_cells.push_back(coord);
+				//coord_dead_cells[dead_cells_count].push_back(j);
+				//dead_cells.push_back(pair<i,j>);//on l'ajoute à la liste
+				
+				grille_[i][j].cel_->set_Genotype('K');
+				
 			}
 		}
+	}
+	for (int test (0); test<coord_dead_cells.size();test++){
+		cout<<coord_dead_cells[test][0]<<","<<coord_dead_cells[test][1]<<endl; 
 	}
 
 		//on conserve les coordonnées où il y a mort dans un conteneur pour l'etape d'apres (list de paire d'int?)
@@ -80,7 +93,7 @@ void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce
 		//on fait &grille_[coordonnées mortes].cel=cmere.divide()
 		//&grille_[coordonnées mère].cel=cmere.divide()
 	//fonctionnement metabolique: !!dt=0.1!!
-	/*for(int i = 0; i < 10 ; i++){ 
+	for(int i = 0; i < 10 ; i++){ 
 	  for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();i++){
 		  for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
 		    if (j->cel_->getGen()=='L'){//Cas ou la cellule est de type Ga (Large)
@@ -107,7 +120,7 @@ void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce
 		    }
 		  }
 	  }
-  }*/
+  }
 
 
 }
@@ -275,15 +288,15 @@ string Grid::zoliaffissage(){//pas encore testé parce que le constructeur de gr
 
 string Grid::zoliaffissagemet(){
 	string zolimet = "";
-	zolimet+="G";
+	zolimet+="A";
 	for (int i (1);i<taille_*2+1;i++){
 		zolimet+="-";
 	}
-	zolimet+="\tA";
+	zolimet+="\tB";
 	for (int i (1);i<taille_*2+1;i++){
 		zolimet+="-";
 	}
-	zolimet+="\tE";
+	zolimet+="\tC";
 	for (int i (1);i<taille_*2+1;i++){
 		zolimet+="-";
 	}
