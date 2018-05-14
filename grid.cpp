@@ -18,13 +18,32 @@ static float A_init=25;
 /*             CONSTRUCTORS                    */
 /*#############################################*/
 
+/************************ Constructeur par défaut ************************/
+/*                                                                       */
+/* Cree une grille torique de taille taille_ * taille_ qui possede des   */
+/* parametres tels que :                                                 */
+/*    coeff_diff : taux de diffusion des cellules dans leur environnement*/
+/*    p_death : probabilité de décès d'un individu                       */
+/*    p_mut : probabilité de mutation de deux individus fils apres une   */
+/*            division                                                   */
+/*    W_min : seuil minimum de la fitness pour un individu               */
+/*    temps : temps initial                                              */
+/*    taux_meta_ : map contenant les taux permettant de convertir ou     */
+/*                 d'importer les ressources de l'environnement          */
+/*                                                                       */
+/*  La grille contient 50% d'individus de type S et 50% d'individus de   */
+/* type L. Chaque case de la grille contient une cellule.                */
+/* Il n'y a pas de cases vides au temps initial.                         */ 
+/*                                                                       */
+/*************************************************************************/
+
 Grid::Grid(){
 	taille_= 4; //W=H
 	coeff_diff_=0.1; //D
 	p_death_=0.02;
 	p_mut_=0.02;
 	W_min_=0.001; //Fitness minimum
-	temps_=0.;
+	temps_= 1;
 	taux_meta_["Raa"]=0.1;
 	taux_meta_["Rab"]=0.1;
 	taux_meta_["Rbb"]=0.1;
@@ -34,173 +53,101 @@ Grid::Grid(){
 	vector<Case> y_axis(taille_);
 	vector< vector<Case> > grid(taille_, y_axis);
 	
+	// On stocke les genotypes de chaque cellule à l'initialisation dans un vecteur
+	vector<char> genotypes(taille_*taille_); 
 	
-	
-	
-	
-	
-	vector<char> genotypes(taille_*taille_); // Vecteur qui contient les genotypes de chaque cellule à l'initialisation
-	
-	//Fonctionne pour une taille paire
+	/*
+	* Precondition : On suppose une grille possédant un nombre de cases pair
+	* On obtient ainsi le meme nombre de cellules L et S
+	*/
 	for(vector<char>::iterator it=genotypes.begin(); it!= genotypes.begin() + (taille_*taille_/2);it++){ 
 		*it = 'S';	
 	}
 	for(vector<char>::iterator it=genotypes.begin() + (taille_*taille_/2); it!= genotypes.end();it++){ 
 		*it = 'L';	
 	}
-	random_shuffle(genotypes.begin(),genotypes.end()); // On mélange les 50% S et les 50% L dans le vecteur
+	// On mélange aleatoirement les 50% S et les 50% L dans le vecteur
+	random_shuffle(genotypes.begin(),genotypes.end()); 
 	
 	for(vector<char>::iterator it=genotypes.begin(); it!= genotypes.end();it++){ 
 		cout << *it << endl;
 	}
 	
 	int count = 1;
-	vector<char>::iterator it = genotypes.begin();// Itérateur qui parcoure le vecteurs des genotypes
-	
-	
+	vector<char>::iterator it = genotypes.begin(); // Itérateur qui parcoure le vecteur des genotypes
+	//on parcourt toutes les cases de la grille
 	for (vector<vector<Case>>::iterator i =grid.begin();i!=grid.end();i++){
-		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){//on parcourt toutes les cases
+		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){ 
 			Cellule* c = new Cellule(*it); // On copie le génotype dans la nouvelle cellule
-			j->cel_=c;
+			j->cel_=c; // On ajoute cette cellule dans la case
 			map<char,float> metab;
-			metab['A']=25; // -> A initial mis dans chaque case. Concentration ???
+			metab['A']=25; // -> Quantite de A initial mis dans chaque case. Concentration ???
 			metab['B']=25;
 			metab['C']=2.;
-			j->metab_=metab;
-			//while(it!=genotypes.end()){			
+			j->metab_=metab;		
 			it++; // On passe au génotype suivant
 			cout << count << " Cells added" << endl;
 			count++;
-		}
-	} 	   
-	grille_ = grid;
+		} 	   
+	}
+	grille_=grid;
 	cout << "DONE !" << endl;
 }
-	
+
+
+/*#############################################*/
+/*              DESTRUCTOR                     */
+/*#############################################*/
+
+
+Grid::~Grid(){
+	for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
+		vector<Case> y_axis = *i;
+		for (vector<Case>::iterator j =y_axis.begin();j!=y_axis.end();++j){
+			Case here = *j;
+			delete here.cel_;
+		}
+	}
+}
+
+/*#############################################*/
+/*                  METHODS                    */
+/*#############################################*/
+
+/******************************** Step **********************************/
+/* Représente tous les evenements se deroulant dans un pas de temps.    */
+/* Celui-ci comprend :                                                  */
+/*    - la diffusion des cellules dans leur environnement               */
+/*    - la mort des cellules (selon p_death)                            */
+/*    - le fonctionnement metabolique des cellules (precision : celui-ci*/
+/*       se déroule en un dixième de temps. Les individus metabolisent  */
+/*       donc 10 fois en un pas de temps)                               */
+/************************************************************************/
 void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de la classe
-	//diffusion metabolite
+	//diffusion metabolite//
 	diffusion();
 	
-	//mort des cellules
-	vector<vector<int>> coord_dead_cells;
-	int dead_cells_count = 0;
-	for (unsigned int i(0);i<taille_;i++){
-		for (unsigned int j(0);j<taille_;j++){
-		//for (vector<Case>::iterator j =grille_[i].begin();j!=grille_[i].end();j++){//on parcourt la grille
-			if(grille_[i][j].cel_->roll_a_dice(Pdeath)){//si la cellule meurt
-				//map<string,float> reseau=j->cel_->getReseauMet();
-				
-				
-				//Cellule* c1 = (grille_[i][j]).cel_;
-				
-				//cout<<c1->getFitness()<<endl;
-				
-				grille_[i][j].metab_['A']+=grille_[i][j].cel_->getReseauMet()["Glucose"];
-				grille_[i][j].metab_['B']+=grille_[i][j].cel_->getReseauMet()["Acetate"];
-				grille_[i][j].metab_['C']+=grille_[i][j].cel_->getReseauMet()["Ethanol"];
-				vector<int> coord;
-				coord.push_back(i);
-				coord.push_back(j);
-				coord_dead_cells.push_back(coord);
-				//coord_dead_cells[dead_cells_count].push_back(j);
-				//dead_cells.push_back(pair<i,j>);//on l'ajoute à la liste
-				
-				//grille_[i][j].cel_->set_Genotype('K');
-				
-			}
-		}
-	}
+	//mort des cellules//
+	vector<vector<int>> coord_dead_cells = dead_position(Pdeath);
+	
+	//division des cellules//
+	division(coord_dead_cells);
 
-				/*
-				-on conserve les coordonnées où il y a mort dans un conteneur 
-				pour l'etape d'apres (list de paire d'int?)
-				-faire un rdm pour savoir quelle case vide on traite en premier, 
-				puis comparer les getfitness de toute les cellules autour
-				-faire un constructeur divide, qui prend en entrée une cellule et 
-				Pmut et qui sort une copie avec moitié moins de métabolite et eventuellement muté (L->s et s->L)
-				-on fait &grille_[coordonnées mortes].cel=cmere.divide()
-				-&grille_[coordonnées mère].cel=cmere.divide()
-				*/
-		
-	while (! coord_dead_cells.empty()){
-		int rand_cell_nbr;
-		if (coord_dead_cells.size()!=1){
-			rand_cell_nbr = rand() % (coord_dead_cells.size()-1);
-		}else{
-			rand_cell_nbr = 0;
-		}
-		int dead_cell_x=coord_dead_cells[rand_cell_nbr][0];
-		int dead_cell_y=coord_dead_cells[rand_cell_nbr][1];
-		int realx=dead_cell_x-1;
-		int realy=dead_cell_y-1;
-		if (realx<0){realx=taille_-1;}
-		if (realx==taille_){realx=0;}
-		if (realy<0){realy=taille_-1;}
-		if (realy==taille_){realy=0;}
-		Cellule* dividing_cell = grille_[realx][realy].cel_;
-		for (int x (dead_cell_x-1);x<=dead_cell_x+1;x++){
-			for (int y (dead_cell_y-1);y<=dead_cell_y+1;y++){
-				if(x!=dead_cell_x || y!=dead_cell_y){
-					
-					realx=x;
-					realy=y;
-					if (realx<0){realx=taille_-1;}
-					if (realx==taille_){realx=0;}
-					if (realy<0){realy=taille_-1;}
-					if (realy==taille_){realy=0;}
-					//si la valeur de la dividing_cell est plus petite que celle que pointe les coord, ou si elle est égale et que un lacer de dé de proba 1/2 donne true
-					if( dividing_cell->getFitness() < grille_[realx][realy].cel_->getFitness() || (rand()%2==0 && dividing_cell->getFitness() == grille_[realx][realy].cel_->getFitness()) ){
-						dividing_cell = grille_[realx][realy].cel_;
-					}
-					
-				}
-			}
-		}
-		delete grille_[dead_cell_x][dead_cell_y].cel_;
-		grille_[dead_cell_x][dead_cell_y].cel_= new Cellule(dividing_cell,p_mut_);
-		coord_dead_cells.erase(coord_dead_cells.begin()+rand_cell_nbr);
-		
-		
-		
-		
-		
-	}
 	
 	//fonctionnement metabolique: !!dt=0.1!!
 	for(int i = 0; i < 10 ; i++){ 
-		for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();i++){
-			for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
-				if (j->cel_->getGen()=='L'){//Cas ou la cellule est de type Ga (Large)
-					//Stockage des données au debut du pas de temps
-					float A_out = j->metab_['A']; //Quantite de Glucose dans la case j
-					float A_in = j->cel_->get_Glucose(); //Quantite de Glucose dans la cellule de la case j
-					//Calculs du fonctionnement metabolique
-					j->metab_['A'] = A_out * (1 - taux_meta_["Raa"]);
-					float dA = A_in + (A_out * taux_meta_["Raa"] - A_in * taux_meta_["Rab"]);
-					j->cel_->set_Glucose(dA);
-					float dB = A_in * (1 + taux_meta_["Rab"]);
-					j->cel_->set_Acetate(dB);
-				}else{ //Cas ou la cellule est de type Gb (Small)
-					//Stockage des données au debut du pas de temps
-					float B_out = j->metab_['B']; //Quantite d'Acetate dans la case j
-					float B_in = j->cel_->get_Acetate(); //Quantite d'Acetate dans la cellule de la case j
-					//Calculs du fonctionnement metabolique
-					j->metab_['B'] = B_out * (1 - taux_meta_["Rbb"]);
-					float dB = B_in + (B_out * taux_meta_["Rbb"] - B_in * taux_meta_["Rbc"]);
-					(j->cel_)->set_Acetate(dB);//Quantite d'acetate dans la cellule
-					float dC = B_in * (1 + taux_meta_["Rbc"]);
-					(j->cel_)->set_Ethanol(dC);//Quantite d'ethanol dans la cellule
-				}
-			}
-		}
+		metaboliser();
 	}
+	
 }
+/**************** Fonctions utilisees par step() ************************/
 
+/************* Diffusion des cellules **************/
 
 void Grid::diffusion(){
 
-/*tableau de taille_ * taille_ contenant les concentration des 3 métabolites 
-A, B et C pour chaque case.*/
+  /* tableau de taille_ * taille_ contenant les concentrations des 
+  *  3 métabolites A, B et C pour chaque case.*/
 	vector<vector<Case>> metab_t_plus_un(taille_, vector<Case>(taille_)); 
 	
 	//Parcours des cases de notre grille (t)
@@ -258,20 +205,98 @@ A, B et C pour chaque case.*/
 }
 
 
+/*************Position des cellules mortes************/
 
-/*#############################################*/
-/*              DESTRUCTOR                     */
-/*#############################################*/
-
-
-Grid::~Grid(){
-	for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
-		vector<Case> y_axis = *i;
-		for (vector<Case>::iterator j =y_axis.begin();j!=y_axis.end();++j){
-			Case here = *j;
-			delete here.cel_;
+vector<vector<int>> Grid::dead_position(float Pdeath){
+  vector<vector<int>> coord_dead_cells;
+	for (unsigned int i(0);i<taille_;i++){
+		for (unsigned int j(0);j<taille_;j++){
+			if(grille_[i][j].cel_->roll_a_dice(Pdeath)){//si la cellule meurt
+				grille_[i][j].metab_['A']+=grille_[i][j].cel_->getReseauMet()["Glucose"];
+				grille_[i][j].metab_['B']+=grille_[i][j].cel_->getReseauMet()["Acetate"];
+				grille_[i][j].metab_['C']+=grille_[i][j].cel_->getReseauMet()["Ethanol"];
+				vector<int> coord;
+				coord.push_back(i);
+				coord.push_back(j);
+				coord_dead_cells.push_back(coord);
+			}
 		}
 	}
+	return coord_dead_cells;
+}
+/***********Concurrence pour la division dans les cases vides************/
+
+void Grid::division(vector<vector<int>> coord_dead_cells){
+	while (! coord_dead_cells.empty()){
+		int rand_cell_nbr;
+		if (coord_dead_cells.size()!=1){
+			rand_cell_nbr = rand() % (coord_dead_cells.size()-1);
+		}else{
+			rand_cell_nbr = 0;
+		}
+		int dead_cell_x=coord_dead_cells[rand_cell_nbr][0];
+		int dead_cell_y=coord_dead_cells[rand_cell_nbr][1];
+		int realx=dead_cell_x-1;
+		int realy=dead_cell_y-1;
+		if (realx<0){realx=taille_-1;}
+		if (realx==taille_){realx=0;}
+		if (realy<0){realy=taille_-1;}
+		if (realy==taille_){realy=0;}
+		Cellule* dividing_cell = grille_[realx][realy].cel_;
+		for (int x (dead_cell_x-1);x<=dead_cell_x+1;x++){
+			for (int y (dead_cell_y-1);y<=dead_cell_y+1;y++){
+				if(x!=dead_cell_x || y!=dead_cell_y){
+					
+					realx=x;
+					realy=y;
+					if (realx<0){realx=taille_-1;}
+					if (realx==taille_){realx=0;}
+					if (realy<0){realy=taille_-1;}
+					if (realy==taille_){realy=0;}
+					//si la valeur de la dividing_cell est plus petite que celle que pointe les coord, ou si elle est égale et que un lacer de dé de proba 1/2 donne true
+					if( dividing_cell->getFitness() < grille_[realx][realy].cel_->getFitness() || (rand()%2==0 && dividing_cell->getFitness() == grille_[realx][realy].cel_->getFitness()) ){
+						dividing_cell = grille_[realx][realy].cel_;
+					}
+					
+				}
+			}
+		}
+		delete grille_[dead_cell_x][dead_cell_y].cel_;
+		grille_[dead_cell_x][dead_cell_y].cel_= new Cellule(dividing_cell,p_mut_);
+		coord_dead_cells.erase(coord_dead_cells.begin()+rand_cell_nbr);
+	}
+	
+	
+}
+/***********Metabolisme d'une cellule !!!!! dt = 0.1 !!!!!************/
+
+void Grid::metaboliser(){
+  for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();i++){
+    for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
+	    if (j->cel_->getGen()=='L'){//Cas ou la cellule est de type Ga (Large)
+	    //Stockage des données au debut du pas de temps
+	      float A_out = j->metab_['A']; //Quantite de Glucose dans la case j
+	      float A_in = j->cel_->get_Glucose(); //Quantite de Glucose dans la cellule de la case j
+	    //Calculs du fonctionnement metabolique suivant les formules fournies
+	      j->metab_['A'] = A_out * (1 - taux_meta_["Raa"]);
+	      float dA = A_in + (A_out * taux_meta_["Raa"] - A_in * taux_meta_["Rab"]);
+	      j->cel_->set_Glucose(dA);
+	      float dB = A_in * (1 + taux_meta_["Rab"]);
+	      j->cel_->set_Acetate(dB);
+	    }
+	    else{ //Cas ou la cellule est de type Gb (Small)
+	    //Stockage des données au debut du pas de temps
+	      float B_out = j->metab_['B']; //Quantite d'Acetate dans la case j
+	      float B_in = j->cel_->get_Acetate(); //Quantite d'Acetate dans la cellule de la case j
+	    //Calculs du fonctionnement metabolique suivant les formules fournies
+	      j->metab_['B'] = B_out * (1 - taux_meta_["Rbb"]);
+	      float dB = B_in + (B_out * taux_meta_["Rbb"] - B_in * taux_meta_["Rbc"]);
+	      (j->cel_)->set_Acetate(dB);//Quantite d'acetate dans la cellule
+	      float dC = B_in * (1 + taux_meta_["Rbc"]);
+	      (j->cel_)->set_Ethanol(dC);//Quantite d'ethanol dans la cellule
+	    }
+	  }
+  }
 }
 
 
@@ -325,6 +350,9 @@ float Grid::get_Rbc(){
 /*#############################################*/
 /*                  SETTERS                    */
 /*#############################################*/
+
+
+
 
 
 
@@ -395,12 +423,5 @@ string Grid::zoliaffissagemet(){
 	}
 	return zolimet;
 }
-
-
-
-/*#############################################*/
-/*                  METHODS                    */
-/*#############################################*/
-
 
 
