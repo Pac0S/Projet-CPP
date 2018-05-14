@@ -71,6 +71,8 @@ class Grid {
 /*#############################################*/
 		void step(float Pdeath,float Pmut);
 		void diffusion();
+		vector<vector<int>> dead_position(float Pdeath);
+		void metaboliser();
 		//
 
 
