@@ -26,7 +26,7 @@ int main(int argc, char* argv[]){
 	cout<<g1.zoliaffissage()<<endl;
 
 	cout<<g1.zoliaffissagemet()<<endl;
-	g1.step(0.5,0.5);
+	/*g1.step(0.5,0.5);
 	cout<<g1.zoliaffissage()<<endl;
 	
 	cout<<g1.zoliaffissagemet()<<endl;
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]){
 	//cout<<g1.zoliaffissage()<<endl;
 	
 	
-	cout<<g1.zoliaffissagemet()<<endl;
+	cout<<g1.zoliaffissagemet()<<endl;*/
 	
 	return 0;
 }
