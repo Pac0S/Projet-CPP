@@ -2,6 +2,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <map>
+#include <gtkmm.h>
 
 #include "cellule.h"
 #include "grid.h"
