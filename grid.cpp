@@ -40,8 +40,8 @@ static float A_init=25;
 Grid::Grid(){
 	taille_= 4; //W=H
 	coeff_diff_=0.1; //D
-	p_death_=0.02;
-	p_mut_=0.02;
+	p_death_=0.5;
+	p_mut_=0.5;
 	W_min_=0.001; //Fitness minimum
 	temps_= 1;
 	taux_meta_["Raa"]=0.1;
@@ -123,12 +123,12 @@ Grid::~Grid(){
 /*       se déroule en un dixième de temps. Les individus metabolisent  */
 /*       donc 10 fois en un pas de temps)                               */
 /************************************************************************/
-void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de la classe
+void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de la classe
 	//diffusion metabolite//
 	diffusion();
 	
 	//mort des cellules//
-	vector<vector<int>> coord_dead_cells = dead_position(Pdeath);
+	vector<vector<int>> coord_dead_cells = dead_position(p_death_);
 	
 	//division des cellules//
 	division(coord_dead_cells);

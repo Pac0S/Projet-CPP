@@ -35,7 +35,7 @@ class Grid {
 /*#############################################*/
 /*                  METHODS                    */
 /*#############################################*/
-		void step(float Pdeath,float Pmut);
+		void step();
 		void diffusion();
 		vector<vector<int>> dead_position(float Pdeath);
 		void metaboliser();

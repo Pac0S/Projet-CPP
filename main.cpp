@@ -20,12 +20,22 @@ int main(int argc, char* argv[]){
 	Cellule c1('L');// test Cellule
 
 	Grid g1;
-	
-
-	
+	cout << g1.zoliaffissage()<< endl;
+	g1.step();
+  cout << g1.zoliaffissage()<< endl;
+	g1.step();
+	cout << g1.zoliaffissage()<< endl;
+	g1.step();
+	cout << g1.zoliaffissage()<< endl;
+	g1.step();
+	cout << g1.zoliaffissage()<< endl;
+	g1.step();
+	cout << g1.zoliaffissage()<< endl;
+	g1.step();
+	cout << g1.zoliaffissage()<< endl;
 	//test_grid_getters(g1); //change le genotype de toute les cellules wtf? Erreur de segmentation quand compilé avec diffusion...
 	//test_bool_function(c1,50,0.2,0.2);
-	test_affichages(g1);
+	//test_affichages(g1);
 	//test_division(c1,0.5);
 	
 	
@@ -61,10 +71,10 @@ void test_affichages(Grid& g1){
 	cout<<g1.zoliaffissage()<<endl;
 	
 	cout<<g1.zoliaffissagemet()<<endl;
-	g1.step(0.5,0.5);
+	g1.step();
 
 	cout<<g1.zoliaffissagemet()<<endl;
-	g1.step(0.5,0.5);
+	g1.step();
 
 	
 	
