@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
 	
 	//test_grid_getters(g1); //change le genotype de toute les cellules wtf? Erreur de segmentation quand compilé avec diffusion...
 	//test_bool_function(c1,50,0.2,0.2);
-	//test_affichages(g1);
+	test_affichages(g1);
 	//test_division(c1,0.5);
 	
 	return 0;
