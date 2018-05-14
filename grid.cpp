@@ -4,6 +4,7 @@
 #include <list>
 #include <stdio.h>
 #include <stdlib.h>
+#include <algorithm> 
 
 #include "grid.h"
 
@@ -32,22 +33,48 @@ Grid::Grid(){
 	
 	vector<Case> y_axis(taille_);
 	vector< vector<Case> > grid(taille_, y_axis);
-	//vector< vector<Case> > grille(taille_, vector<Case>(taille_));
+	
+	
+	
+	
+	
+	
+	vector<char> genotypes(taille_*taille_); // Vecteur qui contient les genotypes de chaque cellule à l'initialisation
+	
+	//Fonctionne pour une taille paire
+	for(vector<char>::iterator it=genotypes.begin(); it!= genotypes.begin() + (taille_*taille_/2);it++){ 
+		*it = 'S';	
+	}
+	for(vector<char>::iterator it=genotypes.begin() + (taille_*taille_/2); it!= genotypes.end();it++){ 
+		*it = 'L';	
+	}
+	random_shuffle(genotypes.begin(),genotypes.end()); // On mélange les 50% S et les 50% L dans le vecteur
+	
+	for(vector<char>::iterator it=genotypes.begin(); it!= genotypes.end();it++){ 
+		cout << *it << endl;
+	}
+	
+	int count = 1;
+	vector<char>::iterator it = genotypes.begin();// Itérateur qui parcoure le vecteurs des genotypes
+	
+	
 	for (vector<vector<Case>>::iterator i =grid.begin();i!=grid.end();i++){
 		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){//on parcourt toutes les cases
-			Cellule* c = new Cellule('L');
-			/*if (c->roll_a_dice(0.5)){
-				c->set_Genotype('S');
-			}*/
+			Cellule* c = new Cellule(*it); // On copie le génotype dans la nouvelle cellule
 			j->cel_=c;
 			map<char,float> metab;
 			metab['A']=25; // -> A initial mis dans chaque case. Concentration ???
 			metab['B']=25;
 			metab['C']=2.;
 			j->metab_=metab;
-		} 	   
-	}
-	grille_=grid;
+			//while(it!=genotypes.end()){			
+			it++; // On passe au génotype suivant
+			cout << count << " Cells added" << endl;
+			count++;
+		}
+	} 	   
+	grille_ = grid;
+	cout << "DONE !" << endl;
 }
 	
 void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de la classe
@@ -84,11 +111,16 @@ void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce
 		}
 	}
 
-		//on conserve les coordonnées où il y a mort dans un conteneur pour l'etape d'apres (list de paire d'int?)
-	//faire un rdm pour savoir quelle case vide on traite en premier, puis comparer les getfitness de toute les cellules autour
-		//faire un constructeur divide, qui prend en entrée une cellule et Pmut et qui sort une copie avec moitié moins de métabolite et eventuellement muté (L->s et s->L)
-		//on fait &grille_[coordonnées mortes].cel=cmere.divide()
-		//&grille_[coordonnées mère].cel=cmere.divide()
+				/*
+				-on conserve les coordonnées où il y a mort dans un conteneur 
+				pour l'etape d'apres (list de paire d'int?)
+				-faire un rdm pour savoir quelle case vide on traite en premier, 
+				puis comparer les getfitness de toute les cellules autour
+				-faire un constructeur divide, qui prend en entrée une cellule et 
+				Pmut et qui sort une copie avec moitié moins de métabolite et eventuellement muté (L->s et s->L)
+				-on fait &grille_[coordonnées mortes].cel=cmere.divide()
+				-&grille_[coordonnées mère].cel=cmere.divide()
+				*/
 		
 	while (! coord_dead_cells.empty()){
 		int rand_cell = rand() % (coord_dead_cells.size()-1);
@@ -125,35 +157,32 @@ void Grid::step(float Pdeath, float Pmut){ // Pas nécessaire Pdeath et Pmut, ce
 	
 	//fonctionnement metabolique: !!dt=0.1!!
 	for(int i = 0; i < 10 ; i++){ 
-	  for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();i++){
-		  for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
-		    if (j->cel_->getGen()=='L'){//Cas ou la cellule est de type Ga (Large)
-		    //Stockage des données au debut du pas de temps
-		      float A_out = j->metab_['A']; //Quantite de Glucose dans la case j
-		      float A_in = j->cel_->get_Glucose(); //Quantite de Glucose dans la cellule de la case j
-		    //Calculs du fonctionnement metabolique
-		      j->metab_['A'] = A_out * (1 - taux_meta_["Raa"]);
-		      float dA = A_in + (A_out * taux_meta_["Raa"] - A_in * taux_meta_["Rab"]);
-		      j->cel_->set_Glucose(dA);
-		      float dB = A_in * (1 + taux_meta_["Rab"]);
-		      j->cel_->set_Acetate(dB);
-		    }
-		    else{ //Cas ou la cellule est de type Gb (Small)
-		    //Stockage des données au debut du pas de temps
-		      float B_out = j->metab_['B']; //Quantite d'Acetate dans la case j
-		      float B_in = j->cel_->get_Acetate(); //Quantite d'Acetate dans la cellule de la case j
-		    //Calculs du fonctionnement metabolique
-		      j->metab_['B'] = B_out * (1 - taux_meta_["Rbb"]);
-		      float dB = B_in + (B_out * taux_meta_["Rbb"] - B_in * taux_meta_["Rbc"]);
-		      (j->cel_)->set_Acetate(dB);//Quantite d'acetate dans la cellule
-		      float dC = B_in * (1 + taux_meta_["Rbc"]);
-		      (j->cel_)->set_Ethanol(dC);//Quantite d'ethanol dans la cellule
-		    }
-		  }
-	  }
-  }
-
-
+		for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();i++){
+			for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
+				if (j->cel_->getGen()=='L'){//Cas ou la cellule est de type Ga (Large)
+					//Stockage des données au debut du pas de temps
+					float A_out = j->metab_['A']; //Quantite de Glucose dans la case j
+					float A_in = j->cel_->get_Glucose(); //Quantite de Glucose dans la cellule de la case j
+					//Calculs du fonctionnement metabolique
+					j->metab_['A'] = A_out * (1 - taux_meta_["Raa"]);
+					float dA = A_in + (A_out * taux_meta_["Raa"] - A_in * taux_meta_["Rab"]);
+					j->cel_->set_Glucose(dA);
+					float dB = A_in * (1 + taux_meta_["Rab"]);
+					j->cel_->set_Acetate(dB);
+				}else{ //Cas ou la cellule est de type Gb (Small)
+					//Stockage des données au debut du pas de temps
+					float B_out = j->metab_['B']; //Quantite d'Acetate dans la case j
+					float B_in = j->cel_->get_Acetate(); //Quantite d'Acetate dans la cellule de la case j
+					//Calculs du fonctionnement metabolique
+					j->metab_['B'] = B_out * (1 - taux_meta_["Rbb"]);
+					float dB = B_in + (B_out * taux_meta_["Rbb"] - B_in * taux_meta_["Rbc"]);
+					(j->cel_)->set_Acetate(dB);//Quantite d'acetate dans la cellule
+					float dC = B_in * (1 + taux_meta_["Rbc"]);
+					(j->cel_)->set_Ethanol(dC);//Quantite d'ethanol dans la cellule
+				}
+			}
+		}
+	}
 }
 
 
@@ -233,6 +262,7 @@ Grid::~Grid(){
 		}
 	}
 }
+
 
 
 

@@ -9,9 +9,9 @@
 
 using namespace std;
 
-void test_grid_getters(Grid g);
+void test_grid_getters(Grid& g);
 void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation);
-void test_affichages(Grid g1);
+void test_affichages(Grid& g1);
 void test_division(Cellule c1, float p_mut);
 
 int main(int argc, char* argv[]){
@@ -28,10 +28,11 @@ int main(int argc, char* argv[]){
 	test_affichages(g1);
 	//test_division(c1,0.5);
 	
+	
 	return 0;
 }
 
-void test_grid_getters(Grid g){
+void test_grid_getters(Grid& g){
 	cout << "Taille de la grille : " << g.get_taille() << endl;
 	cout << "Coefficient de diffusion D : " << g.get_coeff_diff() << endl;
 	cout << "Probabilité de mort des cellules : " << g.get_p_death() << endl;
@@ -56,7 +57,7 @@ void test_bool_function(Cellule c,int try_nbr, float P){
 }
 
 
-void test_affichages(Grid g1){
+void test_affichages(Grid& g1){
 	cout<<g1.zoliaffissage()<<endl;
 	
 	cout<<g1.zoliaffissagemet()<<endl;
@@ -64,6 +65,8 @@ void test_affichages(Grid g1){
 
 	cout<<g1.zoliaffissagemet()<<endl;
 	g1.step(0.5,0.5);
+
+	
 	
 	cout<<g1.zoliaffissage()<<endl;
 	
