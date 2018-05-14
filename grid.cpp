@@ -81,7 +81,7 @@ Grid::Grid(){
 			Cellule* c = new Cellule(*it); // On copie le génotype dans la nouvelle cellule
 			j->cel_=c; // On ajoute cette cellule dans la case
 			map<char,float> metab;
-			metab['A']=25; // -> A initial mis dans chaque case. Concentration ???
+			metab['A']=25; // -> Quantite de A initial mis dans chaque case. Concentration ???
 			metab['B']=25;
 			metab['C']=2.;
 			j->metab_=metab;		
