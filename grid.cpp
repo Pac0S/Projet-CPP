@@ -48,6 +48,7 @@ Grid::Grid(){
 	taux_meta_["Rab"]=0.1;
 	taux_meta_["Rbb"]=0.1;
 	taux_meta_["Rbc"]=0.1;
+	temps_simulation=5000;
 	
 	
 	vector<Case> y_axis(taille_);
@@ -136,6 +137,12 @@ void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de l
 		metaboliser();
 	}
 	
+}
+
+void Grid::run(){
+	for (int(0);i<temps_simulation;i++){
+		step();
+	}
 }
 /**************** Fonctions utilisees par step() ************************/
 

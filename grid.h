@@ -36,6 +36,7 @@ class Grid {
 /*                  METHODS                    */
 /*#############################################*/
 		void step();
+		void run();
 		void diffusion();
 		vector<vector<int>> dead_position(float Pdeath);
 		void metaboliser();
@@ -83,6 +84,7 @@ class Grid {
 		unsigned int temps_; // Temps de simulation par intervalles de 0.1. Apres T pas de temps (T E [1,1500]),réinitialisation de l'environnement. Fin de la simulation à t = 5000. 
 		map<string,float> taux_meta_;
 		vector<vector<Case>> grille_;
+		unsigned int temps_simulation;
 	
 
 
