@@ -81,7 +81,7 @@ Grid::Grid(){
 			Cellule* c = new Cellule(*it); // On copie le génotype dans la nouvelle cellule
 			j->cel_=c; // On ajoute cette cellule dans la case
 			map<char,float> metab;
-			metab['A']=25; // -> Quantite de A initial mis dans chaque case. Concentration ???
+			metab['A']=25; // -> Quantite de A initial mis dans chaque case
 			metab['B']=25;
 			metab['C']=2.;
 			j->metab_=metab;		
@@ -313,7 +313,17 @@ void Grid::metaboliser(){
   }
 }
 
-
+/* Vidage de la grille de ses métabolites */
+void Grid::lavage(){
+	for(vector<vector<Case>>::iterator it1=grille_.begin();it1 != grille_.end(); ++it1){
+		for (vector<Case>::iterator it2 =it1->begin();it2!=it1->end();it2++){
+			it2->metab_['A']=0;
+			it2->metab_['B']=0;
+			it2->metab_['C']=0;
+		}
+	}
+}
+	
 
 
 /*#############################################*/
