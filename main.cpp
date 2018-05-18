@@ -15,9 +15,9 @@ void test_affichages(Grid& g1);
 void test_division(Cellule c1, float p_mut);
 
 int main(int argc, char* argv[]){
-	
+	cout << " --------------------------------------------------" << endl;
 	srand(time(0));//initialise les valeurs aléatoire, a mettre au debut du code
-	Cellule c1('L');// test Cellule
+	//Cellule c1('L');// test Cellule
 
 	Grid g1;
 	
