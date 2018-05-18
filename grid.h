@@ -41,7 +41,8 @@ class Grid {
 		vector<vector<int>> dead_position(float Pdeath);
 		void metaboliser();
 		void division(vector<vector<int>> coord_dead_cells);
-		//
+		void lavage();
+
 
 /*#############################################*/
 /*                 GETTERS                     */
