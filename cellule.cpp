@@ -7,18 +7,21 @@
 #include "cellule.h"
 
 using namespace std;
+
+unsigned int Cellule::nb_cellules_L_ = 0;
+unsigned int Cellule::nb_cellules_S_ = 0;
+
 /*#############################################*/
 /*               CONSTRUCTORS                  */
 /*#############################################*/
-Cellule::Cellule(){
-	genotype_ = 'S';
-	reseauMet_["Glucose"]=0.;
-	reseauMet_["Acetate"]=0.;
-	reseauMet_["Ethanol"]=0.;
- }
-
-Cellule::Cellule(char gen){//preconditions: gen='L' ou 'S' ou 'N'(Nothing)
+Cellule::Cellule(char gen){//preconditions: gen='L' ou 'S'
     genotype_ = gen;
+    // Mise à jour du nombre de cellules
+    if (genotype_ == 'L'){
+      nb_cellules_L_ ++;
+    } else{
+      nb_cellules_S_ ++;
+    }
     reseauMet_["Glucose"]=0.5;
     reseauMet_["Acetate"]=0.5;
     reseauMet_["Ethanol"]=0.5;
@@ -31,6 +34,12 @@ Cellule::Cellule(Cellule*& mere, float& p_mut){
 	(*mere).reseauMet_["Ethanol"]=(*mere).reseauMet_["Ethanol"]/2;
 	reseauMet_ = (*mere).reseauMet_;
 	genotype_ = (*mere).genotype_;
+	// Mise à jour du nombre de cellules
+	if (genotype_ == 'L'){
+    nb_cellules_L_ ++;
+  } else{
+    nb_cellules_S_ ++;
+  }
 	
 	float who_mutates = rand() %100; // Les 2 cellules sont identiques, il faut voir si l'une des deux mute.
 
@@ -40,6 +49,19 @@ Cellule::Cellule(Cellule*& mere, float& p_mut){
 		mere->mutates(p_mut);
 	}
 }
+
+
+/*#############################################*/
+/*               DESTRUCTOR                    */
+/*#############################################*/
+Cellule::~Cellule(){
+  if (genotype_ == 'L'){
+    nb_cellules_L_ --;
+  } else{
+    nb_cellules_S_ --;
+  }
+}
+
 
 /*#############################################*/
 /*                 GETTERS                     */
@@ -74,6 +96,15 @@ float Cellule::get_Ethanol(){
 	return reseauMet_["Ethanol"];
 }
 
+unsigned int Cellule::get_nb_cellules_L(){
+  return nb_cellules_L_;
+}
+unsigned int Cellule::get_nb_cellules_S(){
+  return nb_cellules_S_;
+}
+unsigned int Cellule::get_nb_total(){
+  return nb_cellules_S_ + nb_cellules_L_;
+}
 /*#############################################*/
 /*                  SETTERS                    */
 /*#############################################*/
@@ -102,24 +133,28 @@ void Cellule::set_Genotype(char g){
 
 
 
-//méthode:
-bool Cellule::roll_a_dice(float P){
+/*
+* Effectue une epreuve de Bernouilli avec une 
+* probabilite de reussite p_reussite
+* Retourne un booleen
+*/
+bool Cellule::roll_a_dice(float p_reussite){
 	float lancer = rand() %100;
 	bool result;
-	if (lancer<=P*100){
-		//cout<<"true"<<endl;
+	if (lancer<=p_reussite*100){
 		result=true;
 	}else{
 		result=false;
-		//cout<<"false"<<endl;
 	}
 	return result;
 }
 
-
+/*
+* Mutation de la cellule selon la probabilite Pmut
+* Utilise la fonction roll_a_dice
+*/
 void Cellule::mutates(float Pmut){
-	float lancer = rand() %100;
-	if (lancer<=Pmut*100){
+	if (roll_a_dice(Pmut)){
 		if(genotype_=='S'){
 			genotype_='L';
 		}else{

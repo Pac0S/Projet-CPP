@@ -73,7 +73,6 @@ Grid::Grid(){
 		cout << *it << endl;
 	}
 	
-	int count = 1;
 	vector<char>::iterator it = genotypes.begin(); // Itérateur qui parcoure le vecteur des genotypes
 	//on parcourt toutes les cases de la grille
 	for (vector<vector<Case>>::iterator i =grid.begin();i!=grid.end();i++){
@@ -86,8 +85,6 @@ Grid::Grid(){
 			metab['C']=2.;
 			j->metab_=metab;		
 			it++; // On passe au génotype suivant
-			cout << count << " Cells added" << endl;
-			count++;
 		} 	   
 	}
 	grille_=grid;
@@ -165,7 +162,6 @@ void Grid::diffusion(){
 			for(int i2=-1;i2<=1;++i2){
 				for(int j2=-1;j2<=1;++j2){
 					if(i1+i2<0){ //Cas où on est sur la limite à gauche de la grille
-						x=taille_ - 1; 
 					}else if(i1+i2>taille_-1){ //Cas où on est sur la limite à droite de la grille
 						x=0;
 					}else{

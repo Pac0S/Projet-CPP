@@ -13,7 +13,12 @@ class Cellule {
 		Cellule();
 		Cellule(char gen);
 		Cellule(Cellule*& mere, float& p_mut); // Constructeur spécifique à la division cellulaire
-	
+		
+/*#############################################*/
+/*               DESTRUCTOR                    */
+/*#############################################*/
+    ~Cellule();
+    
 /*#############################################*/
 /*                 GETTERS                     */
 /*#############################################*/
@@ -23,11 +28,16 @@ class Cellule {
 		float get_Glucose();
 		float get_Acetate();
 		float get_Ethanol();
-		void set_Genotype(char g);
+		
+		
+		unsigned int get_nb_cellules_L();
+		unsigned int get_nb_cellules_S();
+		unsigned int get_nb_total();
 	
 /*#############################################*/
 /*                  SETTERS                    */
 /*#############################################*/
+		void set_Genotype(char g);
 		void set_Glucose(float a);
 		void set_Acetate(float b);
 		void set_Ethanol(float c);
@@ -50,6 +60,9 @@ class Cellule {
 		char genotype_; //Ga ou Gb  ou rien 
 		map<string,float> reseauMet_; //quantité de A,B et C dans la cellule
 		static float A_init; //Concentration initiale en A dans chaque Cellule (plutot que de modifier le constructeur on pourra modifier l'initialisation de A).
+		
+		static unsigned int nb_cellules_L_;
+		static unsigned int nb_cellules_S_;
 	
 	
 };
