@@ -78,8 +78,6 @@ void test_affichages(Grid& g1){
 	cout << g1.zoliaffissage()<< endl;
 	g1.step();
 	cout << g1.zoliaffissage()<< endl;
-
-	
 	
 	cout<<g1.zoliaffissage()<<endl;
 	
