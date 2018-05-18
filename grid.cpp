@@ -138,7 +138,7 @@ void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de l
 }
 
 void Grid::run(){
-	for (int(0);i<temps_simulation;i++){
+	for (int i(0);i<temps_simulation;i++){
 		step();
 	}
 }
@@ -216,6 +216,7 @@ vector<vector<int>> Grid::dead_position(float Pdeath){
 				grille_[i][j].metab_['A']+=grille_[i][j].cel_->getReseauMet()["Glucose"];
 				grille_[i][j].metab_['B']+=grille_[i][j].cel_->getReseauMet()["Acetate"];
 				grille_[i][j].metab_['C']+=grille_[i][j].cel_->getReseauMet()["Ethanol"];
+				grille_[i][j].cel_->kill();
 				vector<int> coord;
 				coord.push_back(i);
 				coord.push_back(j);
@@ -380,10 +381,12 @@ string Grid::zoliaffissage(){//pas encore testé parce que le constructeur de gr
 		zoli+='\n';
 		zoli+='|';
 		for (vector<Case>::iterator colonne = ligne->begin();colonne!=ligne->end();colonne++){
-			if(colonne->cel_->getGen()=='L'){
-				zoli+="L|";
-			}else if(colonne->cel_->getGen()=='S'){
-				zoli+="S|";
+			if(colonne->cel_->get_State()){
+				if (colonne->cel_->getGen()=='L'){
+					zoli+="L|";
+				}else if(colonne->cel_->getGen()=='S'){
+					zoli+="S|";
+				}
 			}else{
 				zoli+="X|";
 			}
