@@ -59,7 +59,7 @@ class Cellule {
 
 		char genotype_; //Ga ou Gb  ou rien 
 		map<string,float> reseauMet_; //quantité de A,B et C dans la cellule
-		static float A_init; //Concentration initiale en A dans chaque Cellule (plutot que de modifier le constructeur on pourra modifier l'initialisation de A).
+
 		
 		static unsigned int nb_cellules_L_;
 		static unsigned int nb_cellules_S_;

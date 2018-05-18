@@ -38,7 +38,9 @@ static float A_init=25;
 /*                                                                       */
 /*************************************************************************/
 
-Grid::Grid(){
+Grid::Grid(int T, float A_init){
+	T_ = T;
+	A_init_ = A_init_;
 	taille_= 4; //W=H
 	coeff_diff_=0.1; //D
 	p_death_=0.5;
@@ -70,9 +72,9 @@ Grid::Grid(){
 	// On mélange aleatoirement les 50% S et les 50% L dans le vecteur
 	random_shuffle(genotypes.begin(),genotypes.end()); 
 	
-	for(vector<char>::iterator it=genotypes.begin(); it!= genotypes.end();it++){ 
+	/*for(vector<char>::iterator it=genotypes.begin(); it!= genotypes.end();it++){ 
 		cout << *it << endl;
-	}
+	}*/
 	
 	vector<char>::iterator it = genotypes.begin(); // Itérateur qui parcoure le vecteur des genotypes
 	//on parcourt toutes les cases de la grille
@@ -122,20 +124,32 @@ Grid::~Grid(){
 /*       donc 10 fois en un pas de temps)                               */
 /************************************************************************/
 void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de la classe
-	//diffusion metabolite//
-	diffusion();
+	temps_=0;
+	int laveur = 0;
+	while(temps_!=10){
+		//diffusion metabolite//
+		diffusion();
 	
-	//mort des cellules//
-	vector<vector<int>> coord_dead_cells = dead_position(p_death_);
+		//mort des cellules//
+		vector<vector<int>> coord_dead_cells = dead_position(p_death_);
 	
-	//division des cellules//
-	division(coord_dead_cells);
-
-	
-	//fonctionnement metabolique: !!dt=0.1!!
-	for(int i = 0; i < 10 ; i++){ 
-		metaboliser();
+		//division des cellules//
+		division(coord_dead_cells);
+		
+		//fonctionnement metabolique: !!dt=0.1!!
+		for(int i = 0; i < 10 ; i++){ 
+			metaboliser();
+		}
+		/*laveur ++;
+		temps_++;
+		if(laveur == T_){
+			laveur ==0;
+			lavage();
+		}*/
+		temps_++;
 	}
+		
+
 	
 	/*
 	//-----------------------------------------//
@@ -317,7 +331,7 @@ void Grid::metaboliser(){
 void Grid::lavage(){
 	for(vector<vector<Case>>::iterator it1=grille_.begin();it1 != grille_.end(); ++it1){
 		for (vector<Case>::iterator it2 =it1->begin();it2!=it1->end();it2++){
-			it2->metab_['A']=0;
+			it2->metab_['A']=A_init_;
 			it2->metab_['B']=0;
 			it2->metab_['C']=0;
 		}

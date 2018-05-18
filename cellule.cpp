@@ -22,9 +22,9 @@ Cellule::Cellule(char gen){//preconditions: gen='L' ou 'S'
     } else{
       nb_cellules_S_ ++;
     }
-    reseauMet_["Glucose"]=0.5;
-    reseauMet_["Acetate"]=0.5;
-    reseauMet_["Ethanol"]=0.5;
+    reseauMet_["Glucose"]=0.;
+    reseauMet_["Acetate"]=0.;
+    reseauMet_["Ethanol"]=0.;
 }
 
 Cellule::Cellule(Cellule*& mere, float& p_mut){
