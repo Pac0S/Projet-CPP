@@ -8,8 +8,8 @@
 
 using namespace std;
 
-unsigned int Cellule::nb_cellules_L_ = 0;
-unsigned int Cellule::nb_cellules_S_ = 0;
+int Cellule::nb_cellules_L_ = 0;
+int Cellule::nb_cellules_S_ = 0;
 
 /*#############################################*/
 /*               CONSTRUCTORS                  */
@@ -28,7 +28,7 @@ Cellule::Cellule(char gen){//preconditions: gen='L' ou 'S'
     alive_=true;
 }
 
-Cellule::Cellule(Cellule*& mere, float& p_mut){
+Cellule::Cellule(Cellule* mere, float& p_mut){
 	//Division par deux des quantités de métabolites dans la cellule mere
 	(*mere).reseauMet_["Glucose"]=(*mere).reseauMet_["Glucose"]/2;
 	(*mere).reseauMet_["Acetate"]=(*mere).reseauMet_["Acetate"]/2;
@@ -85,7 +85,7 @@ char Cellule::getGen(){
 map<string,float> Cellule::getReseauMet(){
 	return reseauMet_;
 }
-bool Cellule::get_State(){
+bool Cellule::is_alive(){
 	return alive_;	
 }
 
@@ -155,7 +155,12 @@ bool Cellule::roll_a_dice(float p_reussite){
 }
 
 void Cellule::kill(){
-	alive_=false;	
+	alive_=false;
+	if(genotype_=='S'){
+		nb_cellules_S_ --;
+	}else if(genotype_=='L'){
+		nb_cellules_L_ --;
+	}		
 }
 
 /*

@@ -8,6 +8,7 @@
 #include <fstream>
 
 #include "grid.h"
+#include "cellule.h"
 
 using namespace std;
 
@@ -39,9 +40,9 @@ using namespace std;
 Grid::Grid(int T, float A_init){
 	T_ = T;
 	A_init_ = A_init;
-	taille_= 4; //W=H
+	taille_= 10; //W=H
 	coeff_diff_=0.1; //D
-	p_death_=0.5;
+	p_death_=0.02;
 	p_mut_=0.5;
 	W_min_=0.001; //Fitness minimum
 	temps_= 0;
@@ -49,7 +50,7 @@ Grid::Grid(int T, float A_init){
 	taux_meta_["Rab"]=0.1;
 	taux_meta_["Rbb"]=0.1;
 	taux_meta_["Rbc"]=0.1;
-	temps_simulation_=5000;
+	temps_simulation_=20;
 	
 	
 	vector<Case> y_axis(taille_);
@@ -144,6 +145,14 @@ void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de l
 	
 	//mort des cellules//
 	vector<vector<int>> coord_dead_cells = dead_position(p_death_);
+	cout<<"coords dead :"<<endl;
+	for(vector<vector<int>>::iterator i1 = coord_dead_cells.begin();i1!=coord_dead_cells.end();i1++){
+		for(vector<int>::iterator i2=i1->begin();i2!=i1->end();i2++){
+			cout<<*i2<< "\t";
+		}
+		cout<<endl;
+	}
+	cout<<endl;
 	
 	//division des cellules//
 	division(coord_dead_cells);
@@ -152,6 +161,11 @@ void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de l
 	for(int i = 0; i < 10 ; i++){ 
 		metaboliser();
 	}
+	Cellule c('L');
+	c.kill();
+	cout << "Nombre de cellules dans la grille"<<endl;
+	cout<<c.get_nb_total()<< "\t" << c.get_nb_cellules_S()<< "\t"<< c.get_nb_cellules_L()<<endl<<endl;
+	//cout<<zoliaffissage()<<endl;
 
 		
 
@@ -182,9 +196,19 @@ void Grid::run(){
 		step();			
 		if(temps_ % T_ == 0){
 			lavage();
-			
 		}
-	}	
+	}
+	Cellule c('L'); // Pour récupérer le nombre de cellules L et S
+	c.kill(); 
+	/*vector<string> results(4);
+	results.push_back(A_init_);
+	results.push_back(T_);
+	results.push_back(c.get_nb_cellules_L());
+	results.push_back(c.get_nb_cellules_S());*/
+	string written_results;
+	written_results = "A_init \t T \t nb_cell_L \t nb_cell_S \n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(c.get_nb_cellules_L()) + "\t" + to_string(c.get_nb_cellules_S());
+	cout<<written_results<<endl; //Problème : Le nombre de cellules restantes donne des resultats absurdes
+	cout<<zoliaffissage()<<endl;
 }
 
 
@@ -339,12 +363,12 @@ void Grid::division(vector<vector<int>> coord_dead_cells){
 				}
 			}
 		}
-		delete grille_[dead_cell_x][dead_cell_y].cel_;
-		grille_[dead_cell_x][dead_cell_y].cel_= new Cellule(dividing_cell,p_mut_);
-		coord_dead_cells.erase(coord_dead_cells.begin()+rand_cell_nbr);
-	}
-	
-	
+		//if(dividing_cell->getFitness()>=W_min_){
+			delete grille_[dead_cell_x][dead_cell_y].cel_;
+			grille_[dead_cell_x][dead_cell_y].cel_= new Cellule(dividing_cell,p_mut_);
+			coord_dead_cells.erase(coord_dead_cells.begin()+rand_cell_nbr);
+		//}
+	}	
 }
 
 
@@ -493,7 +517,7 @@ string Grid::zoliaffissage(){//pas encore testé parce que le constructeur de gr
 		zoli+='\n';
 		zoli+='|';
 		for (vector<Case>::iterator colonne = ligne->begin();colonne!=ligne->end();colonne++){
-			if(colonne->cel_->get_State()){
+			if(colonne->cel_->is_alive()){
 				if (colonne->cel_->getGen()=='L'){
 					zoli+="L|";
 				}else if(colonne->cel_->getGen()=='S'){

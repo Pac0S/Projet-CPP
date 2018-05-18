@@ -10,14 +10,14 @@ class Cellule {
 /*#############################################*/
 /*               CONSTRUCTORS                  */
 /*#############################################*/
-		Cellule();
+		//Cellule();
 		Cellule(char gen);
-		Cellule(Cellule*& mere, float& p_mut); // Constructeur spécifique à la division cellulaire
+		Cellule(Cellule* mere, float& p_mut); // Constructeur spécifique à la division cellulaire
 		
 /*#############################################*/
 /*               DESTRUCTOR                    */
 /*#############################################*/
-    ~Cellule();
+    	~Cellule();
     
 /*#############################################*/
 /*                 GETTERS                     */
@@ -28,7 +28,7 @@ class Cellule {
 		float get_Glucose();
 		float get_Acetate();
 		float get_Ethanol();
-		bool get_State();
+		bool is_alive();
 		
 		
 		unsigned int get_nb_cellules_L();
@@ -62,8 +62,8 @@ class Cellule {
 		char genotype_; //Ga ou Gb  ou rien 
 		map<string,float> reseauMet_; //quantité de A,B et C dans la cellule
 		bool alive_;
-		static unsigned int nb_cellules_L_;
-		static unsigned int nb_cellules_S_;
+		static int nb_cellules_L_;
+		static int nb_cellules_S_;
 		
 	
 	
