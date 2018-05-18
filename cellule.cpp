@@ -8,8 +8,8 @@
 
 using namespace std;
 
-int Cellule::nb_cellules_L_ = 0;
-int Cellule::nb_cellules_S_ = 0;
+unsigned int Cellule::nb_cellules_L_ = 0;
+unsigned int Cellule::nb_cellules_S_ = 0;
 
 /*#############################################*/
 /*               CONSTRUCTORS                  */
@@ -56,13 +56,13 @@ Cellule::Cellule(Cellule* mere, float& p_mut){
 /*#############################################*/
 /*               DESTRUCTOR                    */
 /*#############################################*/
-Cellule::~Cellule(){
+/*Cellule::~Cellule(){
   if (genotype_ == 'L'){
     nb_cellules_L_ --;
   } else{
     nb_cellules_S_ --;
   }
-}
+}*/
 
 
 /*#############################################*/
@@ -127,6 +127,11 @@ void Cellule::set_Ethanol(float c){
 
 void Cellule::set_Genotype(char g){
 	genotype_=g;
+}
+void Cellule::empty_Met(){
+	set_Glucose(0);
+	set_Acetate(0);
+	set_Ethanol(0);
 }
 /*#############################################*/
 /*                  DISPLAY                    */

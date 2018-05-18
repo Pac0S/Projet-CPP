@@ -17,7 +17,7 @@ class Cellule {
 /*#############################################*/
 /*               DESTRUCTOR                    */
 /*#############################################*/
-    	~Cellule();
+    	//~Cellule();
     
 /*#############################################*/
 /*                 GETTERS                     */
@@ -42,6 +42,7 @@ class Cellule {
 		void set_Glucose(float a);
 		void set_Acetate(float b);
 		void set_Ethanol(float c);
+		void empty_Met();
 /*#############################################*/
 /*                  DISPLAY                    */
 /*#############################################*/
@@ -62,8 +63,8 @@ class Cellule {
 		char genotype_; //Ga ou Gb  ou rien 
 		map<string,float> reseauMet_; //quantité de A,B et C dans la cellule
 		bool alive_;
-		static int nb_cellules_L_;
-		static int nb_cellules_S_;
+		static unsigned int nb_cellules_L_;
+		static unsigned int nb_cellules_S_;
 		
 	
 	
