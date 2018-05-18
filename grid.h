@@ -24,7 +24,7 @@ class Grid {
 /*             CONSTRUCTORS                    */
 /*#############################################*/
 
-		Grid();
+		Grid(int T, float A_init);
 	
 /*#############################################*/
 /*             DESTRUCTOR                      */
@@ -85,6 +85,8 @@ class Grid {
 		unsigned int temps_; // Temps de simulation par intervalles de 0.1. Apres T pas de temps (T E [1,1500]),réinitialisation de l'environnement. Fin de la simulation à t = 5000. 
 		map<string,float> taux_meta_;
 		vector<vector<Case>> grille_;
+		float A_init_; //Concentration initiale en A dans chaque Case
+		int T_; // nb de pas de temps avant le lavage
 		unsigned int temps_simulation;
 	
 
