@@ -4,7 +4,8 @@
 #include <list>
 #include <stdio.h>
 #include <stdlib.h>
-#include <algorithm> 
+#include <algorithm>
+#include <fstream>
 
 #include "grid.h"
 
@@ -89,6 +90,7 @@ Grid::Grid(){
 		} 	   
 	}
 	grille_=grid;
+	//cout << "DONE !" << endl;
 }
 
 
@@ -134,14 +136,34 @@ void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de l
 	//fonctionnement metabolique: !!dt=0.1!!
 	for(int i = 0; i < 10 ; i++){ 
 		metaboliser();
-	}	
+	}
+	
+	/*
+	//-----------------------------------------//
+	//   Ecriture des donnees en fichier txt   //
+	//-----------------------------------------//
+	
+	
+	//ouverture d'un fichier :
+	ofstream file("result.txt", ios::out | ios::app);	
+	//Si l'ouverture a fonctionné
+	if(file){
+	  file.close(); //Fermeture du fichier
+	}
+	else{
+	  cout << "Error opening the file" << endl;
+	}
+	*/
 }
 
+<<<<<<< HEAD
 void Grid::run(){
 	for (int i(0);i<temps_simulation;i++){
 		step();
 	}
 }
+=======
+>>>>>>> ed8e7bb874405d4b08de31ef434aacc731ccd1f6
 /**************** Fonctions utilisees par step() ************************/
 
 /************* Diffusion des cellules **************/
