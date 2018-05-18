@@ -40,7 +40,7 @@ using namespace std;
 Grid::Grid(int T, float A_init){
 	T_ = T;
 	A_init_ = A_init;
-	taille_= 10; //W=H
+	taille_= 32; //W=H
 	coeff_diff_=0.1; //D
 	p_death_=0.02;
 	p_mut_=0.5;
@@ -50,7 +50,7 @@ Grid::Grid(int T, float A_init){
 	taux_meta_["Rab"]=0.1;
 	taux_meta_["Rbb"]=0.1;
 	taux_meta_["Rbc"]=0.1;
-	temps_simulation_=100;
+	temps_simulation_=5000;
 	
 	
 	vector<Case> y_axis(taille_);
@@ -139,7 +139,7 @@ Grid::~Grid(){
 /*       se déroule en un dixième de temps. Les individus metabolisent  */
 /*       donc 10 fois en un pas de temps)                               */
 /************************************************************************/
-void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de la classe
+void Grid::step(){
 	//diffusion metabolite//
 	diffusion();
 	
@@ -154,12 +154,6 @@ void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de l
 	for(int i = 0; i < 10 ; i++){ 
 		metaboliser();
 	}
-	Cellule c('L');
-	c.kill();
-	cout << "Nombre de cellules dans la grille"<<endl;
-	cout<<c.get_nb_total()<< "\t" << c.get_nb_cellules_S()<< "\t"<< c.get_nb_cellules_L()<<endl<<endl;
-
-		
 
 	
 	/*
@@ -178,7 +172,9 @@ void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de l
 	  cout << "Error opening the file" << endl;
 	}
 	*/
+	
 	temps_++;
+	
 }
 
 
@@ -190,16 +186,9 @@ void Grid::run(){
 			lavage();
 		}
 	}
-	Cellule c('L'); // Pour récupérer le nombre de cellules L et S
-	c.kill(); 
-	/*vector<string> results(4);
-	results.push_back(A_init_);
-	results.push_back(T_);
-	results.push_back(c.get_nb_cellules_L());
-	results.push_back(c.get_nb_cellules_S());*/
 	string written_results;
-	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(c.get_nb_cellules_S()) + "\t" + to_string(c.get_nb_cellules_L());
-	cout<<written_results<<endl; //Problème : Le nombre de cellules restantes donne des resultats absurdes
+	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L());
+	cout<<written_results<<endl;
 	cout<<zoliaffissage()<<endl;
 }
 
@@ -219,7 +208,7 @@ void Grid::run(){
 void Grid::diffusion(){
 
   /* tableau de taille_ * taille_ contenant les concentrations des 
-  *  3 métabolites A, B et C pour chaque case.*/
+     3 métabolites A, B et C pour chaque case.*/
 	vector<vector<Case>> metab_t_plus_un(taille_, vector<Case>(taille_)); 
 	
 	//Parcours des cases de notre grille (t)
@@ -353,11 +342,8 @@ void Grid::division(vector<vector<int>> coord_dead_cells){
 					//si la valeur de la dividing_cell est plus petite que celle que pointe les coord, ou si elle est égale et que un lacer de dé de proba 1/2 donne true
 					if( dividing_cell->getFitness() < grille_[realx][realy].cel_->getFitness() || (rand()%2==0 && dividing_cell->getFitness() == grille_[realx][realy].cel_->getFitness()) ){
 						
-						dividing_cell = grille_[realx][realy].cel_;
-						
+						dividing_cell = grille_[realx][realy].cel_;	
 					}
-					
-					
 				}
 			}
 		}
@@ -510,7 +496,7 @@ float Grid::get_Rbc(){
 /*                   DISPLAY                   */
 /*#############################################*/
 
-string Grid::zoliaffissage(){//pas encore testé parce que le constructeur de grid est pas fini.
+string Grid::zoliaffissage(){
 	string zoli = "";
 	for (vector<vector<Case>>::iterator ligne =grille_.begin();ligne!=grille_.end();++ligne){
 		for (int i(0);i<taille_*2+1;i++){

@@ -176,8 +176,12 @@ void Cellule::mutates(float Pmut){
 	if (roll_a_dice(Pmut)){
 		if(genotype_=='S'){
 			genotype_='L';
+			nb_cellules_L_++;
+			nb_cellules_S_--;
 		}else{
 			genotype_ = 'S';
+			nb_cellules_L_--;
+			nb_cellules_S_++;
 		}
 	}
 }
