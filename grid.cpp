@@ -40,13 +40,13 @@ static float A_init=25;
 
 Grid::Grid(int T, float A_init){
 	T_ = T;
-	A_init_ = A_init_;
+	A_init_ = A_init;
 	taille_= 4; //W=H
 	coeff_diff_=0.1; //D
 	p_death_=0.5;
 	p_mut_=0.5;
 	W_min_=0.001; //Fitness minimum
-	temps_= 1;
+	temps_= 0;
 	taux_meta_["Raa"]=0.1;
 	taux_meta_["Rab"]=0.1;
 	taux_meta_["Rbb"]=0.1;
@@ -96,6 +96,13 @@ Grid::Grid(int T, float A_init){
 }
 
 
+
+
+
+
+
+
+
 /*#############################################*/
 /*              DESTRUCTOR                     */
 /*#############################################*/
@@ -111,6 +118,15 @@ Grid::~Grid(){
 	}
 }
 
+
+
+
+
+
+
+
+
+
 /*#############################################*/
 /*                  METHODS                    */
 /*#############################################*/
@@ -125,30 +141,20 @@ Grid::~Grid(){
 /*       donc 10 fois en un pas de temps)                               */
 /************************************************************************/
 void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de la classe
-	temps_=0;
-	int laveur = 0;
-	while(temps_!=10){
-		//diffusion metabolite//
-		diffusion();
+	//diffusion metabolite//
+	diffusion();
 	
-		//mort des cellules//
-		vector<vector<int>> coord_dead_cells = dead_position(p_death_);
+	//mort des cellules//
+	vector<vector<int>> coord_dead_cells = dead_position(p_death_);
 	
-		//division des cellules//
-		division(coord_dead_cells);
+	//division des cellules//
+	division(coord_dead_cells);
 		
-		//fonctionnement metabolique: !!dt=0.1!!
-		for(int i = 0; i < 10 ; i++){ 
-			metaboliser();
-		}
-		/*laveur ++;
-		temps_++;
-		if(laveur == T_){
-			laveur ==0;
-			lavage();
-		}*/
-		temps_++;
+	//fonctionnement metabolique: !!dt=0.1!!
+	for(int i = 0; i < 10 ; i++){ 
+		metaboliser();
 	}
+
 		
 
 	
@@ -170,14 +176,21 @@ void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de l
 	*/
 }
 
-<<<<<<< HEAD
 void Grid::run(){
 	for (int i(0);i<temps_simulation;i++){
 		step();
 	}
 }
-=======
->>>>>>> ed8e7bb874405d4b08de31ef434aacc731ccd1f6
+
+
+
+
+
+
+
+
+
+
 /**************** Fonctions utilisees par step() ************************/
 
 /************* Diffusion des cellules **************/
@@ -242,6 +255,16 @@ void Grid::diffusion(){
 }
 
 
+
+
+
+
+
+
+
+
+
+
 /*************Position des cellules mortes************/
 
 vector<vector<int>> Grid::dead_position(float Pdeath){
@@ -262,6 +285,17 @@ vector<vector<int>> Grid::dead_position(float Pdeath){
 	}
 	return coord_dead_cells;
 }
+
+
+
+
+
+
+
+
+
+
+
 /***********Concurrence pour la division dans les cases vides************/
 
 void Grid::division(vector<vector<int>> coord_dead_cells){
@@ -306,6 +340,18 @@ void Grid::division(vector<vector<int>> coord_dead_cells){
 	
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
 /***********Metabolisme d'une cellule !!!!! dt = 0.1 !!!!!************/
 
 void Grid::metaboliser(){
@@ -337,6 +383,19 @@ void Grid::metaboliser(){
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Vidage de la grille de ses métabolites */
 void Grid::lavage(){
 	for(vector<vector<Case>>::iterator it1=grille_.begin();it1 != grille_.end(); ++it1){
@@ -348,6 +407,17 @@ void Grid::lavage(){
 	}
 }
 	
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*#############################################*/
@@ -434,6 +504,15 @@ string Grid::zoliaffissage(){//pas encore testé parce que le constructeur de gr
 	}
 	return zoli;
 }
+
+
+
+
+
+
+
+
+
 
 
 string Grid::zoliaffissagemet(){

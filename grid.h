@@ -86,7 +86,7 @@ class Grid {
 		map<string,float> taux_meta_;
 		vector<vector<Case>> grille_;
 		float A_init_; //Concentration initiale en A dans chaque Case
-		int T_; // nb de pas de temps avant le lavage
+		int T_;
 		unsigned int temps_simulation;
 	
 
