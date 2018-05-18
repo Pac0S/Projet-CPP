@@ -25,6 +25,7 @@ Cellule::Cellule(char gen){//preconditions: gen='L' ou 'S'
     reseauMet_["Glucose"]=0.;
     reseauMet_["Acetate"]=0.;
     reseauMet_["Ethanol"]=0.;
+    alive_=true;
 }
 
 Cellule::Cellule(Cellule*& mere, float& p_mut){
@@ -36,10 +37,10 @@ Cellule::Cellule(Cellule*& mere, float& p_mut){
 	genotype_ = (*mere).genotype_;
 	// Mise à jour du nombre de cellules
 	if (genotype_ == 'L'){
-    nb_cellules_L_ ++;
-  } else{
-    nb_cellules_S_ ++;
-  }
+		nb_cellules_L_ ++;
+	} else{
+		nb_cellules_S_ ++;
+	}
 	
 	float who_mutates = rand() %100; // Les 2 cellules sont identiques, il faut voir si l'une des deux mute.
 
@@ -48,6 +49,7 @@ Cellule::Cellule(Cellule*& mere, float& p_mut){
 	}else{ // La mere mute
 		mere->mutates(p_mut);
 	}
+	alive_=true;
 }
 
 
@@ -82,6 +84,9 @@ char Cellule::getGen(){
 
 map<string,float> Cellule::getReseauMet(){
 	return reseauMet_;
+}
+bool Cellule::get_State(){
+	return alive_;	
 }
 
 float Cellule::get_Glucose(){
@@ -147,6 +152,10 @@ bool Cellule::roll_a_dice(float p_reussite){
 		result=false;
 	}
 	return result;
+}
+
+void Cellule::kill(){
+	alive_=false;	
 }
 
 /*

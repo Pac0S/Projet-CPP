@@ -87,7 +87,7 @@ class Grid {
 		vector<vector<Case>> grille_;
 		float A_init_; //Concentration initiale en A dans chaque Case
 		int T_;
-		unsigned int temps_simulation;
+		unsigned int temps_simulation_;
 	
 
 

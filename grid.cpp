@@ -13,8 +13,6 @@ using namespace std;
 
 
 
-static float A_init=25;
-
 /*#############################################*/
 /*             CONSTRUCTORS                    */
 /*#############################################*/
@@ -51,7 +49,7 @@ Grid::Grid(int T, float A_init){
 	taux_meta_["Rab"]=0.1;
 	taux_meta_["Rbb"]=0.1;
 	taux_meta_["Rbc"]=0.1;
-	temps_simulation=5000;
+	temps_simulation_=5000;
 	
 	
 	vector<Case> y_axis(taille_);
@@ -174,12 +172,19 @@ void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de l
 	  cout << "Error opening the file" << endl;
 	}
 	*/
+	temps_++;
 }
 
+
+
 void Grid::run(){
-	for (int i(0);i<temps_simulation;i++){
-		step();
-	}
+	while(temps_!=temps_simulation_){
+		step();			
+		if(temps_ % T_ == 0){
+			lavage();
+			
+		}
+	}	
 }
 
 
@@ -202,8 +207,8 @@ void Grid::diffusion(){
 	vector<vector<Case>> metab_t_plus_un(taille_, vector<Case>(taille_)); 
 	
 	//Parcours des cases de notre grille (t)
-	for (int i1=0;i1<taille_;++i1){
-		for (int j1=0;j1<taille_;++j1){
+	for (int i1=0;i1<taille_;i1++){
+		for (int j1=0;j1<taille_;j1++){
 		
 			//Copie des concentrations de t en t+1
 			(metab_t_plus_un[i1][j1]).metab_['A'] = (grille_[i1][j1]).metab_['A'];
@@ -216,6 +221,7 @@ void Grid::diffusion(){
 			for(int i2=-1;i2<=1;++i2){
 				for(int j2=-1;j2<=1;++j2){
 					if(i1+i2<0){ //Cas où on est sur la limite à gauche de la grille
+						x = taille_ - 1;
 					}else if(i1+i2>taille_-1){ //Cas où on est sur la limite à droite de la grille
 						x=0;
 					}else{
@@ -242,8 +248,8 @@ void Grid::diffusion(){
 		}
 		
 	}
-	for (int i1=0;i1<taille_;++i1){
-		for (int j1=0;j1<taille_;++j1){
+	for (int i1=0;i1<taille_;i1++){
+		for (int j1=0;j1<taille_;j1++){
 		
 			//Copie des concentrations de t+1 en t
 			

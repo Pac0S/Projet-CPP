@@ -19,12 +19,15 @@ int main(int argc, char* argv[]){
 	srand(time(0));//initialise les valeurs aléatoire, a mettre au debut du code
 	//Cellule c1('L');// test Cellule
 
-	Grid g1(5,0.5);
+	Grid g1(5,15);
 	
 	//test_grid_getters(g1); //change le genotype de toute les cellules wtf? Erreur de segmentation quand compilé avec diffusion...
 	//test_bool_function(c1,50,0.2,0.2);
-	test_affichages(g1);
+	//test_affichages(g1);
 	//test_division(c1,0.5);
+	//cout<<g1.zoliaffissage()<<endl;
+	//cout<<g1.zoliaffissagemet()<<endl;
+	g1.run();
 	
 	
 	return 0;

@@ -28,6 +28,7 @@ class Cellule {
 		float get_Glucose();
 		float get_Acetate();
 		float get_Ethanol();
+		bool get_State();
 		
 		
 		unsigned int get_nb_cellules_L();
@@ -51,6 +52,7 @@ class Cellule {
 /*#############################################*/
 		void mutates(float Pmut);
 		bool roll_a_dice(float Pdeath);
+		void kill();
 
 	protected :
 /*#############################################*/
@@ -59,10 +61,10 @@ class Cellule {
 
 		char genotype_; //Ga ou Gb  ou rien 
 		map<string,float> reseauMet_; //quantité de A,B et C dans la cellule
-
-		
+		bool alive_;
 		static unsigned int nb_cellules_L_;
 		static unsigned int nb_cellules_S_;
+		
 	
 	
 };
