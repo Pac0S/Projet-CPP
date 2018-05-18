@@ -36,6 +36,7 @@ class Grid {
 /*                  METHODS                    */
 /*#############################################*/
 		void step();
+		void run();
 		void diffusion();
 		vector<vector<int>> dead_position(float Pdeath);
 		void metaboliser();
@@ -86,6 +87,7 @@ class Grid {
 		vector<vector<Case>> grille_;
 		float A_init_; //Concentration initiale en A dans chaque Case
 		int T_; // nb de pas de temps avant le lavage
+		unsigned int temps_simulation;
 	
 
 

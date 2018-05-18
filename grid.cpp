@@ -51,6 +51,7 @@ Grid::Grid(int T, float A_init){
 	taux_meta_["Rab"]=0.1;
 	taux_meta_["Rbb"]=0.1;
 	taux_meta_["Rbc"]=0.1;
+	temps_simulation=5000;
 	
 	
 	vector<Case> y_axis(taille_);
@@ -169,6 +170,14 @@ void Grid::step(){ // Pas nécessaire Pdeath et Pmut, ce sont des attributs de l
 	*/
 }
 
+<<<<<<< HEAD
+void Grid::run(){
+	for (int i(0);i<temps_simulation;i++){
+		step();
+	}
+}
+=======
+>>>>>>> ed8e7bb874405d4b08de31ef434aacc731ccd1f6
 /**************** Fonctions utilisees par step() ************************/
 
 /************* Diffusion des cellules **************/
@@ -243,6 +252,7 @@ vector<vector<int>> Grid::dead_position(float Pdeath){
 				grille_[i][j].metab_['A']+=grille_[i][j].cel_->getReseauMet()["Glucose"];
 				grille_[i][j].metab_['B']+=grille_[i][j].cel_->getReseauMet()["Acetate"];
 				grille_[i][j].metab_['C']+=grille_[i][j].cel_->getReseauMet()["Ethanol"];
+				grille_[i][j].cel_->kill();
 				vector<int> coord;
 				coord.push_back(i);
 				coord.push_back(j);
@@ -407,10 +417,12 @@ string Grid::zoliaffissage(){//pas encore testé parce que le constructeur de gr
 		zoli+='\n';
 		zoli+='|';
 		for (vector<Case>::iterator colonne = ligne->begin();colonne!=ligne->end();colonne++){
-			if(colonne->cel_->getGen()=='L'){
-				zoli+="L|";
-			}else if(colonne->cel_->getGen()=='S'){
-				zoli+="S|";
+			if(colonne->cel_->get_State()){
+				if (colonne->cel_->getGen()=='L'){
+					zoli+="L|";
+				}else if(colonne->cel_->getGen()=='S'){
+					zoli+="S|";
+				}
 			}else{
 				zoli+="X|";
 			}
