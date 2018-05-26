@@ -154,32 +154,51 @@ void Grid::step(){
 	for(int i = 0; i < 10 ; i++){ 
 		metaboliser();
 	}
+	
+	temps_++;
 
 	
-	/*
+	
 	//-----------------------------------------//
 	//   Ecriture des donnees en fichier txt   //
 	//-----------------------------------------//
 	
+	//Ouverture du fichier initialisé dans run
 	
+	string simulation = to_string(A_init_) + "|" + to_string(T_);
 	//ouverture d'un fichier :
-	ofstream file("result.txt", ios::out | ios::app);	
+	ofstream file(simulation.c_str(), ios::out | ios::app);	
 	//Si l'ouverture a fonctionné
 	if(file){
-	  file.close(); //Fermeture du fichier
+		file<<temps_<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<endl;
+		
+		file.close(); //Fermeture du fichier
 	}
 	else{
-	  cout << "Error opening the file" << endl;
+	  cerr << "Error opening the file" << endl;
 	}
-	*/
-	
-	temps_++;
 	
 }
 
 
 
 void Grid::run(){
+	
+	//Initialisation d'un fichier aui a pour nom les paramètres de la simulation
+	string simulation = to_string(A_init_) + "|" + to_string(T_);
+	ofstream file(simulation.c_str(), ios::out | ios::trunc);	
+	//Si l'ouverture a fonctionné
+	if(file){
+		file << "temps\tS\tL"<<endl;
+		file<<temps_<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<endl;
+		
+		
+		file.close(); //Fermeture du fichier
+	}
+	else{
+		cerr << "Error opening the file" << endl;
+	}
+	
 	while(temps_!=temps_simulation_){
 		step();			
 		if(temps_ % T_ == 0){
