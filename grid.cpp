@@ -196,7 +196,7 @@ void Grid::run(){
     
 	
 	
-	//Initialisation d'un fichier aui a pour nom les paramètres de la simulation
+	//Initialisation d'un fichier qui a pour nom les paramètres de la simulation
 	string A = to_string(A_init_);
 	string A_trc = A.substr(0,4);
 	
@@ -224,9 +224,18 @@ void Grid::run(){
 	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L());
 	
 	
+	
+	/* Problèmes : -Nombre initial de cellules parfois trop élevé...
+				   -Nombre final de cellules parfois identique pour differentes simulations...
+	*/
+	
+	
+	
+	
+	
 	t2 = clock();
     time = (float)(t2-t1)/CLOCKS_PER_SEC;
-    printf("temps = %f\n secondes", time);
+    printf("temps = %f secondes\n", time);
 	cout<<written_results<<endl<<endl; //Affichage des résultats de la fin de la simulation
 	//cout<<zoliaffissage()<<endl; //Affichage environnement fin de simulation
 	
