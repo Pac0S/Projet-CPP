@@ -152,9 +152,14 @@ void Grid::step(){
 	division(coord_dead_cells);
 		
 	//fonctionnement metabolique: !!dt=0.1!!
-	for(int i = 0; i < 10 ; i++){ 
+	
+	
+	
+	//for(int i = 0; i < 10 ; i++){ 
 		metaboliser();
-	}
+	//}
+	
+	
 	
 	temps_++;
 

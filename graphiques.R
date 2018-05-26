@@ -10,9 +10,8 @@ rm(list=ls())
 #lines(x=temps, y=cell_L, col = 2)
 #legend("topright", col = c(1,2), legend = c("cellules S","Cellules L"), lty =1)
 
-library(scatterplot3d)
 library(rgl)
-library(carData)
+library(car)
 
 
 data3d <- read.table('results.txt',header = T, sep = "\t")
@@ -24,5 +23,3 @@ cells_L <- data3d$L
 
 ratio_L <- cells_L-cells_S
 
-car1 <- scatterplot3d(A_init,T,ratio_L,
-                  type ='h')
