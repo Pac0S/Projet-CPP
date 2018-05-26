@@ -2,6 +2,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <map>
+#include <fstream>
 
 #include "cellule.h"
 #include "grid.h"
@@ -13,13 +14,14 @@ void test_grid_getters(Grid& g);
 void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation);
 void test_affichages(Grid& g1);
 void test_division(Cellule c1, float p_mut);
+void final_simulation();
 
 int main(int argc, char* argv[]){
 	cout << " --------------------------------------------------" << endl;
 	srand(time(0));//initialise les valeurs aléatoire, a mettre au debut du code
 	//Cellule c1('L');// test Cellule
 
-	Grid g1(30,50);
+	//Grid g1(30,50);
 	
 	//test_grid_getters(g1); //change le genotype de toute les cellules wtf? Erreur de segmentation quand compilé avec diffusion...
 	//test_bool_function(c1,50,0.2,0.2);
@@ -27,10 +29,12 @@ int main(int argc, char* argv[]){
 	//test_division(c1,0.5);
 	//cout<<g1.zoliaffissage()<<endl;
 	//cout<<g1.zoliaffissagemet()<<endl;
-	g1.run();
+	//g1.run();
 	//1mn05 chrono à l'exécution pour 5000 pas de temps à 32*32
 	//ça va etre sacrément drôle de faire un portrait de phase
 	//A ce rhytme on peut faire 37(A_init) * 37(T_) simulations en 24h (entre deux redémarrages des ordis)
+	
+	final_simulation();
 	
 	
 	return 0;
@@ -88,6 +92,7 @@ void test_affichages(Grid& g1){
 	cout<<g1.zoliaffissage()<<endl;
 	
 }
+
 /*
 void test_division(Cellule c1, float p_mut){
 	cout<<"\n"<<"Cellule mere avant division : " << endl;
@@ -110,4 +115,30 @@ void test_division(Cellule c1, float p_mut){
 	cout<<"\n"<<c2.getReseauMet()["Acetate"]<<endl;
 	cout<<"\n"<<c2.getReseauMet()["Ethanol"]<<endl<<endl;
 }*/
+
+void final_simulation(){
+	//ouverture d'un fichier :
+	ofstream results("results.txt", ios::out | ios::trunc);	
+	//Si l'ouverture a fonctionné
+	if(results){	
+	
+		float A_init;
+		int T;
+		results<<"A_init\tT\tS\tL"<<endl;
+		for(A_init = 0.; A_init<=50.; A_init+=15.){ //Valeurs a changer pour avoir plus de précision
+			for(T=1; T<=1500; T+=500){ //Valeurs a changer pour avoir plus de précision
+				Grid g(T, A_init);
+				g.run();
+			}
+		}
+	
+		
+		results.close(); //Fermeture du fichier
+	}
+	else{
+	  cerr << "Error opening the file" << endl;
+	}
+	
+}
+			
 	

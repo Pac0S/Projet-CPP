@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <algorithm>
 #include <fstream>
+#include <string>
 
 #include "grid.h"
 #include "cellule.h"
@@ -164,8 +165,10 @@ void Grid::step(){
 	//-----------------------------------------//
 	
 	//Ouverture du fichier initialisé dans run
+	string A = to_string(A_init_);
+	string A_trc = A.substr(0,4); //Pour récupérer seulement 50.0 plutot que 50.000000
 	
-	string simulation = to_string(A_init_) + "|" + to_string(T_);
+	string simulation = A_trc + "|" + to_string(T_);
 	//ouverture d'un fichier :
 	ofstream file(simulation.c_str(), ios::out | ios::app);	
 	//Si l'ouverture a fonctionné
@@ -183,9 +186,21 @@ void Grid::step(){
 
 
 void Grid::run(){
+	float time;
+    clock_t t1, t2;
+ 
+    t1 = clock();
+ 
+
+     
+    
+	
 	
 	//Initialisation d'un fichier aui a pour nom les paramètres de la simulation
-	string simulation = to_string(A_init_) + "|" + to_string(T_);
+	string A = to_string(A_init_);
+	string A_trc = A.substr(0,4);
+	
+	string simulation = A_trc + "|" + to_string(T_);
 	ofstream file(simulation.c_str(), ios::out | ios::trunc);	
 	//Si l'ouverture a fonctionné
 	if(file){
@@ -207,8 +222,29 @@ void Grid::run(){
 	}
 	string written_results;
 	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L());
-	cout<<written_results<<endl;
-	cout<<zoliaffissage()<<endl;
+	
+	
+	t2 = clock();
+    time = (float)(t2-t1)/CLOCKS_PER_SEC;
+    printf("temps = %f\n secondes", time);
+	cout<<written_results<<endl<<endl; //Affichage des résultats de la fin de la simulation
+	//cout<<zoliaffissage()<<endl; //Affichage environnement fin de simulation
+	
+	
+	//Copie des résultats dans un fichier txt
+	
+	ofstream results("results.txt", ios::out | ios::app);	
+	//Si l'ouverture a fonctionné
+	if(results){	
+	
+		results<<A_trc<<"\t"<<to_string(T_)<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<endl;
+	
+		
+		results.close(); //Fermeture du fichier
+	}
+	else{
+	  cerr << "Error opening the file" << endl;
+	}
 }
 
 
