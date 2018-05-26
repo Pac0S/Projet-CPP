@@ -43,6 +43,7 @@ class Cellule {
 		void set_Acetate(float b);
 		void set_Ethanol(float c);
 		void empty_Met();
+		void empty_cells();
 /*#############################################*/
 /*                  DISPLAY                    */
 /*#############################################*/

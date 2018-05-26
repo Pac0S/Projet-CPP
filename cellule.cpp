@@ -133,6 +133,12 @@ void Cellule::empty_Met(){
 	set_Acetate(0);
 	set_Ethanol(0);
 }
+
+
+void Cellule::empty_cells(){
+	nb_cellules_S_=0;
+	nb_cellules_L_=0;
+}
 /*#############################################*/
 /*                  DISPLAY                    */
 /*#############################################*/

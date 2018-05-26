@@ -44,8 +44,8 @@ Grid::Grid(int T, float A_init){
 	taille_= 32; //W=H
 	coeff_diff_=0.1; //D
 	p_death_=0.02;
-	p_mut_=0.5;
-	W_min_=0.01; //Fitness minimum
+	p_mut_=0.000;
+	W_min_=0.001; //Fitness minimum
 	temps_= 0;
 	taux_meta_["Raa"]=0.1;
 	taux_meta_["Rab"]=0.1;
@@ -168,7 +168,7 @@ void Grid::step(){
 	string A = to_string(A_init_);
 	string A_trc = A.substr(0,4); //Pour récupérer seulement 50.0 plutot que 50.000000
 	
-	string simulation = A_trc + "|" + to_string(T_);
+	string simulation = A_trc + "|" + to_string(T_)+ ".txt";
 	//ouverture d'un fichier :
 	ofstream file(simulation.c_str(), ios::out | ios::app);	
 	//Si l'ouverture a fonctionné
@@ -189,7 +189,7 @@ void Grid::run(){
 	float time;
     clock_t t1, t2;
  
-    t1 = clock();
+    t1 = clock(); //Départ de l'horloge
  
 
      
@@ -200,7 +200,7 @@ void Grid::run(){
 	string A = to_string(A_init_);
 	string A_trc = A.substr(0,4);
 	
-	string simulation = A_trc + "|" + to_string(T_);
+	string simulation = A_trc + "|" + to_string(T_)+ ".txt";
 	ofstream file(simulation.c_str(), ios::out | ios::trunc);	
 	//Si l'ouverture a fonctionné
 	if(file){
@@ -233,9 +233,10 @@ void Grid::run(){
 	
 	
 	
-	t2 = clock();
+	t2 = clock();//Arrêt de l'horloge
     time = (float)(t2-t1)/CLOCKS_PER_SEC;
     printf("temps = %f secondes\n", time);
+    
 	cout<<written_results<<endl<<endl; //Affichage des résultats de la fin de la simulation
 	//cout<<zoliaffissage()<<endl; //Affichage environnement fin de simulation
 	
@@ -254,6 +255,8 @@ void Grid::run(){
 	else{
 	  cerr << "Error opening the file" << endl;
 	}
+	
+	grille_[0][0].cel_->empty_cells();
 }
 
 

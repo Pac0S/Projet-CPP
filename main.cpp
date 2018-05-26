@@ -125,8 +125,8 @@ void final_simulation(){
 		float A_init;
 		int T;
 		results<<"A_init\tT\tS\tL"<<endl;
-		for(A_init = 0.; A_init<=50.; A_init+=15.){ //Valeurs a changer pour avoir plus de précision
-			for(T=1; T<=1500; T+=500){ //Valeurs a changer pour avoir plus de précision
+		for(A_init = 0.; A_init<=50.; A_init+=10.){ //Valeurs a changer pour avoir plus de précision
+			for(T=1; T<=1500; T+=499){ //Valeurs a changer pour avoir plus de précision
 				Grid g(T, A_init);
 				g.run();
 			}
