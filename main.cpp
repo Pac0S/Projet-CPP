@@ -14,7 +14,7 @@ void test_grid_getters(Grid& g);
 void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation);
 void test_affichages(Grid& g1);
 void test_division(Cellule c1, float p_mut);
-void final_simulation();
+void final_simulation(int T_max, float A_init_max, int T_step, int A_init_step);
 
 int main(int argc, char* argv[]){
 	cout << " --------------------------------------------------" << endl;
@@ -34,7 +34,7 @@ int main(int argc, char* argv[]){
 	//ça va etre sacrément drôle de faire un portrait de phase
 	//A ce rhytme on peut faire 37(A_init) * 37(T_) simulations en 24h (entre deux redémarrages des ordis)
 	
-	final_simulation();
+	final_simulation(50,1500,10.,499);
 	
 	
 	return 0;
@@ -116,7 +116,7 @@ void test_division(Cellule c1, float p_mut){
 	cout<<"\n"<<c2.getReseauMet()["Ethanol"]<<endl<<endl;
 }*/
 
-void final_simulation(){
+void final_simulation(int T_max, float A_init_max, int T_step, int A_init_step){
 	//ouverture d'un fichier :
 	ofstream results("results.txt", ios::out | ios::trunc);	
 	//Si l'ouverture a fonctionné
@@ -125,8 +125,8 @@ void final_simulation(){
 		float A_init;
 		int T;
 		results<<"A_init\tT\tS\tL"<<endl;
-		for(A_init = 0.; A_init<=50.; A_init+=10.){ //Valeurs a changer pour avoir plus de précision
-			for(T=1; T<=1500; T+=499){ //Valeurs a changer pour avoir plus de précision
+		for(A_init = 0.; A_init<=A_init_max; A_init+=A_init_step){ //Valeurs a changer pour avoir plus de précision
+			for(T=1; T<=T_max; T+=T_step){ //Valeurs a changer pour avoir plus de précision
 				Grid g(T, A_init);
 				g.run();
 			}
