@@ -49,7 +49,7 @@ Cellule::Cellule(Cellule* mere, float& p_mut){
 	}else{ // La mere mute
 		mere->mutates(p_mut);
 	}
-	alive_=true;
+    alive_=true;
 }
 
 
@@ -85,6 +85,7 @@ char Cellule::getGen(){
 map<string,float> Cellule::getReseauMet(){
 	return reseauMet_;
 }
+
 bool Cellule::is_alive(){
 	return alive_;	
 }
@@ -104,12 +105,16 @@ float Cellule::get_Ethanol(){
 unsigned int Cellule::get_nb_cellules_L(){
   return nb_cellules_L_;
 }
+
 unsigned int Cellule::get_nb_cellules_S(){
   return nb_cellules_S_;
 }
+
 unsigned int Cellule::get_nb_total(){
   return nb_cellules_S_ + nb_cellules_L_;
 }
+
+
 /*#############################################*/
 /*                  SETTERS                    */
 /*#############################################*/
@@ -139,9 +144,16 @@ void Cellule::empty_cells(){
 	nb_cellules_S_=0;
 	nb_cellules_L_=0;
 }
+
+
+
+
 /*#############################################*/
 /*                  DISPLAY                    */
 /*#############################################*/
+
+
+
 
 /*#############################################*/
 /*                   METHODS                   */
@@ -189,5 +201,6 @@ void Cellule::mutates(float Pmut){
 			nb_cellules_L_--;
 			nb_cellules_S_++;
 		}
+		
 	}
 }

@@ -42,7 +42,7 @@ Grid::Grid(int T, float A_init){
 	T_ = T;
 	A_init_ = A_init;
 	taille_= 32; //W=H
-	coeff_diff_=0.1; //D
+	coeff_diff_=0.; //D
 	p_death_=0.02;
 	p_mut_=0.000;
 	W_min_=0.001; //Fitness minimum
@@ -155,14 +155,16 @@ void Grid::step(){
 	
 	
 	
-	//for(int i = 0; i < 10 ; i++){ 
+	for(int i = 0; i < 10 ; i++){ 
 		metaboliser();
-	//}
+	}
 	
 	
 	
 	temps_++;
 
+	
+	
 	
 	
 	//-----------------------------------------//
@@ -186,6 +188,8 @@ void Grid::step(){
 	  cerr << "Error opening the file" << endl;
 	}
 	
+	
+	
 }
 
 
@@ -205,6 +209,8 @@ void Grid::run(){
 	string A = to_string(A_init_);
 	string A_trc = A.substr(0,4);
 	
+	
+	
 	string simulation = A_trc + "|" + to_string(T_)+ ".txt";
 	ofstream file(simulation.c_str(), ios::out | ios::trunc);	
 	//Si l'ouverture a fonctionné
@@ -219,11 +225,13 @@ void Grid::run(){
 		cerr << "Error opening the file" << endl;
 	}
 	
-	while(temps_!=temps_simulation_){
-		step();			
+	
+	
+	while(temps_!=temps_simulation_){		
 		if(temps_ % T_ == 0){
 			lavage();
 		}
+		step();
 	}
 	string written_results;
 	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L());
@@ -442,35 +450,46 @@ void Grid::division(vector<vector<int>> coord_dead_cells){
 /***********Metabolisme d'une cellule !!!!! dt = 0.1 !!!!!************/
 
 void Grid::metaboliser(){
-  for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();i++){
-    for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
-		if(j->cel_->is_alive()){
-		
-			if (j->cel_->getGen()=='L'){//Cas ou la cellule est de type Ga (Large)
-			//Stockage des données au debut du pas de temps
-			  float A_out = j->metab_['A']; //Quantite de Glucose dans la case j
-			  float A_in = j->cel_->get_Glucose(); //Quantite de Glucose dans la cellule de la case j
-			//Calculs du fonctionnement metabolique suivant les formules fournies
-			  j->metab_['A'] = A_out * (1 - taux_meta_["Raa"]);
-			  float dA = A_in + (A_out * taux_meta_["Raa"] - A_in * taux_meta_["Rab"]);
-			  j->cel_->set_Glucose(dA);
-			  float dB = A_in * (1 + taux_meta_["Rab"]);
-			  j->cel_->set_Acetate(dB);
-			}
-			else{ //Cas ou la cellule est de type Gb (Small)
-			//Stockage des données au debut du pas de temps
-			  float B_out = j->metab_['B']; //Quantite d'Acetate dans la case j
-			  float B_in = j->cel_->get_Acetate(); //Quantite d'Acetate dans la cellule de la case j
-			//Calculs du fonctionnement metabolique suivant les formules fournies
-			  j->metab_['B'] = B_out * (1 - taux_meta_["Rbb"]);
-			  float dB = B_in + (B_out * taux_meta_["Rbb"] - B_in * taux_meta_["Rbc"]);
-			  (j->cel_)->set_Acetate(dB);//Quantite d'acetate dans la cellule
-			  float dC = B_in * (1 + taux_meta_["Rbc"]);
-			  (j->cel_)->set_Ethanol(dC);//Quantite d'ethanol dans la cellule
+	for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();i++){
+		for (vector<Case>::iterator j =i->begin();j!=i->end();j++){
+			if(j->cel_->is_alive()){
+			
+				//Stockage des données au debut du pas de temps
+				float A_out = j->metab_['A']; //Quantite de Glucose dans la case j
+				float A_in = j->cel_->get_Glucose(); //Quantite de Glucose dans la cellule de la case j
+			
+				float B_out = j->metab_['B']; //Quantite d'Acetate dans la case j
+				float B_in = j->cel_->get_Acetate(); //Quantite d'Acetate dans la cellule de la case j
+			
+				//float C_out = j->metab_['C']; //Quantite d'Ethanol dans la case j
+				float C_in = j->cel_->get_Ethanol(); //Quantite d'Ethanol dans la cellule de la case j
+			
+				if (j->cel_->getGen()=='L'){//Cas ou la cellule est de type Ga (Large)
+			
+				//Calculs du fonctionnement metabolique suivant les formules fournies
+					j->metab_['A'] = A_out * (1 - taux_meta_["Raa"]); //mise à jour de A dans la case
+				
+					float new_A = A_in + A_out * taux_meta_["Raa"] - A_in * taux_meta_["Rab"];
+					j->cel_->set_Glucose(new_A);//Mise à jour de A dans la cellule
+				
+					float new_B = B_in + A_in * taux_meta_["Rab"];
+					j->cel_->set_Acetate(new_B);//Mise à jour de B dans la cellule
+				
+				}else{ //Cas ou la cellule est de type Gb (Small)
+			
+				//Calculs du fonctionnement metabolique suivant les formules fournies
+					j->metab_['B'] = B_out * (1 - taux_meta_["Rbb"]);//mise à jour de B dans la case
+				
+					float dB = B_in + B_out * taux_meta_["Rbb"] - B_in * taux_meta_["Rbc"];
+					(j->cel_)->set_Acetate(dB);//Mise à jour de A dans la cellule
+				  
+				  
+					float new_C = C_in + B_in * taux_meta_["Rbc"];
+					(j->cel_)->set_Ethanol(new_C);//Mise à jour de C dans la cellule
+				}
 			}
 		}
-	  }
-  }
+	}
 }
 
 

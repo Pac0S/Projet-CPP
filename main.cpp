@@ -13,7 +13,7 @@ using namespace std;
 void test_grid_getters(Grid& g);
 void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation);
 void test_affichages(Grid& g1);
-void test_division(Cellule c1, float p_mut);
+void test_division(Cellule& c1, float p_mut);
 void final_simulation();
 
 int main(int argc, char* argv[]){
@@ -52,7 +52,7 @@ void test_grid_getters(Grid& g){
 	cout << "Taux métabolique Rbc : " << g.get_Rbc() << endl;
 }
 
-void test_bool_function(Cellule c,int try_nbr, float P){
+void test_bool_function(Cellule& c,int try_nbr, float P){
 	
 	srand(time(0));//initialise les valeurs aléatoire, a mettre au debut du code
 	int nbr_true =0;
@@ -125,8 +125,8 @@ void final_simulation(){
 		float A_init;
 		int T;
 		results<<"A_init\tT\tS\tL"<<endl;
-		for(A_init = 0.; A_init<=50.; A_init+=10.){ //Valeurs a changer pour avoir plus de précision
-			for(T=1; T<=1500; T+=499){ //Valeurs a changer pour avoir plus de précision
+		for(A_init = 1.; A_init<=50.; A_init+=2.){ //Valeurs a changer pour avoir plus de précision
+			for(T=1; T<=1501; T+=60){ //Valeurs a changer pour avoir plus de précision
 				Grid g(T, A_init);
 				g.run();
 			}
