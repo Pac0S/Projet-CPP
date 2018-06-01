@@ -42,7 +42,7 @@ Grid::Grid(int T, float A_init){
 	T_ = T;
 	A_init_ = A_init;
 	taille_= 32; //W=H
-	coeff_diff_=0.; //D
+	coeff_diff_=0.1; //D
 	p_death_=0.02;
 	p_mut_=0.000;
 	W_min_=0.001; //Fitness minimum
@@ -187,9 +187,6 @@ void Grid::step(){
 	else{
 	  cerr << "Error opening the file" << endl;
 	}
-	
-	
-	
 }
 
 
@@ -411,10 +408,9 @@ void Grid::division(vector<vector<int>> coord_dead_cells){
 		Cellule* dividing_cell = grille_[realx][realy].cel_;
 		for (int x =dead_cell_x-1;x<=dead_cell_x+1;x++){
 			for (int y =dead_cell_y-1;y<=dead_cell_y+1;y++){
+				realx=x;
+				realy=y;
 				if(x!=dead_cell_x || y!=dead_cell_y){
-					
-					realx=x;
-					realy=y;
 					if (realx<0){realx=taille_-1;}
 					if (realx==taille_){realx=0;}
 					if (realy<0){realy=taille_-1;}
@@ -423,11 +419,15 @@ void Grid::division(vector<vector<int>> coord_dead_cells){
 					if( dividing_cell->getFitness() < grille_[realx][realy].cel_->getFitness() || (rand()%2==0 && dividing_cell->getFitness() == grille_[realx][realy].cel_->getFitness()) ){
 						
 						dividing_cell = grille_[realx][realy].cel_;	
+						
 					}
 				}
 			}
 		}
 		if(dividing_cell->getFitness()>=W_min_){
+			if(!dividing_cell->is_alive()){
+					printf("A dead cell has divided\n");
+			}
 			delete grille_[dead_cell_x][dead_cell_y].cel_;
 			grille_[dead_cell_x][dead_cell_y].cel_= new Cellule(dividing_cell,p_mut_);
 			

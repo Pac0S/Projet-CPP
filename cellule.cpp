@@ -10,6 +10,7 @@ using namespace std;
 
 unsigned int Cellule::nb_cellules_L_ = 0;
 unsigned int Cellule::nb_cellules_S_ = 0;
+unsigned int Cellule::nb_cellules_dead = 0;
 
 /*#############################################*/
 /*               CONSTRUCTORS                  */
@@ -114,6 +115,10 @@ unsigned int Cellule::get_nb_total(){
   return nb_cellules_S_ + nb_cellules_L_;
 }
 
+unsigned int Cellule::get_nb_mortes(){
+  return nb_cellules_dead;
+}
+
 
 /*#############################################*/
 /*                  SETTERS                    */
@@ -169,7 +174,7 @@ void Cellule::empty_cells(){
 bool Cellule::roll_a_dice(float p_reussite){
 	float lancer = rand() %100;
 	bool result;
-	if (lancer<=p_reussite*100){
+	if (lancer<p_reussite*100){
 		result=true;
 	}else{
 		result=false;
@@ -179,10 +184,13 @@ bool Cellule::roll_a_dice(float p_reussite){
 
 void Cellule::kill(){
 	alive_=false;
+	nb_cellules_mortes ++;
 	if(genotype_=='S'){
 		nb_cellules_S_ --;
 	}else if(genotype_=='L'){
 		nb_cellules_L_ --;
+	}else{
+		printf("Kill ne fonctionne pas comme prévu");
 	}		
 }
 
@@ -196,10 +204,12 @@ void Cellule::mutates(float Pmut){
 			genotype_='L';
 			nb_cellules_L_++;
 			nb_cellules_S_--;
-		}else{
+		}else if(genotype_=='L'){
 			genotype_ = 'S';
 			nb_cellules_L_--;
 			nb_cellules_S_++;
+		}else{
+			cout<<"Mutates ne fonctionne pas comme prévu"<<endl;
 		}
 		
 	}

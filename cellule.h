@@ -34,6 +34,7 @@ class Cellule {
 		unsigned int get_nb_cellules_L();
 		unsigned int get_nb_cellules_S();
 		unsigned int get_nb_total();
+		unsigned int get_nb_cellules_mortes();
 	
 /*#############################################*/
 /*                  SETTERS                    */
@@ -66,6 +67,7 @@ class Cellule {
 		bool alive_;
 		static unsigned int nb_cellules_L_;
 		static unsigned int nb_cellules_S_;
+		unsigned int nb_cellules_dead;
 		
 	
 	
