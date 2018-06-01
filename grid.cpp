@@ -446,7 +446,7 @@ void Grid::division(vector<vector<int>> coord_dead_cells){
 				}
 			}
 		}
-		if(dividing_cell->is_alive()){
+		if(dividing_cell->getFitness()!=0){
 			delete grille_[dead_cell_x][dead_cell_y].cel_;
 			grille_[0][0].cel_->decrease_dead();
 			grille_[dead_cell_x][dead_cell_y].cel_= new Cellule(dividing_cell,p_mut_);
