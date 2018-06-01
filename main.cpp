@@ -116,27 +116,41 @@ void test_division(Cellule c1, float p_mut){
 }*/
 
 void final_simulation(int T_max, float A_init_max, int T_step, int A_init_step){
-	//ouverture d'un fichier :
+
+
+	/*#######################################*/
+	/*###   Initialisation du temps   #######*/
+	/*#######################################*/
+	
+	float time;
+    clock_t t1, t2;
+    t1 = clock(); //Départ de l'horloge
+    
+    
+    /*#######################################*/
+	/*###     Ouverture d'un fichier  #######*/
+	/*#######################################*/
+	
 	ofstream results("results.txt", ios::out | ios::trunc);	
-	//Si l'ouverture a fonctionné
 	if(results){	
 	
 		float A_init;
 		int T;
 		results<<"A_init\tT\tS\tL\tEtat"<<endl;
-		for(A_init = 0.; A_init<=A_init_max; A_init+=A_init_step){ //Valeurs a changer pour avoir plus de précision
-			for(T=1; T<=T_max; T+=T_step){ //Valeurs a changer pour avoir plus de précision
+		for(A_init = 0.; A_init<=A_init_max; A_init+=A_init_step){
+			for(T=1; T<=T_max; T+=T_step){
 				Grid g(T, A_init);
 				g.run();
 			}
 		}
-	
-		
 		results.close(); //Fermeture du fichier
-	}
-	else{
+	}else{
 	  cerr << "Error opening the file" << endl;
 	}
+	
+	t2 = clock();//Arrêt de l'horloge
+    time = (float)(t2-t1)/CLOCKS_PER_SEC;
+    printf("Simulation complète :  %f secondes\n", time);
 	
 }
 			

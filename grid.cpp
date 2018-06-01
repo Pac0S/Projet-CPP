@@ -140,35 +140,27 @@ Grid::~Grid(){
 /*       donc 10 fois en un pas de temps)                               */
 /************************************************************************/
 void Grid::step(){
+
 	temps_++;
 	
 	//diffusion metabolite//
 	diffusion();
 	
 	//mort des cellules//
-	vector<vector<int>> coord_dead_cells = dead_position(p_death_);
-	
-	int dead_in_step = coord_dead_cells.size();
+	dying();
 	
 	
 	//division des cellules//
-	division(coord_dead_cells); //Aucune division au premier pas ????
-	//cout<<temps_<<"stop"<<endl;
+	division(); //Aucune division au premier pas ????
+		
 		
 	//fonctionnement metabolique: !!dt=0.1!!
-	
-	
-	
 	for(int i = 0; i < 10 ; i++){
 		metaboliser();
 	}
 	
 	
-	
-	
-	
-	
-	
+
 	
 	
 	//-----------------------------------------//
@@ -184,7 +176,7 @@ void Grid::step(){
 	ofstream file(simulation.c_str(), ios::out | ios::app);	
 	//Si l'ouverture a fonctionné
 	if(file){
-		file<<temps_<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_dead())<<"\t"<<to_string(dead_in_step)<<endl;
+		file<<temps_<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_dead())<<endl;
 		
 		file.close(); //Fermeture du fichier
 	}
@@ -199,22 +191,22 @@ void Grid::step(){
 void Grid::run(){
 	
 	
-	
+	/*#######################################*/
+	/*###   Initialisation du temps   #######*/
+	/*#######################################*/
 	
 	float time;
     clock_t t1, t2;
-    
-    
-    
- 
     t1 = clock(); //Départ de l'horloge
  
+  
+	
+	
+	/*#######################################*/
+	/*###   Initialisation du fichier   #####*/
+	/*#######################################*/
+	
 
-     
-    
-	
-	
-	//Initialisation d'un fichier qui a pour nom les paramètres de la simulation
 	string A = to_string(A_init_);
 	string A_trc = A.substr(0,4);
 	
@@ -224,7 +216,7 @@ void Grid::run(){
 	ofstream file(simulation.c_str(), ios::out | ios::trunc);	
 	//Si l'ouverture a fonctionné
 	if(file){
-		file << "temps\tS\tL\tdead_in_grid\tMortes_ici"<<endl;
+		file << "temps\tS\tL\tdead_in_grid"<<endl;
 		file<<temps_<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_dead())<<endl;
 		
 		
@@ -234,7 +226,13 @@ void Grid::run(){
 		cerr << "Error opening the file" << endl;
 	}
 	
-	while(temps_!=temps_simulation_&&grille_[0][0].cel_->get_nb_total()!=0){
+	
+	
+	/*#######################################*/
+	/*########    Boucle principale     #####*/
+	/*#######################################*/
+	
+	while(temps_!=temps_simulation_ && grille_[0][0].cel_->get_nb_total()!=0 && grille_[0][0].cel_->get_nb_cellules_L()!=taille_*taille_){
 		
 		if(temps_ % T_ == 0){
 			lavage();
@@ -254,24 +252,38 @@ void Grid::run(){
 		final_state = "Pas normal";
 	}
 	
-	string written_results;
-	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \t nb_cell_dead \t Etat final\n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L())+"\t"+ to_string(grille_[0][0].cel_->get_nb_dead())+"\t"+final_state;
 	
 	
 	
 	
 	
+	
+	/*#######################################*/
+	/*## Affichage du temps d'exécution   ###*/
+	/*#######################################*/
 	
 	
 	t2 = clock();//Arrêt de l'horloge
     time = (float)(t2-t1)/CLOCKS_PER_SEC;
     printf("temps = %f secondes\n", time);
     
-	cout<<written_results<<endl<<endl; //Affichage des résultats de la fin de la simulation
-	//cout<<zoliaffissage()<<endl; //Affichage environnement fin de simulation
+    
+    /*#######################################*/
+	/*###   Affichage des résultats     #####*/
+	/*#######################################*/
 	
 	
-	//Copie des résultats dans un fichier txt
+	string written_results;
+	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \t nb_cell_dead \t Etat final\n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L())+"\t"+ to_string(grille_[0][0].cel_->get_nb_dead())+"\t"+final_state;
+    
+	cout<<written_results<<endl<<endl;
+	
+	
+	
+	/*#######################################*/
+	/*###   Sauvegarde des résultats    #####*/
+	/*#######################################*/
+	
 	
 	ofstream results("results.txt", ios::out | ios::app);	
 	//Si l'ouverture a fonctionné
@@ -285,6 +297,12 @@ void Grid::run(){
 	else{
 	  cerr << "Error opening the file" << endl;
 	}
+	
+	
+	/*#######################################*/
+	/*###   Réinitialisation de la grille  ##*/
+	/*#######################################*/
+	
 	
 	grille_[0][0].cel_->empty_cells();
 }
@@ -375,12 +393,11 @@ void Grid::diffusion(){
 
 /*************Position des cellules mortes************/
 
-vector<vector<int>> Grid::dead_position(float Pdeath){
-  vector<vector<int>> coord_dead_cells;
+void Grid::dying(){
 	for (unsigned int i(0);i<taille_;i++){
 		for (unsigned int j(0);j<taille_;j++){
 			if(grille_[i][j].cel_->is_alive()){
-				if(grille_[i][j].cel_->roll_a_dice(Pdeath)){//si la cellule meurt
+				if(grille_[i][j].cel_->roll_a_dice(p_death_)){//si la cellule meurt
 					grille_[i][j].metab_['A']+=grille_[i][j].cel_->getReseauMet()["Glucose"];
 					grille_[i][j].metab_['B']+=grille_[i][j].cel_->getReseauMet()["Acetate"];
 					grille_[i][j].metab_['C']+=grille_[i][j].cel_->getReseauMet()["Ethanol"];
@@ -389,12 +406,11 @@ vector<vector<int>> Grid::dead_position(float Pdeath){
 					vector<int> coord;
 					coord.push_back(i);
 					coord.push_back(j);
-					coord_dead_cells.push_back(coord);
+					coord_dead_cells_.push_back(coord);
 				}
 			}
 		}
 	}
-	return coord_dead_cells;
 }
 
 
@@ -409,18 +425,22 @@ vector<vector<int>> Grid::dead_position(float Pdeath){
 
 /***********Concurrence pour la division dans les cases vides************/
 
-void Grid::division(vector<vector<int>> coord_dead_cells){
+void Grid::division(){
+
+
+	vector<vector<int>> new_coords;
 	
-	while (! coord_dead_cells.empty()){
-		//cout<< coord_dead_cells.size()<<endl;
+	while (! coord_dead_cells_.empty()){
+		//cout<< coord_dead_cells_.size()<<endl;
 		int rand_cell_nbr;
-		if (coord_dead_cells.size()!=1){
-			rand_cell_nbr = rand() % (coord_dead_cells.size()-1);
+		
+		if (coord_dead_cells_.size()!=1){
+			rand_cell_nbr = rand() % (coord_dead_cells_.size()-1);
 		}else{
 			rand_cell_nbr = 0;
 		}
-		int dead_cell_x=coord_dead_cells[rand_cell_nbr][0];
-		int dead_cell_y=coord_dead_cells[rand_cell_nbr][1];
+		int dead_cell_x=coord_dead_cells_[rand_cell_nbr][0];
+		int dead_cell_y=coord_dead_cells_[rand_cell_nbr][1];
 		int realx=dead_cell_x-1;
 		int realy=dead_cell_y-1;
 		if (realx<0){realx=taille_-1;}
@@ -451,8 +471,26 @@ void Grid::division(vector<vector<int>> coord_dead_cells){
 			grille_[0][0].cel_->decrease_dead();
 			grille_[dead_cell_x][dead_cell_y].cel_= new Cellule(dividing_cell,p_mut_);
 		}
-		coord_dead_cells.erase(coord_dead_cells.begin()+rand_cell_nbr);
-	}	
+		
+		if(!grille_[dead_cell_x][dead_cell_y].cel_->is_alive()){//Si la cellules n'est pas vivante, càd si la morte n'a pas été remplacée
+			new_coords.push_back(*(coord_dead_cells_.begin()+rand_cell_nbr));
+		}
+		
+		coord_dead_cells_.erase(coord_dead_cells_.begin()+rand_cell_nbr); //On efface le vecteur de cellules mortes d'origine
+		
+		
+		
+		
+		
+		
+			
+		/*Oui mais non... Si on supprime une cellule qui n'a pas été remplacée, elle ne sera plus considérée aux steps suivants. 
+		Elle ne sera donc jamais remplacée. Il faut la stocker et la récupérer au step suivant*/
+		
+
+	}
+	
+	coord_dead_cells_ = new_coords;
 }
 
 

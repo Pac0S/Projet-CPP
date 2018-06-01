@@ -3,6 +3,7 @@
 
 #include <map>
 #include <vector>
+#include <set>
 
 #include "cellule.h"
 using namespace std;
@@ -38,9 +39,9 @@ class Grid {
 		void step();
 		void run();
 		void diffusion();
-		vector<vector<int>> dead_position(float Pdeath);
+		void dying();
 		void metaboliser();
-		void division(vector<vector<int>> coord_dead_cells);
+		void division();
 		void lavage();
 
 
@@ -88,6 +89,7 @@ class Grid {
 		float A_init_; //Concentration initiale en A dans chaque Case
 		int T_;
 		unsigned int temps_simulation_;
+		vector<vector<int>> coord_dead_cells_; //Stocke les coordonnées des cellules mortes non remplacées
 	
 
 
