@@ -45,7 +45,6 @@ void test_grid_getters(Grid& g){
 	cout << "Coefficient de diffusion D : " << g.get_coeff_diff() << endl;
 	cout << "Probabilité de mort des cellules : " << g.get_p_death() << endl;
 	cout << "Probabilité de mutation des cellules : " << g.get_p_mut() << endl;
-	cout << "Fitness minimale nécessaire à la division : " << g.get_W_min() << endl;
 	cout << "Taux métabolique Raa : " << g.get_Raa() << endl;
 	cout << "Taux métabolique Rab : " << g.get_Rab() << endl;
 	cout << "Taux métabolique Rbb : " << g.get_Rbb() << endl;

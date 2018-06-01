@@ -45,7 +45,6 @@ Grid::Grid(int T, float A_init){
 	coeff_diff_=0.1; //D
 	p_death_=0.02;
 	p_mut_=0.000;
-	W_min_=0.001; //Fitness minimum
 	temps_= 0;
 	taux_meta_["Raa"]=0.1;
 	taux_meta_["Rab"]=0.1;
@@ -141,28 +140,33 @@ Grid::~Grid(){
 /*       donc 10 fois en un pas de temps)                               */
 /************************************************************************/
 void Grid::step(){
+	temps_++;
+	
 	//diffusion metabolite//
 	diffusion();
 	
 	//mort des cellules//
 	vector<vector<int>> coord_dead_cells = dead_position(p_death_);
 	
+	int dead_in_step = coord_dead_cells.size();
+	
 	
 	//division des cellules//
-	division(coord_dead_cells);
+	division(coord_dead_cells); //Aucune division au premier pas ????
+	//cout<<temps_<<"stop"<<endl;
 		
 	//fonctionnement metabolique: !!dt=0.1!!
 	
 	
 	
-	for(int i = 0; i < 10 ; i++){ 
+	for(int i = 0; i < 10 ; i++){
 		metaboliser();
 	}
 	
 	
 	
-	temps_++;
-
+	
+	
 	
 	
 	
@@ -180,20 +184,28 @@ void Grid::step(){
 	ofstream file(simulation.c_str(), ios::out | ios::app);	
 	//Si l'ouverture a fonctionné
 	if(file){
-		file<<temps_<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<endl;
+		file<<temps_<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_dead())<<"\t"<<to_string(dead_in_step)<<endl;
 		
 		file.close(); //Fermeture du fichier
 	}
 	else{
 	  cerr << "Error opening the file" << endl;
 	}
+	
 }
 
 
 
 void Grid::run(){
+	
+	
+	
+	
 	float time;
     clock_t t1, t2;
+    
+    
+    
  
     t1 = clock(); //Départ de l'horloge
  
@@ -212,8 +224,8 @@ void Grid::run(){
 	ofstream file(simulation.c_str(), ios::out | ios::trunc);	
 	//Si l'ouverture a fonctionné
 	if(file){
-		file << "temps\tS\tL"<<endl;
-		file<<temps_<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<endl;
+		file << "temps\tS\tL\tdead_in_grid\tMortes_ici"<<endl;
+		file<<temps_<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_dead())<<endl;
 		
 		
 		file.close(); //Fermeture du fichier
@@ -222,16 +234,15 @@ void Grid::run(){
 		cerr << "Error opening the file" << endl;
 	}
 	
-	
-	
-	while(temps_!=temps_simulation_){		
+	while(temps_!=temps_simulation_&&grille_[0][0].cel_->get_nb_total()!=0){
+		
 		if(temps_ % T_ == 0){
 			lavage();
 		}
 		step();
 	}
 	string written_results;
-	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L());
+	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \t nb_cell_dead\n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L())+"\t"+ to_string(grille_[0][0].cel_->get_nb_dead());
 	
 	
 	
@@ -257,7 +268,7 @@ void Grid::run(){
 	//Si l'ouverture a fonctionné
 	if(results){	
 	
-		results<<A_trc<<"\t"<<to_string(T_)<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<endl;
+		results<<A_trc<<"\t"<<to_string(T_)<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_dead())<<endl;
 	
 		
 		results.close(); //Fermeture du fichier
@@ -390,7 +401,9 @@ vector<vector<int>> Grid::dead_position(float Pdeath){
 /***********Concurrence pour la division dans les cases vides************/
 
 void Grid::division(vector<vector<int>> coord_dead_cells){
+	
 	while (! coord_dead_cells.empty()){
+		//cout<< coord_dead_cells.size()<<endl;
 		int rand_cell_nbr;
 		if (coord_dead_cells.size()!=1){
 			rand_cell_nbr = rand() % (coord_dead_cells.size()-1);
@@ -408,9 +421,10 @@ void Grid::division(vector<vector<int>> coord_dead_cells){
 		Cellule* dividing_cell = grille_[realx][realy].cel_;
 		for (int x =dead_cell_x-1;x<=dead_cell_x+1;x++){
 			for (int y =dead_cell_y-1;y<=dead_cell_y+1;y++){
-				realx=x;
-				realy=y;
 				if(x!=dead_cell_x || y!=dead_cell_y){
+					
+					realx=x;
+					realy=y;
 					if (realx<0){realx=taille_-1;}
 					if (realx==taille_){realx=0;}
 					if (realy<0){realy=taille_-1;}
@@ -418,19 +432,15 @@ void Grid::division(vector<vector<int>> coord_dead_cells){
 					//si la valeur de la dividing_cell est plus petite que celle que pointe les coord, ou si elle est égale et que un lacer de dé de proba 1/2 donne true
 					if( dividing_cell->getFitness() < grille_[realx][realy].cel_->getFitness() || (rand()%2==0 && dividing_cell->getFitness() == grille_[realx][realy].cel_->getFitness()) ){
 						
-						dividing_cell = grille_[realx][realy].cel_;	
-						
+						dividing_cell = grille_[realx][realy].cel_;
 					}
 				}
 			}
 		}
-		if(dividing_cell->getFitness()>=W_min_){
-			if(!dividing_cell->is_alive()){
-					printf("A dead cell has divided\n");
-			}
+		if(dividing_cell->is_alive()){
 			delete grille_[dead_cell_x][dead_cell_y].cel_;
+			grille_[0][0].cel_->decrease_dead();
 			grille_[dead_cell_x][dead_cell_y].cel_= new Cellule(dividing_cell,p_mut_);
-			
 		}
 		coord_dead_cells.erase(coord_dead_cells.begin()+rand_cell_nbr);
 	}	
@@ -550,11 +560,6 @@ float Grid::get_p_death(){
 	
 float Grid::get_p_mut(){
 	return p_mut_;
-}
-	
-	
-float Grid::get_W_min(){
-	return W_min_;
 }
 	
 	

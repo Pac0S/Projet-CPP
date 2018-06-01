@@ -10,7 +10,8 @@ using namespace std;
 
 unsigned int Cellule::nb_cellules_L_ = 0;
 unsigned int Cellule::nb_cellules_S_ = 0;
-unsigned int Cellule::nb_cellules_dead = 0;
+unsigned int Cellule::nb_cellules_Dead_ = 0;
+float Cellule::W_min_ = 0.001;
 
 /*#############################################*/
 /*               CONSTRUCTORS                  */
@@ -50,21 +51,18 @@ Cellule::Cellule(Cellule* mere, float& p_mut){
 	}else{ // La mere mute
 		mere->mutates(p_mut);
 	}
-    alive_=true;
+	alive_=true;
 }
 
 
 /*#############################################*/
 /*               DESTRUCTOR                    */
 /*#############################################*/
-/*Cellule::~Cellule(){
-  if (genotype_ == 'L'){
-    nb_cellules_L_ --;
-  } else{
-    nb_cellules_S_ --;
-  }
-}*/
-
+/*
+Cellule::~Cellule(){
+	nb_cellules_Dead_--;
+}
+*/
 
 /*#############################################*/
 /*                 GETTERS                     */
@@ -72,9 +70,17 @@ Cellule::Cellule(Cellule* mere, float& p_mut){
 float Cellule::getFitness() {
 	float fitness;
 	if (genotype_=='L'){
-		fitness= reseauMet_["Acetate"];
+		if(reseauMet_["Acetate"]>=W_min_){
+			fitness= reseauMet_["Acetate"];
+		}else{
+			fitness = 0;
+		}
 	}else{
-		fitness= reseauMet_["Ethanol"];
+		if(reseauMet_["Ethanol"]>=W_min_){
+			fitness= reseauMet_["Ethanol"];
+		}else{
+			fitness = 0;
+		}
 	}
 	return fitness;
 }
@@ -103,6 +109,10 @@ float Cellule::get_Ethanol(){
 	return reseauMet_["Ethanol"];
 }
 
+float Cellule::get_W_min(){
+	return W_min_;
+}
+
 unsigned int Cellule::get_nb_cellules_L(){
   return nb_cellules_L_;
 }
@@ -115,8 +125,8 @@ unsigned int Cellule::get_nb_total(){
   return nb_cellules_S_ + nb_cellules_L_;
 }
 
-unsigned int Cellule::get_nb_mortes(){
-  return nb_cellules_dead;
+unsigned int Cellule::get_nb_dead(){
+  return nb_cellules_Dead_;
 }
 
 
@@ -148,6 +158,11 @@ void Cellule::empty_Met(){
 void Cellule::empty_cells(){
 	nb_cellules_S_=0;
 	nb_cellules_L_=0;
+	nb_cellules_Dead_=0;
+}
+
+void Cellule::decrease_dead(){
+	nb_cellules_Dead_ --;
 }
 
 
@@ -184,7 +199,7 @@ bool Cellule::roll_a_dice(float p_reussite){
 
 void Cellule::kill(){
 	alive_=false;
-	nb_cellules_mortes ++;
+	nb_cellules_Dead_++;
 	if(genotype_=='S'){
 		nb_cellules_S_ --;
 	}else if(genotype_=='L'){

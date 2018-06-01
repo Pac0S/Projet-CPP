@@ -34,7 +34,8 @@ class Cellule {
 		unsigned int get_nb_cellules_L();
 		unsigned int get_nb_cellules_S();
 		unsigned int get_nb_total();
-		unsigned int get_nb_cellules_mortes();
+		unsigned int get_nb_dead();
+		float get_W_min();
 	
 /*#############################################*/
 /*                  SETTERS                    */
@@ -45,6 +46,7 @@ class Cellule {
 		void set_Ethanol(float c);
 		void empty_Met();
 		void empty_cells();
+		void decrease_dead();
 /*#############################################*/
 /*                  DISPLAY                    */
 /*#############################################*/
@@ -65,9 +67,10 @@ class Cellule {
 		char genotype_; //Ga ou Gb  ou rien 
 		map<string,float> reseauMet_; //quantité de A,B et C dans la cellule
 		bool alive_;
+		static float W_min_;
 		static unsigned int nb_cellules_L_;
 		static unsigned int nb_cellules_S_;
-		unsigned int nb_cellules_dead;
+		static unsigned int nb_cellules_Dead_;
 		
 	
 	
