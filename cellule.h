@@ -17,7 +17,7 @@ class Cellule {
 /*#############################################*/
 /*               DESTRUCTOR                    */
 /*#############################################*/
-    	//~Cellule();
+    	~Cellule();
     
 /*#############################################*/
 /*                 GETTERS                     */
@@ -66,6 +66,7 @@ class Cellule {
 		bool alive_;
 		static unsigned int nb_cellules_L_;
 		static unsigned int nb_cellules_S_;
+		static unsigned int nb_cellules_Dead_;
 		
 	
 	

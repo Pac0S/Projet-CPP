@@ -10,6 +10,7 @@ using namespace std;
 
 unsigned int Cellule::nb_cellules_L_ = 0;
 unsigned int Cellule::nb_cellules_S_ = 0;
+unsigned int Cellule::nb_cellules_Dead_ = 0;
 
 /*#############################################*/
 /*               CONSTRUCTORS                  */
@@ -56,13 +57,9 @@ Cellule::Cellule(Cellule* mere, float& p_mut){
 /*#############################################*/
 /*               DESTRUCTOR                    */
 /*#############################################*/
-/*Cellule::~Cellule(){
-  if (genotype_ == 'L'){
-    nb_cellules_L_ --;
-  } else{
-    nb_cellules_S_ --;
-  }
-}*/
+Cellule::~Cellule(){
+	nb_cellules_Dead_--;
+}
 
 
 /*#############################################*/
@@ -157,7 +154,7 @@ void Cellule::empty_cells(){
 bool Cellule::roll_a_dice(float p_reussite){
 	float lancer = rand() %100;
 	bool result;
-	if (lancer<=p_reussite*100){
+	if (lancer<p_reussite*100){
 		result=true;
 	}else{
 		result=false;
@@ -167,6 +164,7 @@ bool Cellule::roll_a_dice(float p_reussite){
 
 void Cellule::kill(){
 	alive_=false;
+	nb_cellules_Dead_++;
 	if(genotype_=='S'){
 		nb_cellules_S_ --;
 	}else if(genotype_=='L'){
@@ -180,6 +178,7 @@ void Cellule::kill(){
 */
 void Cellule::mutates(float Pmut){
 	if (roll_a_dice(Pmut)){
+		cout<<"mutation "<<endl;
 		if(genotype_=='S'){
 			genotype_='L';
 			nb_cellules_L_++;

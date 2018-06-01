@@ -191,8 +191,15 @@ void Grid::step(){
 
 
 void Grid::run(){
+	
+	
+	
+	
 	float time;
     clock_t t1, t2;
+    
+    
+    
  
     t1 = clock(); //Départ de l'horloge
  
@@ -219,7 +226,7 @@ void Grid::run(){
 		cerr << "Error opening the file" << endl;
 	}
 	
-	while(temps_!=temps_simulation_){
+	while(temps_!=temps_simulation_&&grille_[0][0].cel_->get_nb_total()!=0){
 		step();			
 		if(temps_ % T_ == 0){
 			lavage();
