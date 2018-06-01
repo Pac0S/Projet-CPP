@@ -34,7 +34,7 @@ int main(int argc, char* argv[]){
 	//ça va etre sacrément drôle de faire un portrait de phase
 	//A ce rhytme on peut faire 37(A_init) * 37(T_) simulations en 24h (entre deux redémarrages des ordis)
 	
-	final_simulation(1550,50,499,20);
+	final_simulation(1501,50,100,3.3);
 	
 	
 	return 0;
@@ -123,8 +123,8 @@ void final_simulation(int T_max, float A_init_max, int T_step, int A_init_step){
 	
 		float A_init;
 		int T;
-		results<<"A_init\tT\tS\tL"<<endl;
-		for(A_init = 1.; A_init<=A_init_max; A_init+=A_init_step){ //Valeurs a changer pour avoir plus de précision
+		results<<"A_init\tT\tS\tL\tEtat"<<endl;
+		for(A_init = 0.; A_init<=A_init_max; A_init+=A_init_step){ //Valeurs a changer pour avoir plus de précision
 			for(T=1; T<=T_max; T+=T_step){ //Valeurs a changer pour avoir plus de précision
 				Grid g(T, A_init);
 				g.run();

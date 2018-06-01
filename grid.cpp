@@ -241,14 +241,23 @@ void Grid::run(){
 		}
 		step();
 	}
+	
+	string final_state="";
+	
+	if(grille_[0][0].cel_->get_nb_cellules_S() == 0 && grille_[0][0].cel_->get_nb_cellules_L()!=0){
+		final_state = "Exclusion";
+	}else if(grille_[0][0].cel_->get_nb_cellules_S() == 0 && grille_[0][0].cel_->get_nb_cellules_L()==0){
+		final_state = "Extinction";
+	}else if(grille_[0][0].cel_->get_nb_cellules_S() != 0 && grille_[0][0].cel_->get_nb_cellules_L()!=0){
+		final_state = "Cohabitation";
+	}else{
+		final_state = "Pas normal";
+	}
+	
 	string written_results;
-	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \t nb_cell_dead\n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L())+"\t"+ to_string(grille_[0][0].cel_->get_nb_dead());
+	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \t nb_cell_dead \t Etat final\n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L())+"\t"+ to_string(grille_[0][0].cel_->get_nb_dead())+"\t"+final_state;
 	
 	
-	
-	/* Problèmes : -Nombre initial de cellules parfois trop élevé...
-				   -Nombre final de cellules parfois identique pour differentes simulations...
-	*/
 	
 	
 	
@@ -268,7 +277,7 @@ void Grid::run(){
 	//Si l'ouverture a fonctionné
 	if(results){	
 	
-		results<<A_trc<<"\t"<<to_string(T_)<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_dead())<<endl;
+		results<<A_trc<<"\t"<<to_string(T_)<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<"\t"<<final_state<<endl;
 	
 		
 		results.close(); //Fermeture du fichier
