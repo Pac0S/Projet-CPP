@@ -14,7 +14,7 @@ void test_grid_getters(Grid& g);
 void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation);
 void test_affichages(Grid& g1);
 void test_division(Cellule c1, float p_mut);
-void final_simulation(int T_max, float A_init_max, int T_step, int A_init_step);
+void final_simulation(float A_init_min, float A_init_max, int a_init_step, int T_min, int T_max, int T_step);
 
 int main(int argc, char* argv[]){
 	cout << " --------------------------------------------------" << endl;
@@ -34,7 +34,7 @@ int main(int argc, char* argv[]){
 	//ça va etre sacrément drôle de faire un portrait de phase
 	//A ce rhytme on peut faire 37(A_init) * 37(T_) simulations en 24h (entre deux redémarrages des ordis)
 	
-	final_simulation(1501,50,100,3.3);
+	final_simulation(0, 10, 1, 1, 151, 15);
 	
 	
 	return 0;
@@ -115,7 +115,7 @@ void test_division(Cellule c1, float p_mut){
 	cout<<"\n"<<c2.getReseauMet()["Ethanol"]<<endl<<endl;
 }*/
 
-void final_simulation(int T_max, float A_init_max, int T_step, int A_init_step){
+void final_simulation(float A_init_min, float A_init_max, int A_init_step, int T_min, int T_max, int T_step){
 
 
 	/*#######################################*/
@@ -131,14 +131,14 @@ void final_simulation(int T_max, float A_init_max, int T_step, int A_init_step){
 	/*###     Ouverture d'un fichier  #######*/
 	/*#######################################*/
 	
-	ofstream results("results.txt", ios::out | ios::trunc);	
+	ofstream results("0_10|1_151.txt", ios::out | ios::trunc);	
 	if(results){	
 	
 		float A_init;
 		int T;
 		results<<"A_init\tT\tS\tL\tEtat"<<endl;
-		for(A_init = 0.; A_init<=A_init_max; A_init+=A_init_step){
-			for(T=1; T<=T_max; T+=T_step){
+		for(A_init = A_init_min; A_init<=A_init_max; A_init+=A_init_step){
+			for(T= T_min; T<=T_max; T+=T_step){
 				Grid g(T, A_init);
 				g.run();
 			}

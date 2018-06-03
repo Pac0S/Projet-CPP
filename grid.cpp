@@ -240,16 +240,16 @@ void Grid::run(){
 		step();
 	}
 	
-	string final_state="";
+	int final_state;
 	
 	if(grille_[0][0].cel_->get_nb_cellules_S() == 0 && grille_[0][0].cel_->get_nb_cellules_L()!=0){
-		final_state = "Exclusion";
+		final_state = 1; //Exclusion
 	}else if(grille_[0][0].cel_->get_nb_cellules_S() == 0 && grille_[0][0].cel_->get_nb_cellules_L()==0){
-		final_state = "Extinction";
+		final_state = 0; //Extinction
 	}else if(grille_[0][0].cel_->get_nb_cellules_S() != 0 && grille_[0][0].cel_->get_nb_cellules_L()!=0){
-		final_state = "Cohabitation";
+		final_state = 2; //Cohabitation
 	}else{
-		final_state = "Pas normal";
+		final_state = -1; //Pas normal
 	}
 	
 	
@@ -274,7 +274,7 @@ void Grid::run(){
 	
 	
 	string written_results;
-	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \t nb_cell_dead \t Etat final\n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L())+"\t"+ to_string(grille_[0][0].cel_->get_nb_dead())+"\t"+final_state;
+	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \t nb_cell_dead \t Etat final\n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L())+"\t"+ to_string(grille_[0][0].cel_->get_nb_dead())+"\t"+to_string(final_state);
     
 	cout<<written_results<<endl<<endl;
 	
@@ -285,11 +285,11 @@ void Grid::run(){
 	/*#######################################*/
 	
 	
-	ofstream results("results.txt", ios::out | ios::app);	
+	ofstream results("0_10|1_151.txt", ios::out | ios::app);	
 	//Si l'ouverture a fonctionné
 	if(results){	
 	
-		results<<A_trc<<"\t"<<to_string(T_)<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<"\t"<<final_state<<endl;
+		results<<A_trc<<"\t"<<to_string(T_)<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<"\t"<<to_string(final_state)<<endl;
 	
 		
 		results.close(); //Fermeture du fichier
