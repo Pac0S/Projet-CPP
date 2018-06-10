@@ -27,7 +27,6 @@ using namespace std;
 /*    p_death : probabilité de décès d'un individu                       */
 /*    p_mut : probabilité de mutation de deux individus fils apres une   */
 /*            division                                                   */
-/*    W_min : seuil minimum de la fitness pour un individu               */
 /*    temps : temps initial                                              */
 /*    taux_meta_ : map contenant les taux permettant de convertir ou     */
 /*                 d'importer les ressources de l'environnement          */
@@ -51,6 +50,7 @@ Grid::Grid(int T, float A_init){
 	taux_meta_["Rbb"]=0.1;
 	taux_meta_["Rbc"]=0.1;
 	temps_simulation_=5000;
+	max_L_lvg = 0; //On initialise à 0. Reste à 0 si mort des c avant lavage. Sinon prend la valeur du plus grand nb de L au moment d'un lavage.
 	
 	
 	vector<Case> y_axis(taille_);
@@ -171,7 +171,7 @@ void Grid::step(){
 	string A = to_string(A_init_);
 	string A_trc = A.substr(0,4); //Pour récupérer seulement 50.0 plutot que 50.000000
 	
-	string simulation = A_trc + "|" + to_string(T_)+ ".txt";
+	string simulation = A_trc + "|" + to_string(T_)+ "_m" + ".txt";
 	//ouverture d'un fichier :
 	ofstream file(simulation.c_str(), ios::out | ios::app);	
 	//Si l'ouverture a fonctionné
@@ -212,7 +212,7 @@ void Grid::run(){
 	
 	
 	
-	string simulation = A_trc + "|" + to_string(T_)+ ".txt";
+	string simulation = A_trc + "|" + to_string(T_)+ "_m" + ".txt";
 	ofstream file(simulation.c_str(), ios::out | ios::trunc);	
 	//Si l'ouverture a fonctionné
 	if(file){
@@ -235,6 +235,9 @@ void Grid::run(){
 	while(temps_!=temps_simulation_ && grille_[0][0].cel_->get_nb_total()!=0 && grille_[0][0].cel_->get_nb_cellules_L()!=taille_*taille_){
 		
 		if(temps_ % T_ == 0){
+			if (grille_[0][0].cel_->get_nb_cellules_L() > max_L_lvg && temps_ >500){
+				max_L_lvg = grille_[0][0].cel_->get_nb_cellules_L(); // récupération du nb de cellules au moment du lavage.
+			}
 			lavage();
 		}
 		step();
@@ -249,7 +252,7 @@ void Grid::run(){
 	}else if(grille_[0][0].cel_->get_nb_cellules_S() != 0 && grille_[0][0].cel_->get_nb_cellules_L()!=0){
 		final_state = 2; //Cohabitation
 	}else{
-		final_state = -1; //Pas normal
+		final_state = -1; //Extinction tardive
 	}
 	
 	
@@ -274,7 +277,7 @@ void Grid::run(){
 	
 	
 	string written_results;
-	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \t nb_cell_dead \t Etat final\n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L())+"\t"+ to_string(grille_[0][0].cel_->get_nb_dead())+"\t"+to_string(final_state);
+	written_results = "A_init \t T \t nb_cell_S \t nb_cell_L \t nb_cell_dead \t max_L_lvg \t Etat final\n" + to_string(A_init_) + "\t" + to_string(T_) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_S()) + "\t" + to_string(grille_[0][0].cel_->get_nb_cellules_L())+"\t"+ to_string(grille_[0][0].cel_->get_nb_dead())+"\t"+ to_string(max_L_lvg) + "\t" + to_string(final_state);
     
 	cout<<written_results<<endl<<endl;
 	
@@ -285,11 +288,11 @@ void Grid::run(){
 	/*#######################################*/
 	
 	
-	ofstream results("0_10|1_151.txt", ios::out | ios::app);	
+	ofstream results("n_mut_0_10|1_1501.txt", ios::out | ios::app);	
 	//Si l'ouverture a fonctionné
 	if(results){	
 	
-		results<<A_trc<<"\t"<<to_string(T_)<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<"\t"<<to_string(final_state)<<endl;
+		results<<A_trc<<"\t"<<to_string(T_)<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_S())<<"\t"<<to_string(grille_[0][0].cel_->get_nb_cellules_L())<<"\t" << to_string(max_L_lvg) << "\t" << to_string(final_state)<<endl;
 	
 		
 		results.close(); //Fermeture du fichier

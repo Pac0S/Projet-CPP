@@ -90,9 +90,7 @@ class Grid {
 		int T_;
 		unsigned int temps_simulation_;
 		vector<vector<int>> coord_dead_cells_; //Stocke les coordonnées des cellules mortes non remplacées
-	
-
-
+		int max_L_lvg; //Nb maximum de L atteint avant un lavage, 0 si mort des cellules avant le premier lavage
 };
 
 #endif

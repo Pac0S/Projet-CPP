@@ -34,8 +34,9 @@ int main(int argc, char* argv[]){
 	//ça va etre sacrément drôle de faire un portrait de phase
 	//A ce rhytme on peut faire 37(A_init) * 37(T_) simulations en 24h (entre deux redémarrages des ordis)
 	
-	final_simulation(0, 10, 1, 1, 151, 15);
 	
+	final_simulation(0, 10 , 1, 1, 1501, 15);
+	 
 	
 	return 0;
 }
@@ -131,12 +132,12 @@ void final_simulation(float A_init_min, float A_init_max, int A_init_step, int T
 	/*###     Ouverture d'un fichier  #######*/
 	/*#######################################*/
 	
-	ofstream results("0_10|1_151.txt", ios::out | ios::trunc);	
+	ofstream results("n_mut_0_10|1_1501.txt", ios::out | ios::trunc);	
 	if(results){	
 	
 		float A_init;
 		int T;
-		results<<"A_init\tT\tS\tL\tEtat"<<endl;
+		results<<"A_init\tT\tS\tL\tmax_L_lvg\tEtat"<<endl;
 		for(A_init = A_init_min; A_init<=A_init_max; A_init+=A_init_step){
 			for(T= T_min; T<=T_max; T+=T_step){
 				Grid g(T, A_init);
