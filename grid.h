@@ -69,8 +69,8 @@ class Grid {
 /*                   DISPLAY                   */
 /*#############################################*/
 
-		string zoliaffissage();
-		string zoliaffissagemet();
+		//string zoliaffissage();
+		//string zoliaffissagemet();
 
 	protected :
 		

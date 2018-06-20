@@ -106,7 +106,7 @@ Grid::Grid(int T, float A_init){
 /*              DESTRUCTOR                     */
 /*#############################################*/
 
-
+//Détruit toutes les cellules de la grille
 Grid::~Grid(){
 	for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();++i){
 		vector<Case> y_axis = *i;
@@ -139,6 +139,9 @@ Grid::~Grid(){
 /*       se déroule en un dixième de temps. Les individus metabolisent  */
 /*       donc 10 fois en un pas de temps)                               */
 /************************************************************************/
+
+//Utilise les fonctions de cellule pour faire un pas de temps
+//Ecrit les données finales du pas dans un fichier txt (append)
 void Grid::step(){
 
 	temps_++;
@@ -159,8 +162,6 @@ void Grid::step(){
 		metaboliser();
 	}
 	
-	
-
 	
 	
 	//-----------------------------------------//
@@ -187,7 +188,8 @@ void Grid::step(){
 }
 
 
-
+//Lance une simulation (A_init, T)
+//Ecrit les résultats de la simulation dans un fichier txt créé dans le main
 void Grid::run(){
 	
 	
@@ -288,7 +290,7 @@ void Grid::run(){
 	/*#######################################*/
 	
 	
-	ofstream results("n_mut_0_10|1_1501.txt", ios::out | ios::app);	
+	ofstream results("n_mut_50_50|1231_1501.txt", ios::out | ios::app);	
 	//Si l'ouverture a fonctionné
 	if(results){	
 	
@@ -323,6 +325,7 @@ void Grid::run(){
 
 /************* Diffusion des cellules **************/
 
+//Modifie le contenu des cases de la grille
 void Grid::diffusion(){
 
   /* tableau de taille_ * taille_ contenant les concentrations des 
@@ -396,6 +399,8 @@ void Grid::diffusion(){
 
 /*************Position des cellules mortes************/
 
+
+//Fait mourir aléatoirement les cellules de la grille et stocke leurs coordonnées dans un vector<vector<int>>
 void Grid::dying(){
 	for (unsigned int i(0);i<taille_;i++){
 		for (unsigned int j(0);j<taille_;j++){
@@ -427,6 +432,10 @@ void Grid::dying(){
 
 
 /***********Concurrence pour la division dans les cases vides************/
+
+
+//Parcourt les cases vides au hasard, détermine quelle cellule autour a la plus grosse fitness et provoque sa division de manière aléatoire.
+//Delete la cellule morte qui est remplacée
 
 void Grid::division(){
 
@@ -481,15 +490,6 @@ void Grid::division(){
 		
 		coord_dead_cells_.erase(coord_dead_cells_.begin()+rand_cell_nbr); //On efface le vecteur de cellules mortes d'origine
 		
-		
-		
-		
-		
-		
-			
-		/*Oui mais non... Si on supprime une cellule qui n'a pas été remplacée, elle ne sera plus considérée aux steps suivants. 
-		Elle ne sera donc jamais remplacée. Il faut la stocker et la récupérer au step suivant*/
-		
 
 	}
 	
@@ -508,6 +508,10 @@ void Grid::division(){
 
 
 /***********Metabolisme d'une cellule !!!!! dt = 0.1 !!!!!************/
+
+
+//Active le métabolisme des cellules
+//Modifie les taux de métabolites dans les cellules (absorbtion selon taux métabolique)
 
 void Grid::metaboliser(){
 	for (vector<vector<Case>>::iterator i =grille_.begin();i!=grille_.end();i++){
@@ -565,7 +569,9 @@ void Grid::metaboliser(){
 
 
 
-/* Vidage de la grille de ses métabolites */
+/* Vidage de la grille de ses métabolites 
+Remplissage des cases avec A_init*/
+
 void Grid::lavage(){
 	for(vector<vector<Case>>::iterator it1=grille_.begin();it1 != grille_.end(); ++it1){
 		for (vector<Case>::iterator it2 =it1->begin();it2!=it1->end();it2++){
@@ -642,6 +648,11 @@ float Grid::get_Rbc(){
 /*                   DISPLAY                   */
 /*#############################################*/
 
+
+
+/*Fonction test : Affichage de la grille contenant les cellules*/
+
+/*
 string Grid::zoliaffissage(){
 	string zoli = "";
 	for (vector<vector<Case>>::iterator ligne =grille_.begin();ligne!=grille_.end();++ligne){
@@ -669,6 +680,7 @@ string Grid::zoliaffissage(){
 	return zoli;
 }
 
+*/
 
 
 
@@ -679,6 +691,9 @@ string Grid::zoliaffissage(){
 
 
 
+/* Fonction test : Affichage de la grille et concentrations en métabolites*/
+
+/*
 string Grid::zoliaffissagemet(){
 	string zolimet = "";
 	zolimet+="A";
@@ -716,5 +731,6 @@ string Grid::zoliaffissagemet(){
 	}
 	return zolimet;
 }
+*/
 
 

@@ -12,7 +12,7 @@ using namespace std;
 
 void test_grid_getters(Grid& g);
 void test_bool_function(Cellule c,int try_nbr, float Pdeath, float Pmutation);
-void test_affichages(Grid& g1);
+//void test_affichages(Grid& g1);
 void test_division(Cellule c1, float p_mut);
 void final_simulation(float A_init_min, float A_init_max, int a_init_step, int T_min, int T_max, int T_step);
 
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]){
 	//A ce rhytme on peut faire 37(A_init) * 37(T_) simulations en 24h (entre deux redémarrages des ordis)
 	
 	
-	final_simulation(0, 10 , 1, 1, 1501, 15);
+	final_simulation(50, 50 , 1, 1231, 1501, 15);
 	 
 	
 	return 0;
@@ -65,6 +65,7 @@ void test_bool_function(Cellule& c,int try_nbr, float P){
 }
 
 
+/*
 void test_affichages(Grid& g1){
 	cout<<g1.zoliaffissage()<<endl;
 	
@@ -92,6 +93,7 @@ void test_affichages(Grid& g1){
 	cout<<g1.zoliaffissage()<<endl;
 	
 }
+*/
 
 /*
 void test_division(Cellule c1, float p_mut){
@@ -132,7 +134,7 @@ void final_simulation(float A_init_min, float A_init_max, int A_init_step, int T
 	/*###     Ouverture d'un fichier  #######*/
 	/*#######################################*/
 	
-	ofstream results("n_mut_0_10|1_1501.txt", ios::out | ios::trunc);	
+	ofstream results("n_mut_50_50|1231_1501.txt", ios::out | ios::trunc);	
 	if(results){	
 	
 		float A_init;

@@ -148,6 +148,7 @@ void Cellule::set_Ethanol(float c){
 void Cellule::set_Genotype(char g){
 	genotype_=g;
 }
+
 void Cellule::empty_Met(){
 	set_Glucose(0);
 	set_Acetate(0);
@@ -197,6 +198,8 @@ bool Cellule::roll_a_dice(float p_reussite){
 	return result;
 }
 
+
+//Diminue nombre cellules S ou L
 void Cellule::kill(){
 	alive_=false;
 	nb_cellules_Dead_++;
